@@ -1,0 +1,613 @@
+/* Default
+    
+    Colors
+    background - #F3F2EF
+    pale-brown - #E3D6C5
+    dark-brown - #4E1700
+
+    Font - Roboto Slab
+*/
+
+/* ---------- Basic Structure ---------- */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+*:focus {
+  outline: none;
+}
+
+html {
+  color: #4e1700;
+  font-family: "Roboto Slab", Georgia, serif;
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+/* ---------- Home ---------- */
+.container {
+  padding: 10px 3%;
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.background-img {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -99;
+}
+
+h1 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 250%;
+  text-shadow: #e3d6c5 4px 4px;
+  text-transform: capitalize;
+  text-align: center;
+  font-family: "Rochester", "cursive";
+}
+
+.home-row {
+  height: auto;
+}
+
+.home-col {
+  height: auto;
+  position: relative;
+}
+
+/* ---------- Button ---------- */
+
+.windows-btn-container {
+  display: flex;
+  -moz-column-gap: 7px;
+  column-gap: 7px;
+}
+
+.windows-btn {
+  display: inline-flex;
+  border: #4e1700 solid 2px;
+  border-radius: 5px;
+  justify-content: center;
+  align-items: center;
+  width: 20px;
+  height: 20px;
+  box-shadow: #4e1700 1px 1px;
+}
+
+.mini-btn,
+.close-btn-1,
+.close-btn-2 {
+  width: 60%;
+  height: 2px;
+  background-color: #4e1700;
+}
+
+.max-btn {
+  width: 55%;
+  height: 55%;
+  border: #4e1700 solid 2px;
+}
+.close-btn {
+  font-size: 80%;
+  transform: translateX(1px);
+}
+
+/* ---------- Toast Alert Box ---------- */
+.toast-container {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  position: fixed;
+  left: 0;
+  z-index: 99;
+  transition: all 0.5s ease-out;
+}
+
+.bannerAndBody {
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  width: 50%;
+  border: #4e1700 solid 3px;
+  border-radius: 5px;
+  box-shadow: #4e17006b 0 4px 10px;
+}
+
+.toast-banner {
+  background-color: hsla(34, 35%, 83%, 0.7);
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.toast-parent {
+  background-color: hsla(45, 14%, 95%, 0.7);
+  text-align: left;
+  padding: 15px;
+}
+
+/* ---------- Pop-up Box ---------- */
+.pop-up-box {
+  background-color: #f3f2ef;
+  width: 74%;
+  height: auto;
+  border: solid 2px #4e1700;
+  border-radius: 5px;
+  box-shadow: #4e1700 6px 6px;
+  margin: 15px 0;
+  position: relative;
+}
+
+h3 {
+  font-weight: 400;
+  font-size: 90%;
+  text-transform: uppercase;
+}
+
+/* Pop-up Banner */
+
+.box-banner {
+  padding: 1% 2%;
+  background-color: #e3d6c5;
+  border-bottom: #4e1700 solid 2px;
+  border-radius: 5px 5px 0 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+/* ---------- Timer Box ---------- */
+
+.setting-btn {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  right: 2%;
+  margin-top: 2%;
+}
+
+.setting-btn i {
+  color: #4e1700;
+  font-size: 120%;
+}
+
+.setting-activated {
+  transform: rotate(30deg);
+}
+
+/* Time */
+#secs {
+  display: none;
+}
+
+/* Timer */
+.timer-container {
+  display: flex;
+  text-align: center;
+  width: 100%;
+  justify-content: space-between;
+  padding: 10% 5% 3%;
+  align-items: center;
+}
+
+.timer-btn-container {
+  display: flex;
+  align-items: center;
+  -moz-column-gap: 10px;
+  column-gap: 10px;
+}
+
+.timer-clock {
+  font-size: 330%;
+  letter-spacing: 10px;
+}
+
+.start-btn {
+  background-color: #f3f2ef;
+  border: solid 2px #4e1700;
+  padding: 6px 15px;
+  border-radius: 25px;
+  color: #4e1700;
+  text-transform: uppercase;
+  font-size: 70%;
+  letter-spacing: 2px;
+  cursor: pointer;
+}
+
+.start-btn:hover,
+.start-btn:active {
+  background-color: #e3d6c5;
+}
+
+.redo-btn {
+  background-color: transparent;
+  border: none;
+  color: #4e1700;
+  font-size: 120%;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+/* Tabs */
+.tabs-container {
+  display: flex;
+  justify-content: space-evenly;
+  border-top: solid #4e1700 2px;
+}
+
+.tabs-container a {
+  font-weight: 400;
+  text-align: center;
+  width: 100%;
+  text-transform: uppercase;
+  font-size: 70%;
+  text-decoration: none;
+  color: #4e1700;
+  padding: 2.5% 0;
+}
+
+/* Tab Btns */
+.tab-selected,
+.tab-btn:hover,
+.tab-btn:active {
+  background-color: #e3d6c5;
+}
+
+/* ---------- Timer Settings Box ---------- */
+
+.timer-setting-box {
+  display: none;
+  position: absolute;
+  top: 0;
+  left: 78%;
+  width: 40%;
+  font-size: 78%;
+  z-index: 99;
+}
+
+.timer-setting-box .windows-btn {
+  width: 23px;
+  height: 23px;
+  font-size: 120%;
+  cursor: pointer;
+}
+
+.timer-setting-box .box-banner {
+  padding: 2%;
+}
+
+.timer-setting-body {
+  padding: 6% 5% 3%;
+}
+
+.timer-setting-list {
+  width: auto;
+  display: flex;
+  justify-content: space-between;
+  margin: 5% 0;
+  align-items: center;
+  letter-spacing: 0;
+  list-style: none;
+  font-size: 90%;
+}
+
+.timer-setting-list div {
+  width: 55%;
+}
+
+.timer-setting-list input {
+  max-width: 70%;
+  background-color: #e3d6c5;
+  color: #4e1700;
+  border: #4e1700 solid 1px;
+  border-radius: 5px;
+  padding: 2% 4%;
+}
+
+.apply-btn-container {
+  width: 100%;
+  display: flex;
+  justify-content: flex-end;
+}
+
+#apply-btn {
+  background-color: #e3d6c5;
+  color: #4e1700;
+  border: #4e1700 solid 1px;
+  border-radius: 5px;
+  padding: 2% 7%;
+  margin-top: 8%;
+  text-transform: uppercase;
+  font-size: 90%;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+#apply-btn:hover,
+#apply-btn:active {
+  background-color: #d8c0a2;
+}
+
+/* ---------- To-Do-List Box ---------- */
+
+.to-do-list-box .pop-up-box {
+  min-height: 300px;
+  height: auto;
+  max-height: 100%;
+  overflow: hidden;
+}
+
+.plus-btn {
+  width: auto;
+  height: auto;
+  padding: 2%;
+  background-color: #e3d6c5;
+  border: none;
+  font-size: 200%;
+  color: #4e1700;
+  position: absolute;
+  bottom: 9px;
+  right: 9px;
+  cursor: pointer;
+  display: flex;
+}
+.plus-btn img {
+  width: 20px;
+}
+
+.to-do-list-content {
+  padding: 6%;
+}
+
+/* Task List */
+.task-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 5% 0;
+}
+
+.task-list:first-child {
+  margin-top: 0;
+}
+.task-list:last-of-type {
+  margin-bottom: 10%;
+}
+
+input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  outline: solid #4e1700 1.5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+}
+
+input[type="checkbox"]:checked:after {
+  content: "";
+  width: 16px;
+  height: 16px;
+  background-image: url("img/tick.svg");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  display: inline-block;
+}
+
+.task-lable-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: space-between;
+  border-bottom: #4e1700 solid 1.5px;
+  margin-left: 9px;
+}
+
+.task-input {
+  width: 100%;
+  color: #4e1700;
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 80%;
+  letter-spacing: 1.5px;
+}
+.task-input::-webkit-input-placeholder {
+  color: #9b624b;
+}
+.task-input::-moz-placeholder {
+  color: #9b624b;
+}
+.task-input:-ms-input-placeholder {
+  color: #9b624b;
+}
+.task-input::-ms-input-placeholder {
+  color: #9b624b;
+}
+.task-input::placeholder {
+  color: #9b624b;
+}
+.task-input::-moz-selection {
+  background: #e3d6c5;
+}
+.task-input::selection {
+  background: #e3d6c5;
+}
+
+.hasChecked {
+  text-decoration: line-through;
+}
+
+.remove-btn {
+  font-size: 85%;
+  cursor: pointer;
+}
+
+/* ---------- Musics ----------  */
+.music-row {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-mood-container {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  -moz-column-gap: 6%;
+  column-gap: 6%;
+  row-gap: 30px;
+  justify-content: center;
+}
+
+.mood-container {
+  text-align: center;
+}
+
+.icon-box {
+  background-color: #f3f2ef;
+  width: 65px;
+  height: 65px;
+  border: solid 2px #4e1700;
+  border-radius: 5px;
+  position: relative;
+  cursor: pointer;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 35px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-box:hover {
+  background-color: #f3edd7b0;
+}
+
+.mood-label {
+  position: relative;
+  bottom: 0%;
+  text-transform: capitalize;
+  font-size: 75%;
+  letter-spacing: 1px;
+}
+
+.mood-selected::before {
+  content: "";
+  background-image: url("../img/sync.svg");
+  background-repeat: no-repeat;
+  background-color: #f3f2efb0;
+  background-position: center;
+  height: 18px;
+  width: 18px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  transform: scale(3.1) rotate(30deg);
+}
+
+/* ---------- Volume Slider ----------  */
+.volume-slider-container {
+  width: 90%;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#volumeSlider {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 80%;
+  height: 3px;
+  border-radius: 2px;
+  background-color: #4e1700;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 23px;
+  height: 23px;
+  background-color: #4e1700;
+  border-radius: 100%;
+  cursor: pointer;
+}
+
+.fa-volume-up {
+  margin: 0 15px;
+  font-size: 30px;
+}
+
+/* ---------- Quote ----------  */
+.quote-container::before {
+  content: url(../img/quote-left.svg);
+  transform: scale(0.8);
+  background-color: #f3f2ef;
+  position: absolute;
+  top: -40px;
+  left: -35px;
+}
+
+.quote-container {
+  margin: 50px auto 0;
+  background-color: #f3f2ef;
+  text-align: center;
+  line-height: 40px;
+  border: solid 2px #4e1700;
+  border-radius: 5px;
+  box-shadow: #4e1700 6px 6px;
+  padding: 7%;
+  min-width: 60%;
+  width: auto;
+  max-width: 90%;
+  position: relative;
+}
+
+.quoteClass {
+  line-height: 30px;
+}
+
+.authorClass {
+  font-size: 80%;
+}
+/* ---------- Full Screen btn ---------- */
+
+.full-screen-btn,
+.exit-full-screen-btn {
+  background-color: transparent;
+  border: none;
+  position: fixed;
+  right: 2%;
+  bottom: 2%;
+  cursor: pointer;
+  z-index: 999;
+}
+
+.full-screen-btn i,
+.exit-full-screen-btn i {
+  color: #4e1700;
+  font-size: 150%;
+}
+
+.exit-full-screen-btn {
+  display: none;
+}

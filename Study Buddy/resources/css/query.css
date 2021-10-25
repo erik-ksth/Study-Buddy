@@ -1,0 +1,223 @@
+@media only screen and (min-width: 1510px) {
+  .bannerAndBody,
+  .pop-up-box,
+  /* .box-banner, */
+  .start-btn,
+  /* .tabs-container, */
+  /* .timer-setting-list input, */
+  #apply-btn,
+  .icon-box,
+  .quote-container {
+    border: solid #4e1700 2px;
+  }
+
+  .task-lable-container {
+    border-bottom: solid #4e1700 2px;
+  }
+
+  input[type="checkbox"] {
+    width: 23px;
+    height: 23px;
+    outline: solid #4e1700 2px;
+  }
+
+  .windows-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .bannerAndBody {
+    width: 40%;
+  }
+
+  .row {
+    margin-bottom: 5%;
+  }
+
+  .container {
+    font-size: 140%;
+    padding: 10px 6%;
+  }
+
+  .main-mood-container {
+    -moz-column-gap: 5%;
+    column-gap: 5%;
+    row-gap: 40px;
+  }
+
+  .icon-box {
+    width: 100px;
+    height: 100px;
+    background-size: 50px;
+  }
+
+  .mood-selected::before {
+    background-size: 24px;
+    width: 25px;
+    height: 25px;
+  }
+
+  #volumeSlider::-webkit-slider-thumb {
+    width: 33px;
+    height: 33px;
+  }
+
+  .fa-volume-up {
+    font-size: 150%;
+  }
+
+  .to-do-list-box .pop-up-box {
+    min-height: 450px;
+  }
+
+  .quote-container {
+    margin-top: 10%;
+    line-height: 70px;
+  }
+
+  .quoteClass {
+    line-height: 150%;
+  }
+}
+
+/* from 1201 to 1510px */
+@media only screen and (max-width: 1510px) {
+  .bannerAndBody {
+    width: 40%;
+  }
+  .container {
+    font-size: 100%;
+  }
+
+  .to-do-list-box .pop-up-box {
+    min-height: 350px;
+  }
+}
+
+/* from 1171px to 1200px */
+@media only screen and (max-width: 1200px) {
+}
+
+/* Large Tablet from 851 to 1023 */
+@media only screen and (max-width: 1170px) {
+  .container {
+    font-size: 20px;
+  }
+
+  .pop-up-box {
+    width: 90%;
+  }
+
+  .main-mood-container {
+    -moz-column-gap: 2%;
+    column-gap: 2%;
+    row-gap: 15px;
+  }
+
+  .icon-box {
+    transform-origin: top;
+    transform: scale(0.9);
+  }
+}
+
+/* Large Tablet from 741 to 850 */
+@media only screen and (max-width: 910px) {
+  .bannerAndBody {
+    width: 50%;
+  }
+
+  .container {
+    font-size: 15px;
+  }
+}
+
+/* Small Tablet from 481 to 740 */
+@media only screen and (max-width: 740px) {
+  .bannerAndBody {
+    width: 70%;
+  }
+
+  .pop-up-box {
+    width: 100%;
+  }
+
+  .timer-setting-box {
+    position: absolute;
+    left: 35%;
+    font-size: 140%;
+    transform: scale(0.7);
+  }
+
+  .timer-setting-box .windows-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .timer-setting-box .close-btn {
+    font-size: 90%;
+  }
+
+  .timer-clock {
+    font-size: 350%;
+    margin-top: -20px;
+  }
+
+  .container {
+    font-size: 16px;
+  }
+
+  .pop-up-box {
+    width: 100%;
+  }
+
+  .timer-container {
+    flex-direction: column;
+  }
+
+  .timer-btn-container {
+    margin: 5px 0;
+  }
+
+  .quote-container::before {
+    transform: scale(0.5);
+  }
+
+  .full-screen-btn,
+  .exit-full-screen-btn {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
+
+/* Small Phone from 0 to 480px */
+@media only screen and (max-width: 480px) {
+  .bannerAndBody {
+    width: 90%;
+  }
+
+  .timer-setting-box {
+    left: 0;
+    font-size: 120%;
+    transform: scale(0.7);
+  }
+
+  .timer-setting-box .windows-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timer-setting-box .close-btn {
+    font-size: 90%;
+  }
+
+  .container {
+    font-size: 20px;
+    transform-origin: top;
+    transform: scale(0.9);
+    padding: 10px;
+  }
+
+  .pop-up-box {
+    width: 100%;
+  }
+}
