@@ -191,6 +191,10 @@
 
 /* Small Phone from 0 to 480px */
 @media only screen and (max-width: 480px) {
+  #preloader h1 {
+    font-size: 200%;
+  }
+
   .bannerAndBody {
     width: 90%;
   }
