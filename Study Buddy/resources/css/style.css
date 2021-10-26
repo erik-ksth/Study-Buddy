@@ -13,6 +13,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 *:focus {
@@ -27,6 +28,45 @@ html {
   letter-spacing: 2px;
   text-rendering: optimizeLegibility;
   overflow-x: hidden;
+  cursor: url("img/cursor/default.png"), default;
+}
+
+/* ---------- PreLoader ---------- */
+#preloader {
+  background-color: #f3f2ef;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 999;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#preloader img {
+  width: 15%;
+}
+
+#preloader h1 {
+  font-size: 400%;
+}
+
+#gif {
+  background-image: url("../img/preloader/Ellipsis-1.6s-200px.gif");
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  width: 17%;
+  height: 17%;
 }
 
 /* ---------- Home ---------- */
@@ -104,6 +144,7 @@ h1 {
 
 /* ---------- Toast Alert Box ---------- */
 .toast-container {
+  display: -ms-grid;
   display: grid;
   place-items: center;
   width: 100%;
@@ -170,7 +211,7 @@ h3 {
 .setting-btn {
   background-color: transparent;
   border: none;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
   position: absolute;
   right: 2%;
   margin-top: 2%;
@@ -221,7 +262,7 @@ h3 {
   text-transform: uppercase;
   font-size: 70%;
   letter-spacing: 2px;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 
 .start-btn:hover,
@@ -234,7 +275,7 @@ h3 {
   border: none;
   color: #4e1700;
   font-size: 120%;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
   transition: all 0.2s;
 }
 
@@ -279,7 +320,7 @@ h3 {
   width: 23px;
   height: 23px;
   font-size: 120%;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 
 .timer-setting-box .box-banner {
@@ -330,7 +371,7 @@ h3 {
   text-transform: uppercase;
   font-size: 90%;
   letter-spacing: 1px;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 #apply-btn:hover,
 #apply-btn:active {
@@ -357,7 +398,7 @@ h3 {
   position: absolute;
   bottom: 9px;
   right: 9px;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
   display: flex;
 }
 .plus-btn img {
@@ -394,7 +435,7 @@ input[type="checkbox"] {
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 
 input[type="checkbox"]:checked:after {
@@ -454,7 +495,7 @@ input[type="checkbox"]:checked:after {
 
 .remove-btn {
   font-size: 85%;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 
 /* ---------- Musics ----------  */
@@ -486,7 +527,7 @@ input[type="checkbox"]:checked:after {
   border: solid 2px #4e1700;
   border-radius: 5px;
   position: relative;
-  cursor: pointer;
+  cursor: url("img/cursor/pointer.png"), pointer;
   background-repeat: no-repeat;
   background-position: center;
   background-size: 35px;
@@ -549,7 +590,13 @@ input[type="checkbox"]:checked:after {
   height: 23px;
   background-color: #4e1700;
   border-radius: 100%;
-  cursor: pointer;
+  cursor: url("img/cursor/grab.png"), -webkit-grab;
+  cursor: url("img/cursor/grab.png"), grab;
+}
+
+#volumeSlider::-webkit-slider-thumb:active {
+  cursor: url("img/cursor/grabbing.png"), -webkit-grabbing;
+  cursor: url("img/cursor/grabbing.png"), grabbing;
 }
 
 .fa-volume-up {
@@ -598,8 +645,8 @@ input[type="checkbox"]:checked:after {
   position: fixed;
   right: 2%;
   bottom: 2%;
-  cursor: pointer;
-  z-index: 999;
+  cursor: url("img/cursor/pointer.png"), pointer;
+  z-index: 998;
 }
 
 .full-screen-btn i,
