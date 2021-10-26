@@ -1,3 +1,7 @@
+$(window).on("load", function() {
+    $("#preloader").fadeOut(1000);
+})
+
 /* -------------------------------------------- Document -------------------------------------------- */
 
 const elem = document.documentElement; //document
