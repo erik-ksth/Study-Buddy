@@ -295,6 +295,7 @@ h3 {
   text-decoration: none;
   color: #4e1700;
   padding: 2.5% 0;
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
 
 /* Tab Btns */
