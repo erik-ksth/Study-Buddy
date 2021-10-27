@@ -302,6 +302,30 @@ const musics = [
 
     {
         id : 7,
+        icon : "resources/img/icons/k-pop.svg",
+        label : "k-pop",
+        dir: "k-pop",
+        playlist : ["bts/spring day",
+                    "bts/butterfly",
+                    "bts/BTS - Dynamite Piano Cover No Copyright Music_160k",
+                    "bts/I need U",
+                    "bts/4 o' clock",
+                    "bts/BTS (방탄소년단) - Life Goes On Piano Cover_160k",
+                    "bts/awake",
+                    "bts/best of me",
+                    "bts/DNA",
+                    "bts/Crystal Snow",
+                    "bts/lost",
+                    "bts/save me",
+                    "bts/Intro- Serendipity",
+                    "bts/Love Yourself Highlight Reel",
+                    "bts/Steve Aoki ft. BTS - Waste It On Me Piano Cover_160k.mp3",
+                    "bts/run",
+                    "bts/young forever",]
+    },
+
+    {
+        id : 8,
         icon : "resources/img/icons/cafe.svg",
         label : "cafe",
         dir: "cafe",
@@ -315,7 +339,7 @@ const musics = [
 
 
     {
-        id : 8,
+        id : 9,
         icon : "resources/img/icons/library.svg",
         label : "library",
         dir: "library",
@@ -325,34 +349,25 @@ const musics = [
     },
 
     {
-        id : 9,
+        id : 10,
         icon : "resources/img/icons/nature.svg",
         label : "nature",
         dir: "nature",
         playlist : ["ASMR - Water Sounds_160k",
                     "Forest Sound Effect NO COPYRIGHTS_160k",
+                    "Calm Seashore - No Copyright Sound Effects - Audio Library_160k",
                     "Rain Sounds No Copyright - Rain on a Quiet Forest Sounds Free Download No Copyrights RAIN ASMR_160k",
                     "Nature Sounds Of Scotland Spring Time (Royalty Free Sound Effects)_160k",
                     "FREE Ambient Sounds Of Snow Falling Sound Effect (Free Download)_160k",
+                    "Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music)_160k",
                     "Fire Crackling Sound Effect Royalty & Copyright Free_160k",
+                    "sea waves [calm sound of waves in the sea] NO COPYRIGHT",
                     "Rain Sounds No Copyright - Rain Sounds Under Umbrella Rain Sounds for Sleeping,Study RAIN ASMR_160k",
                     "Relaxing Water Stream In Forest Nature Sound Effects_160k",
                     "Strong Wind Sound Effect Royalty Free Sound Effects_160k",
+                    "THE RELAXING SOUND OF THE BEACH WATER 4 ASMR_160k",
                     "Free Sound Effects - Water Sounds (Royalty free Sound Effects)_160k",
                     "Rain Sounds No Copyright - The City Rain Sounds Rain Sounds No Thunder RAIN ASMR No Copyright_160k"]
     },
-
-    {
-        id : 10,
-        icon : "resources/img/icons/beach.svg",
-        label : "beach",
-        dir: "beach",
-        playlist : ["Calm Seashore - No Copyright Sound Effects - Audio Library_160k",
-                    "Ocean Waves Beach(Sound Effects)- SFX Producer (Vlog No Copyright Music)_160k",
-                    "sea waves [calm sound of waves in the sea] NO COPYRIGHT",
-                    "THE RELAXING SOUND OF THE BEACH WATER 4 ASMR_160k",
-                    "Sound Effect _ Beach ambience No Copyright Music (2021)_160k"]
-    },
-
 
 ]
