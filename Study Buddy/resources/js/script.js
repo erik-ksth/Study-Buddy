@@ -372,7 +372,6 @@ function playMusic() {
                     }
 
                     audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[currentPlayingIndex]}.${ext}`;
-                    audioTag.load();
                     audioTag.play();
                 })
 
