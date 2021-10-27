@@ -548,6 +548,7 @@ input[type="checkbox"]:checked:after {
   text-transform: capitalize;
   font-size: 75%;
   letter-spacing: 1px;
+  cursor: url("img/cursor/default.png"), default;
 }
 
 .mood-selected::before {
@@ -582,6 +583,7 @@ input[type="checkbox"]:checked:after {
   height: 3px;
   border-radius: 2px;
   background-color: #4e1700;
+  cursor: url("img/cursor/default.png"), default;
 }
 
 #volumeSlider::-webkit-slider-thumb {
