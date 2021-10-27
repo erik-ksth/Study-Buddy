@@ -37,8 +37,8 @@
   }
 
   .main-mood-container {
-    -moz-column-gap: 5%;
-    column-gap: 5%;
+    -moz-column-gap: 30px;
+    column-gap: 30px;
     row-gap: 40px;
   }
 
