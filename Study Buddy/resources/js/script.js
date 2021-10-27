@@ -360,7 +360,6 @@ function playMusic() {
                 }
             
                 audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[e]}.${ext}`;
-                console.log(audioTag.src);
                 audioTag.loop = false;
                 audioTag.play();
                 currentPlayingIndex = e;
@@ -375,10 +374,8 @@ function playMusic() {
                     audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[currentPlayingIndex]}.${ext}`;
                     audioTag.load();
                     audioTag.play();
-                    console.log(currentPlayingIndex);
                 })
 
-                console.log(currentPlayingIndex);
             }
 
         }
