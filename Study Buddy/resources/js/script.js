@@ -406,6 +406,10 @@ authorTag.classList.add("authorClass");
 quoteContainerTag.append(authorTag);
 
 // Write random quote
-let randomQuoteId = Math.floor(Math.random()*quotes.length); // get random ID
-blockQuoteTag.textContent = `"` + quotes[randomQuoteId].quote + `"`; // display quote
-authorTag.textContent = "-" + quotes[randomQuoteId].author + "-"; // display author
+refreshQuote();
+
+function refreshQuote() {
+    let randomQuoteId = Math.floor(Math.random()*quotes.length); // get random ID
+    blockQuoteTag.textContent = `"` + quotes[randomQuoteId].quote + `"`; // display quote
+    authorTag.textContent = "-" + quotes[randomQuoteId].author + "-"; // display author
+}
