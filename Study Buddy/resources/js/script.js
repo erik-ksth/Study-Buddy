@@ -141,6 +141,10 @@ function applySetting() {
     localStorage.setItem("shortBreak", shortBreakLengthTag.value);
     localStorage.setItem("longBreak", longBreakLengthTag.value);
 
+    // Restart time when apply setting
+    restartTimer();
+    startBtnTag.textContent = "start";
+    startBtnTag.classList.remove("pause-btn");
     // Time Display when apply setting
     displayTime();
 }
@@ -156,7 +160,11 @@ function tabSelected() {
 
         let selectedTabId = e.target;
         selectedTabId.classList.add("tab-selected");
-        
+
+        // Restart time when change tab
+        restartTimer();
+        startBtnTag.textContent = "start";
+        startBtnTag.classList.remove("pause-btn");
         // Time Display when change tab
         displayTime();
     }
@@ -227,6 +235,11 @@ function startTimerFunction(m, s) {
     let minute = m;
     let second = s;
 
+    if (minute < 10) {
+        minute = minute.substring(1);
+    }
+    
+    // Decrease Minute on first timer minute
     if (minsTag.textContent == localStorage.getItem("pomodoro") || 
         minsTag.textContent == localStorage.getItem("shortBreak") || 
         minsTag.textContent == localStorage.getItem("longBreak")) {
