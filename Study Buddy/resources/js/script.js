@@ -242,12 +242,10 @@ function startTimerFunction(m, s) {
     }
     
     // Decrease Minute on first timer minute
-    if (minsTag.textContent == localStorage.getItem("pomodoro") || 
-        minsTag.textContent == localStorage.getItem("shortBreak") || 
-        minsTag.textContent == localStorage.getItem("longBreak")) {
-
+    if (minute == localStorage.getItem("pomodoro") || 
+       minute == localStorage.getItem("shortBreak") || 
+       minute == localStorage.getItem("longBreak")) {
             minute--;
-
     }
 
     clearInterval(intervalId);
