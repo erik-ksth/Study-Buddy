@@ -211,24 +211,10 @@ function startTimer() {
             firstSecsTag.style.display = "none";
             secsTag.style.display = "inline";
         }, 1000);
-        // Get data from selected tab
-        if (pomodoroBtnTag.classList.contains("tab-selected")) {
+        // Get current time
+        clearInterval(intervalId);
+        startTimerFunction(minsTag.textContent, secsTag.textContent);
 
-            clearInterval(intervalId);
-            startTimerFunction(pomodoroLengthTag.value, secsTag.textContent);
-
-        } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
-
-            clearInterval(intervalId);
-            startTimerFunction(shortBreakLengthTag.value, secsTag.textContent);
-
-        } else if (longBreakBtnTag.classList.contains("tab-selected")) {
-
-            clearInterval(intervalId);
-            startTimerFunction(longBreakLengthTag.value, secsTag.textContent);
-
-        }
-        
         startBtnTag.textContent = "pause";
         startBtnTag.classList.add("pause-btn");
 
@@ -241,7 +227,14 @@ function startTimerFunction(m, s) {
     let minute = m;
     let second = s;
 
-    minute--;
+    if (minsTag.textContent == localStorage.getItem("pomodoro") || 
+        minsTag.textContent == localStorage.getItem("shortBreak") || 
+        minsTag.textContent == localStorage.getItem("longBreak")) {
+
+            minute--;
+
+    }
+
     clearInterval(intervalId);
     intervalId = setInterval(timerFunction, 1000);
     
@@ -360,6 +353,7 @@ function playMusic() {
                 }
             
                 audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[e]}.${ext}`;
+                // console.log(audioTag.src);
                 audioTag.loop = false;
                 audioTag.play();
                 currentPlayingIndex = e;
@@ -372,10 +366,11 @@ function playMusic() {
                     }
 
                     audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[currentPlayingIndex]}.${ext}`;
-                    console.log(audioTag.src);
                     audioTag.play();
+                    // console.log(currentPlayingIndex);
                 })
 
+                // console.log(currentPlayingIndex);
             }
 
         }
