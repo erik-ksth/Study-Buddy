@@ -198,6 +198,8 @@ function restartTimer() {
     secsTag.textContent = 60;
     firstSecsTag.style.display = "inline";
     secsTag.style.display = "none";
+    startBtnTag.textContent = "start";
+    startBtnTag.classList.remove("pause-btn");
     clearInterval(intervalId);
 }
 
