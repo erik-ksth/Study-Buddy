@@ -572,7 +572,7 @@ input[type="checkbox"]:checked:after {
   margin-top: 40px;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-between;
 }
 
 #volumeSlider {
@@ -602,9 +602,18 @@ input[type="checkbox"]:checked:after {
   cursor: url("img/cursor/grabbing.png"), grabbing;
 }
 
-.fa-volume-up {
+.audioIcon {
   margin: 0 15px;
   font-size: 30px;
+  cursor: url("img/cursor/pointer.png"), pointer;
+}
+
+.playPauseBtn {
+  width: 13%;
+}
+
+.fa-pause {
+  display: none;
 }
 
 /* ---------- Quote ----------  */
@@ -646,6 +655,7 @@ input[type="checkbox"]:checked:after {
 .authorClass {
   font-size: 80%;
 }
+
 /* ---------- Full Screen btn ---------- */
 
 .full-screen-btn,
