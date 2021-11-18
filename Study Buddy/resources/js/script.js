@@ -69,10 +69,6 @@ function newlist() {
     taskBtnsContainer.classList.add("task-btns-container");
     taskLableContainerTag.append(taskBtnsContainer);
 
-    // const editBtn = document.createElement("i");
-    // editBtn.classList.add("fas", "fa-edit", "edit-btn");
-    // taskBtnsContainer.append(editBtn);
-
     checkboxTag.addEventListener("click", () => {
         const hasChecked = taskInputTag.classList.contains("hasChecked");
 
@@ -183,6 +179,7 @@ if (localStorage.getItem("pomodoro")) {
 // display Time
 displayTime();
 function displayTime() {
+
     if (pomodoroBtnTag.classList.contains("tab-selected")) {
         minsTag.textContent = pomodoroLengthTag.value < 10 ? "0" + pomodoroLengthTag.value.toString() : pomodoroLengthTag.value;
     } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
@@ -236,16 +233,18 @@ function startTimer() {
 function startTimerFunction(m, s) {
     let minute = m;
     let second = s;
-
+    
     if (minute < 10) {
         minute = minute.substring(1);
     }
-    
+
     // Decrease Minute on first timer minute
     if (minute == localStorage.getItem("pomodoro") || 
        minute == localStorage.getItem("shortBreak") || 
        minute == localStorage.getItem("longBreak")) {
+
             minute--;
+
     }
 
     clearInterval(intervalId);
@@ -323,7 +322,6 @@ for (let i = 0; i < musics.length; i++) {
 
 // Play music function
 function playMusic() {
-
     mainMoodContainerTag.onclick = e => {
 
         const selectedMood = e.target; // get clicked tag
@@ -332,6 +330,9 @@ function playMusic() {
         if (selectedMood.classList.contains("icon-box")) {
 
             let musicId = selectedMood.id-1;
+
+            // Alter to pause button
+            startMusic();
 
             // get elements which have a class "mood selected"
             var elements = document.querySelectorAll(".mood-selected");
@@ -353,7 +354,6 @@ function playMusic() {
                 }
                 selectedMood.classList.add("mood-selected");
                 playRepeatMusic(0, musicId);
-
             }
         
             function playRepeatMusic(e, musicAlbumId) {
@@ -366,7 +366,6 @@ function playMusic() {
                 }
             
                 audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[e]}.${ext}`;
-                // console.log(audioTag.src);
                 audioTag.loop = false;
                 audioTag.play();
                 currentPlayingIndex = e;
@@ -380,10 +379,8 @@ function playMusic() {
 
                     audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[currentPlayingIndex]}.${ext}`;
                     audioTag.play();
-                    // console.log(currentPlayingIndex);
                 })
 
-                // console.log(currentPlayingIndex);
             }
 
         }
@@ -391,12 +388,58 @@ function playMusic() {
 }
 
 /* --------------------------------------------- Volume Slider --------------------------------------------- */
+const volumeIconTag = document.querySelector(".volumeIcon");
 var volumeSliderTag = document.querySelector("#volumeSlider");
+const pauseBtnTag = document.querySelector(".fa-pause");
+const playBtnTag = document.querySelector(".fa-play");
 volumeSliderTag.addEventListener("mousemove", setvolume);
+
+// mute audio by click volume icon
+function muteFunction() {
+    // click to mute
+    if (volumeIconTag.classList.contains("fa-volume-up")) {
+        volumeIconTag.classList.remove("fa-volume-up");
+        volumeIconTag.classList.add("fa-volume-mute");
+        audioTag.volume = 0;
+        volumeSliderTag.value = 0;
+    } 
+    // click to volume up
+    else if (volumeIconTag.classList.contains("fa-volume-mute")){
+        volumeIconTag.classList.add("fa-volume-up");
+        volumeIconTag.classList.remove("fa-volume-mute");
+        volumeSliderTag.value = localStorage.getItem("volumeSlider");
+        if(volumeSliderTag.value < 5) {
+            volumeSliderTag.value = 10;
+        }
+        audioTag.volume = volumeSliderTag.value / 100;
+    }
+}
 
 function setvolume() {
     audioTag.volume = volumeSliderTag.value / 100;
+    localStorage.setItem("volumeSlider", volumeSliderTag.value);
+    if (volumeSliderTag.value == 0) {
+        volumeIconTag.classList.remove("fa-volume-up");
+        volumeIconTag.classList.add("fa-volume-mute");
+    } else {
+        volumeIconTag.classList.add("fa-volume-up");
+        volumeIconTag.classList.remove("fa-volume-mute");
+    }
 }
+
+
+// Alter icon when pause and play btn is clicked
+function pauseMusic() {
+    audioTag.pause();
+    playBtnTag.style.display = "inline";
+    pauseBtnTag.style.display = "none";
+}
+function startMusic() {
+    audioTag.play();
+    playBtnTag.style.display = "none";
+    pauseBtnTag.style.display = "inline";
+}
+
 
 
 /* --------------------------------------------- Quote --------------------------------------------- */
