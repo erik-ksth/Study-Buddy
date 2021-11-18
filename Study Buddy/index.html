@@ -7,6 +7,23 @@
     <title>Study Buddy</title>
     <link rel="shortcut icon" type="image/svg" href="resources/img/lamp.svg">
 
+    <!-- Favicon -->
+    <!-- <link rel="apple-touch-icon" sizes="180x180" href="resources/favicon/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="resources/favicon/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="resources/favicon/favicon-16x16.png">
+    <link rel="manifest" href="resources/favicon/site.webmanifest">
+    <link rel="mask-icon" href="resources/favicon/safari-pinned-tab.svg" color="#4e1700">
+    <link rel="shortcut icon" href="resources/favicon/favicon.ico">
+    <meta name="apple-mobile-web-app-title" content="Study Buddy">
+    <meta name="application-name" content="Study Buddy">
+    <meta name="msapplication-TileColor" content="#2d89ef">
+    <meta name="msapplication-config" content="resources/favicon/browserconfig.xml">
+    <meta name="theme-color" content="#ffffff"> -->
+
+    <!-- Animation -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
+
+
     <!-- Input css -->
     <link rel="stylesheet" href="ventors/css/grid.css">
     <link rel="stylesheet" href="ventors/css/normalize.css">
@@ -21,6 +38,7 @@
     <link rel="stylesheet" href="resources/css/query.css">
 </head>
 <body>
+
     <div id="preloader">
         <div class="logo">
             <img src="resources/img/lamp.svg" alt="">
@@ -171,8 +189,12 @@
                         </audio>
                     </div>
                     <div class="volume-slider-container">
-                        <i class="fas fa-volume-up"></i>
+                        <i class="fas fa-volume-up volumeIcon audioIcon" onclick="muteFunction()"></i>
                         <input id="volumeSlider" type="range" min="0" max="100" value="60">
+                        <div class="playPauseBtn">
+                            <i class="fas fa-pause audioIcon" onclick="pauseMusic()"></i>
+                            <i class="fas fa-play audioIcon" onclick="startMusic()"></i>
+                        </div>
                     </div>
                 </div>
 
@@ -180,7 +202,7 @@
                     <!-- Motivational Quote -->
                     <div class="row quote-row">
                         <figure class="quote-container">
-                            <button class="redo-btn refresh-quote-btn" onclick="refreshQuote()"><i class="fas fa-redo"></i></button>
+                                <button class="redo-btn refresh-quote-btn" onclick="refreshQuote()"><i class="fas fa-redo"></i></button>
                         </figure>
                     </div>
                 </div>
@@ -191,7 +213,7 @@
         <button class="full-screen-btn" onclick="enterFullScreen()" title="Expand"><i class="fas fa-expand-alt"></i></button>
         <button class="exit-full-screen-btn" onclick="exitFullScreen()" title="Exit"><i class="fas fa-compress-alt"></i></button>
     </div>
-
+    
     <!-- Custom JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="resources/js/server.js"></script>
