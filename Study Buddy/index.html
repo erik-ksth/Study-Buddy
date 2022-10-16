@@ -28,6 +28,7 @@
     <link rel="stylesheet" href="ventors/css/grid.css">
     <link rel="stylesheet" href="ventors/css/normalize.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;700&display=swap" rel="stylesheet">
@@ -51,9 +52,7 @@
         <h1>study buddy</h1>
 
         <!-- Toast Alert -->
-        <div class="toast-container">
-            
-        </div>
+        <div class="toast-container"> </div>
 
         <div class="row home-row">
             <!-- Timer and To-Do-List Column -->
@@ -98,9 +97,9 @@
 
                         <!-- Tabs -->
                         <div class="tabs-container">
-                            <a href="#" id="pomodoro-btn" class="tab-btn tab-selected" onclick="tabSelected()">pomodoro</a>
-                            <a href="#" id="short-break-btn" class="tab-btn" onclick="tabSelected()">short break</a>
-                            <a href="#" id="long-break-btn" class="tab-btn" onclick="tabSelected()">long break</a>
+                            <button id="pomodoro-btn" class="tab-btn tab-selected" onclick="tabSelected()">pomodoro</button>
+                            <button id="short-break-btn" class="tab-btn" onclick="tabSelected()">short break</button>
+                            <button id="long-break-btn" class="tab-btn" onclick="tabSelected()">long break</button>
                         </div>
                     </div>
 
@@ -128,14 +127,14 @@
                             <div class="timer-setting-list">
                                 <span>Short Break</span>
                                 <div>
-                                    <input type="number" min="1" value="5" id="short-break-length">
+                                    <input type="number" min="1" max="15" value="5" id="short-break-length">
                                     <span>min</span>
                                 </div>
                             </div>
                             <div class="timer-setting-list">
                                 <span>Long Break</span>
                                 <div>
-                                    <input type="number" min="1" value="15" id="long-break-length">
+                                    <input type="number" min="15" max="30" value="15" id="long-break-length">
                                     <span>min</span>
                                     </div>
                             </div>
@@ -171,7 +170,6 @@
                         <!-- list -->
                         <div class="to-do-list-content">
                             <ul class="list-container">
-                                
                             </ul>
                         </div>
 
@@ -216,6 +214,7 @@
     
     <!-- Custom JS -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="resources/js/server.js"></script>
     <script src="resources/js/script.js"></script>
 </body>
