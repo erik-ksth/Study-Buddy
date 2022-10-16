@@ -81,6 +81,11 @@ function newlist() {
         }
     })
 
+    const timeInput = document.createElement("input");
+    timeInput.classList.add("timeInputBtn");
+    timeInput.type="time";
+    taskBtnsContainer.append(timeInput);
+
     const removeBtn = document.createElement("i");
     removeBtn.classList.add("far", "fa-trash-alt", "remove-btn");
     taskBtnsContainer.append(removeBtn);
@@ -133,6 +138,15 @@ function closeTimerSetting() {
 
 // Applying timer setting
 function applySetting() {
+
+    if(shortBreakLengthTag.value > 15 || shortBreakLengthTag.value < 1) {
+        shortBreakLengthTag.value = 1;
+    }
+
+    if(longBreakLengthTag.value > 30 || longBreakLengthTag.value < 15) {
+        longBreakLengthTag.value = 15;
+    }
+
     localStorage.setItem("pomodoro", pomodoroLengthTag.value);
     localStorage.setItem("shortBreak", shortBreakLengthTag.value);
     localStorage.setItem("longBreak", longBreakLengthTag.value);
