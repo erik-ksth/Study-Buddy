@@ -286,13 +286,16 @@ h3 {
   border-top: solid #4e1700 2px;
 }
 
-.tabs-container a {
+.tabs-container button {
   font-weight: 400;
   text-align: center;
   width: 100%;
+  border: none;
+  font-family: "Roboto Slab", Georgia, serif;
   text-transform: uppercase;
   font-size: 70%;
   text-decoration: none;
+  letter-spacing: 2px;
   color: #4e1700;
   padding: 2.5% 0;
   cursor: url("img/cursor/pointer.png"), pointer;
@@ -348,7 +351,7 @@ h3 {
 }
 
 .timer-setting-list input {
-  max-width: 70%;
+  max-width: 50px;
   background-color: #e3d6c5;
   color: #4e1700;
   border: #4e1700 solid 1px;
@@ -460,7 +463,7 @@ input[type="checkbox"]:checked:after {
 }
 
 .task-input {
-  width: 100%;
+  width: 60%;
   color: #4e1700;
   background-color: transparent;
   outline: none;
@@ -494,7 +497,21 @@ input[type="checkbox"]:checked:after {
   text-decoration: line-through;
 }
 
+.timeInputBtn {
+  cursor: url("img/cursor/pointer.png"), pointer;
+  display: flex;
+  flex-direction: row;
+  float: left;
+  margin-right: 10px;
+  border: none;
+  background-color: transparent;
+  font-size: 80%;
+  color: #4e1700;
+} 
+
 .remove-btn {
+  display: flex;
+  flex-direction: row;
   font-size: 85%;
   cursor: url("img/cursor/pointer.png"), pointer;
 }
