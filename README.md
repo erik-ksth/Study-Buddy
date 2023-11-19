@@ -9,4 +9,4 @@
   <br/>💬 Inspriational quotes by famouse people<br/>
 </p>
 
-<h3 align="center">If you need concentration while working or studying, check it out: https://study-buddy.vercel.app/</h3>
+<h4 align="center">If you need concentration while working or studying, check it out: https://study-buddy.vercel.app/</h4>
