@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Study Buddy</title>
-    <link rel="shortcut icon" type="image/svg" href="resources/img/lamp.svg">
+    <link rel="shortcut icon" type="image/svg" href="resources/img/lamp.svg" />
 
     <!-- Favicon -->
     <!-- <link rel="apple-touch-icon" sizes="180x180" href="resources/favicon/apple-touch-icon.png">
@@ -21,201 +21,320 @@
     <meta name="theme-color" content="#ffffff"> -->
 
     <!-- Animation -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
-
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"
+    />
 
     <!-- Input css -->
-    <link rel="stylesheet" href="ventors/css/grid.css">
-    <link rel="stylesheet" href="ventors/css/normalize.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css" integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css" rel="stylesheet">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Rochester&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="ventors/css/grid.css" />
+    <link rel="stylesheet" href="ventors/css/normalize.css" />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta2/css/all.min.css"
+      integrity="sha512-YWzhKL2whUzgiheMoBFwW8CKV4qpHQAEuvilg9FAn5VJUDwKZZxkJNuGM4XkWuk94WCrrwslk8yWNGmY1EduTA=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <link
+      href="https://gitcdn.github.io/bootstrap-toggle/2.2.2/css/bootstrap-toggle.min.css"
+      rel="stylesheet"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto+Slab:wght@100;200;300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rochester&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Rozha+One&display=swap"
+      rel="stylesheet"
+    />
     <!-- Custom css -->
-    <link rel="stylesheet" href="resources/css/style.css">
-    <link rel="stylesheet" href="resources/css/query.css">
-</head>
-<body>
+    <link rel="stylesheet" href="resources/css/style.css" />
+    <link rel="stylesheet" href="resources/css/query.css" />
 
+    <!-- Google tag (gtag.js) -->
+    <script
+      async
+      src="https://www.googletagmanager.com/gtag/js?id=G-TS6JNF3FNP"
+    ></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag() {
+        dataLayer.push(arguments);
+      }
+      gtag("js", new Date());
+
+      gtag("config", "G-TS6JNF3FNP");
+    </script>
+  </head>
+  <body>
     <div id="preloader">
-        <div class="logo">
-            <img src="resources/img/lamp.svg" alt="">
-            <h1>Study Buddy</h1>
-        </div>
-        <div id="gif">&nbsp;</div>
+      <div class="logo">
+        <img src="resources/img/lamp.svg" alt="" />
+        <h1>Study Buddy</h1>
+      </div>
+      <div id="gif">&nbsp;</div>
     </div>
-    <img class="background-img" src="resources/css/img/backgroundImg.png" alt="">
+    <img
+      class="background-img"
+      src="resources/css/img/backgroundImg.png"
+      alt=""
+    />
     <div class="container">
-        <h1>study buddy</h1>
+      <h1>study buddy</h1>
 
-        <!-- Toast Alert -->
-        <div class="toast-container"> </div>
+      <!-- Toast Alert -->
+      <div class="toast-container"></div>
 
-        <div class="row home-row">
-            <!-- Timer and To-Do-List Column -->
-            <div class="col span-1-of-2 home-col">
+      <div class="row home-row">
+        <!-- Timer and To-Do-List Column -->
+        <div class="col span-1-of-2 home-col">
+          <!-- timer -->
+          <audio id="noti-sound">
+            <source
+              src="resources/music/notificationSound.mp3"
+              type="audio/mpeg"
+            />
+            <source
+              src="resources/music/notificationSound.ogg"
+              type="audio/ogg"
+            />
+            Your browser does not support the audio element.
+          </audio>
 
-                <!-- timer -->
-                <audio id="noti-sound">
-                    <source src="resources/music/notificationSound.mp3" type="audio/mpeg">
-                    <source src="resources/music/notificationSound.ogg" type="audio/ogg">
-                    Your browser does not support the audio element.
-                </audio>
-
-                <div class="row">
-                    <div class="pop-up-box">
-
-                        <!-- Box Banner  -->
-                        <div class="box-banner">
-                            <h3>Timer</h3>
-                            <div class="windows-btn-container">
-                                <div class="windows-btn">
-                                    <div class="mini-btn"></div>
-                                </div>
-                                <div class="windows-btn">
-                                    <div class="max-btn"></div>
-                                </div>
-                                <div class="windows-btn">
-                                    <i class="fas fa-times close-btn"></i>
-                                </div>
-                            </div> 
-                        </div>
-
-                        <button onclick="openTimerSetting()" class="setting-btn"><i class="fas fa-cog"></i></button>
-
-                        <!-- Timer -->
-                        <div class="timer-container">
-                            <span class="timer-clock"> <span id="mins">25</span>:<span id="first-secs">00</span><span id="secs">60</span></span>
-                            <div class="timer-btn-container">
-                                <button class="start-btn" onclick="startTimer()">Start</button>
-                                <button class="redo-btn" onclick="restartTimer()"><i class="fas fa-redo"></i></button>
-                            </div>
-                        </div>
-
-                        <!-- Tabs -->
-                        <div class="tabs-container">
-                            <button id="pomodoro-btn" class="tab-btn tab-selected" onclick="tabSelected()">pomodoro</button>
-                            <button id="short-break-btn" class="tab-btn" onclick="tabSelected()">short break</button>
-                            <button id="long-break-btn" class="tab-btn" onclick="tabSelected()">long break</button>
-                        </div>
-                    </div>
-
-
-                    <!-- Timer Setting -->
-                    <div class="pop-up-box timer-setting-box">
-
-                        <!-- Box Banner  -->
-                        <div class="box-banner">
-                            <h3>Timer Settings</h3>
-                            <div class="windows-btn-container">
-                                <div class="windows-btn"  onclick="closeTimerSetting()">
-                                    <i class="fas fa-times close-btn"></i>
-                                </div>
-                            </div> 
-                        </div>
-                        <div class="timer-setting-body">
-                            <div class="timer-setting-list">
-                                <span>pomodoro</span>
-                                <div>
-                                    <input type="number" min="1" value="25" id="pomodoro-length">
-                                    <span>min</span>
-                                </div>
-                            </div>
-                            <div class="timer-setting-list">
-                                <span>Short Break</span>
-                                <div>
-                                    <input type="number" min="1" max="15" value="5" id="short-break-length">
-                                    <span>min</span>
-                                </div>
-                            </div>
-                            <div class="timer-setting-list">
-                                <span>Long Break</span>
-                                <div>
-                                    <input type="number" min="15" max="30" value="15" id="long-break-length">
-                                    <span>min</span>
-                                    </div>
-                            </div>
-
-                            <div class="apply-btn-container">
-                                <button id="apply-btn" onclick="closeTimerSetting(); applySetting()">apply</button>
-                            </div>
-                        </div>
-                    </div>
+          <div class="row">
+            <div class="pop-up-box">
+              <!-- Box Banner  -->
+              <div class="box-banner">
+                <h3>Timer</h3>
+                <div class="windows-btn-container">
+                  <div class="windows-btn">
+                    <div class="mini-btn"></div>
+                  </div>
+                  <div class="windows-btn">
+                    <div class="max-btn"></div>
+                  </div>
+                  <div class="windows-btn">
+                    <i class="fas fa-times close-btn"></i>
+                  </div>
                 </div>
+              </div>
 
+              <button onclick="openTimerSetting()" class="setting-btn">
+                <i class="fas fa-cog"></i>
+              </button>
 
-                <!-- to do list -->
-                <div class="row to-do-list-box">
-                    <div class="pop-up-box">
-
-                        <!-- Box Banner  -->
-                        <div class="box-banner">
-                            <h3>To-do-list</h3>
-                            <div class="windows-btn-container">
-                                <div class="windows-btn">
-                                    <div class="mini-btn"></div>
-                                </div>
-                                <div class="windows-btn">
-                                    <div class="max-btn"></div>
-                                </div>
-                                <div class="windows-btn">
-                                    <i class="fas fa-times close-btn"></i>
-                                </div>
-                            </div> 
-                        </div>
-
-                        <!-- list -->
-                        <div class="to-do-list-content">
-                            <ul class="list-container">
-                            </ul>
-                        </div>
-
-                        <!-- Plus Btn -->
-                        <button class="plus-btn" onclick="newlist()"><img src="resources/css/img/plus.svg" alt="Add"></button>
-                    </div>
+              <!-- Timer -->
+              <div class="timer-container">
+                <span class="timer-clock">
+                  <span id="mins">25</span>:<span id="first-secs">00</span
+                  ><span id="secs">60</span></span
+                >
+                <div class="timer-btn-container">
+                  <button class="start-btn" onclick="startTimer()">
+                    Start
+                  </button>
+                  <button class="redo-btn" onclick="restartTimer()">
+                    <i class="fas fa-redo"></i>
+                  </button>
                 </div>
+              </div>
+
+              <!-- Tabs -->
+              <div class="tabs-container">
+                <button
+                  id="pomodoro-btn"
+                  class="tab-btn tab-selected"
+                  onclick="tabSelected()"
+                >
+                  pomodoro
+                </button>
+                <button
+                  id="short-break-btn"
+                  class="tab-btn"
+                  onclick="tabSelected()"
+                >
+                  short break
+                </button>
+                <button
+                  id="long-break-btn"
+                  class="tab-btn"
+                  onclick="tabSelected()"
+                >
+                  long break
+                </button>
+              </div>
             </div>
-            <!-- Vibes Column -->
-            <div class="col span-1-of-2 left-col">
-                <div class="row music-row">
-                    <div class="main-mood-container">
-                        <audio src="" class="audioSource">
-                            Your browser does not support the audio element.
-                        </audio>
-                    </div>
-                    <div class="volume-slider-container">
-                        <i class="fas fa-volume-up volumeIcon audioIcon" onclick="muteFunction()"></i>
-                        <input id="volumeSlider" type="range" min="0" max="100" value="60">
-                        <div class="playPauseBtn">
-                            <i class="fas fa-pause audioIcon" onclick="pauseMusic()"></i>
-                            <i class="fas fa-play audioIcon" onclick="startMusic()"></i>
-                        </div>
-                    </div>
+
+            <!-- Timer Setting -->
+            <div class="pop-up-box timer-setting-box">
+              <!-- Box Banner  -->
+              <div class="box-banner">
+                <h3>Timer Settings</h3>
+                <div class="windows-btn-container">
+                  <div class="windows-btn" onclick="closeTimerSetting()">
+                    <i class="fas fa-times close-btn"></i>
+                  </div>
+                </div>
+              </div>
+              <div class="timer-setting-body">
+                <div class="timer-setting-list">
+                  <span>pomodoro</span>
+                  <div>
+                    <input
+                      type="number"
+                      min="1"
+                      value="25"
+                      id="pomodoro-length"
+                    />
+                    <span>min</span>
+                  </div>
+                </div>
+                <div class="timer-setting-list">
+                  <span>Short Break</span>
+                  <div>
+                    <input
+                      type="number"
+                      min="1"
+                      max="15"
+                      value="5"
+                      id="short-break-length"
+                    />
+                    <span>min</span>
+                  </div>
+                </div>
+                <div class="timer-setting-list">
+                  <span>Long Break</span>
+                  <div>
+                    <input
+                      type="number"
+                      min="15"
+                      max="30"
+                      value="15"
+                      id="long-break-length"
+                    />
+                    <span>min</span>
+                  </div>
                 </div>
 
-                <div class="row">
-                    <!-- Motivational Quote -->
-                    <div class="row quote-row">
-                        <figure class="quote-container">
-                                <button class="redo-btn refresh-quote-btn" onclick="refreshQuote()"><i class="fas fa-redo"></i></button>
-                        </figure>
-                    </div>
+                <div class="apply-btn-container">
+                  <button
+                    id="apply-btn"
+                    onclick="closeTimerSetting(); applySetting()"
+                  >
+                    apply
+                  </button>
                 </div>
+              </div>
             </div>
+          </div>
+
+          <!-- to do list -->
+          <div class="row to-do-list-box">
+            <div class="pop-up-box">
+              <!-- Box Banner  -->
+              <div class="box-banner">
+                <h3>To-do-list</h3>
+                <div class="windows-btn-container">
+                  <div class="windows-btn">
+                    <div class="mini-btn"></div>
+                  </div>
+                  <div class="windows-btn">
+                    <div class="max-btn"></div>
+                  </div>
+                  <div class="windows-btn">
+                    <i class="fas fa-times close-btn"></i>
+                  </div>
+                </div>
+              </div>
+
+              <!-- list -->
+              <div class="to-do-list-content">
+                <ul class="list-container"></ul>
+              </div>
+
+              <!-- Plus Btn -->
+              <button class="plus-btn" onclick="newlist()">
+                <img src="resources/css/img/plus.svg" alt="Add" />
+              </button>
+            </div>
+          </div>
         </div>
+        <!-- Vibes Column -->
+        <div class="col span-1-of-2 left-col">
+          <div class="row music-row">
+            <div class="main-mood-container">
+              <audio src="" class="audioSource">
+                Your browser does not support the audio element.
+              </audio>
+            </div>
+            <div class="volume-slider-container">
+              <i
+                class="fas fa-volume-up volumeIcon audioIcon"
+                onclick="muteFunction()"
+              ></i>
+              <input
+                id="volumeSlider"
+                type="range"
+                min="0"
+                max="100"
+                value="60"
+              />
+              <div class="playPauseBtn">
+                <i class="fas fa-pause audioIcon" onclick="pauseMusic()"></i>
+                <i class="fas fa-play audioIcon" onclick="startMusic()"></i>
+              </div>
+            </div>
+          </div>
 
-        <!-- Full Screen Btns -->
-        <button class="full-screen-btn" onclick="enterFullScreen()" title="Expand"><i class="fas fa-expand-alt"></i></button>
-        <button class="exit-full-screen-btn" onclick="exitFullScreen()" title="Exit"><i class="fas fa-compress-alt"></i></button>
+          <div class="row">
+            <!-- Motivational Quote -->
+            <div class="row quote-row">
+              <figure class="quote-container">
+                <button
+                  class="redo-btn refresh-quote-btn"
+                  onclick="refreshQuote()"
+                >
+                  <i class="fas fa-redo"></i>
+                </button>
+              </figure>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Full Screen Btns -->
+      <button
+        class="full-screen-btn"
+        onclick="enterFullScreen()"
+        title="Expand"
+      >
+        <i class="fas fa-expand-alt"></i>
+      </button>
+      <button
+        class="exit-full-screen-btn"
+        onclick="exitFullScreen()"
+        title="Exit"
+      >
+        <i class="fas fa-compress-alt"></i>
+      </button>
     </div>
-    
+
     <!-- Custom JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js" integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"
+      integrity="sha512-894YE6QWD5I59HgZOGReFYm4dnWc1Qt5NtvYSaNcOP+u1T9qYdvdihz0PPSiiqn/+/3e7Jo4EaG7TubfWGUrMQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
     <script src="https://gitcdn.github.io/bootstrap-toggle/2.2.2/js/bootstrap-toggle.min.js"></script>
     <script src="resources/js/server.js"></script>
     <script src="resources/js/script.js"></script>
-</body>
+  </body>
 </html>
