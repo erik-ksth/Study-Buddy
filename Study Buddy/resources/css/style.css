@@ -31,6 +31,11 @@ html {
   cursor: url("img/cursor/default.png"), default;
 }
 
+a {
+  color: #4e1700;
+  cursor: url("img/cursor/pointer.png"), pointer;
+}
+
 /* ---------- PreLoader ---------- */
 #preloader {
   background-color: #f3f2ef;
@@ -507,7 +512,7 @@ input[type="checkbox"]:checked:after {
   background-color: transparent;
   font-size: 80%;
   color: #4e1700;
-} 
+}
 
 .remove-btn {
   display: flex;
@@ -694,4 +699,10 @@ input[type="checkbox"]:checked:after {
 
 .exit-full-screen-btn {
   display: none;
+}
+
+.signature {
+  position: fixed;
+  bottom: 2%;
+  left: 2%;
 }
