@@ -285,6 +285,19 @@ h3 {
   transition: all 0.2s;
 }
 
+.reset-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#round-counter {
+  font-size: 60%;
+  color: #4e1700;
+  margin-top: 5px;
+  font-weight: bold;
+}
+
 /* Tabs */
 .tabs-container {
   display: flex;
@@ -392,9 +405,9 @@ h3 {
 /* ---------- To-Do-List Box ---------- */
 
 .to-do-list-box .pop-up-box {
-  min-height: 300px;
-  height: auto;
-  max-height: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -411,6 +424,8 @@ h3 {
   right: 9px;
   cursor: url("img/cursor/pointer.png"), pointer;
   display: flex;
+  z-index: 10;
+  /* Ensure above scroll */
 }
 
 .plus-btn img {
@@ -419,6 +434,30 @@ h3 {
 
 .to-do-list-content {
   padding: 6%;
+  padding-bottom: 60px;
+  /* Extra space for plus button */
+  flex: 1;
+  overflow-y: auto;
+  /* Scrollbar Styling */
+  scrollbar-color: #4e1700 #f3f2ef;
+  scrollbar-width: thin;
+}
+
+.to-do-list-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.to-do-list-content::-webkit-scrollbar-track {
+  background: #f3f2ef;
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb {
+  background: #4e1700;
+  border-radius: 4px;
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb:hover {
+  background: #6e2700;
 }
 
 /* Task List */

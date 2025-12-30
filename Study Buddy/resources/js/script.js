@@ -337,6 +337,9 @@ const longBreakBtnTag = document.querySelector("#long-break-btn");
 let pomodoroLengthTag = document.querySelector("#pomodoro-length");
 let shortBreakLengthTag = document.querySelector("#short-break-length");
 let longBreakLengthTag = document.querySelector("#long-break-length");
+// Round Counter
+let roundCount = 1;
+const roundCounterTag = document.querySelector("#round-counter");
 
 
 // Open Timer Setting function
@@ -520,11 +523,23 @@ function startTimerFunction(m, s) {
                 console.error("Audio error:", e);
             }
 
-            openToastAlert();
-            sendSystemNotification(); // Send Notification
+            const message = getNotificationMessage();
+            openToastAlert(message);
+            sendSystemNotification(message); // Send Notification
 
             clearInterval(intervalId);
             restartTimer(); // Consistent reset of all UI elements
+
+            if (pomodoroBtnTag.classList.contains("tab-selected")) {
+                roundCount++;
+                if (roundCount > 4) {
+                    roundCount = 1;
+                }
+                const currentRoundCounterTag = document.querySelector("#round-counter");
+                if (currentRoundCounterTag) {
+                    currentRoundCounterTag.textContent = `${roundCount}/4`;
+                }
+            }
             return;
         }
 
@@ -537,26 +552,37 @@ function startTimerFunction(m, s) {
     }
 }
 
+function getNotificationMessage() {
+    if (pomodoroBtnTag.classList.contains("tab-selected")) {
+        if (roundCount < 4) {
+            return "Short break time! Take a walk, stretch, and hydrate.";
+        } else {
+            return "Long break time! Step away, relax, and reset your mind.";
+        }
+    } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
+        return "Break’s over. Let’s get back to focus.";
+    } else if (longBreakBtnTag.classList.contains("tab-selected")) {
+        return "Hope you recharged! Ready for a new focus session?";
+    }
+    return "Time's up!";
+}
+
 // System Notification
-function sendSystemNotification() {
+function sendSystemNotification(message) {
     if (Notification.permission === "granted") {
         let title = "Time's up!";
-        let body = "Timer finished.";
 
-        // Determine context based on selected tab
+        // Determine context based on selected tab for Title (optional, or keep generic)
         if (pomodoroBtnTag.classList.contains("tab-selected")) {
             title = "Focus session complete!";
-            body = "Time to take a break.";
         } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
             title = "Short break over!";
-            body = "Ready to get back to work?";
         } else if (longBreakBtnTag.classList.contains("tab-selected")) {
             title = "Long break over!";
-            body = "Ready to focus again?";
         }
 
         new Notification(title, {
-            body: body,
+            body: message,
             icon: "resources/img/lamp.svg" // Assuming this exists based on README
         });
     }
@@ -566,12 +592,12 @@ function sendSystemNotification() {
 // Toast Alert function
 const toastParentTag = document.querySelector(".toast-parent");
 const toastContainerTag = document.querySelector(".toast-container");
-function openToastAlert() {
+function openToastAlert(message) {
     toastContainerTag.innerHTML = `
     <div class="bannerAndBody">
         <div class="toast-banner"><span>MESSAGE</span><span>now</span></div>
         <div class="toast-parent">
-            <div class="toast-alert-text">"Hey there, Time's up!"</div>
+            <div class="toast-alert-text">"${message}"</div>
         </div>
     </div>`;
 
