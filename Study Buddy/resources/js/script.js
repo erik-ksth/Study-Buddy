@@ -244,22 +244,10 @@ function startTimer() {
 }
 
 // Timer Function
+// Timer Function
 function startTimerFunction(m, s) {
-    let minute = m;
-    let second = s;
-    
-    if (minute < 10) {
-        minute = minute.substring(1);
-    }
-
-    // Decrease Minute on first timer minute
-    if (minute == localStorage.getItem("pomodoro") || 
-       minute == localStorage.getItem("shortBreak") || 
-       minute == localStorage.getItem("longBreak")) {
-
-            minute--;
-
-    }
+    let minute = parseInt(m);
+    let second = parseInt(s);
 
     clearInterval(intervalId);
     intervalId = setInterval(timerFunction, 1000);
@@ -279,10 +267,12 @@ function startTimerFunction(m, s) {
                 clearInterval(intervalId);
                 startBtnTag.textContent = "start";
                 startBtnTag.classList.remove("pause-btn");
+                displayTime(); // Ensure display resets or updates correctly at end
+                return; // Stop execution
             }
         }
-        secsTag.textContent = second === 60 ? "0" + "0" : second < 10 ? "0" + second.toString() : second;
-        minsTag.textContent = minute < 0 ? "0" + "0" : minute < 10 ? "0" + minute.toString() : minute;
+        secsTag.textContent = second === 60 ? "00" : second < 10 ? "0" + second.toString() : second;
+        minsTag.textContent = minute < 0 ? "00" : minute < 10 ? "0" + minute.toString() : minute;
     }
 }
 
