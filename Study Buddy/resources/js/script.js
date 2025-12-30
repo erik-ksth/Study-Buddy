@@ -104,19 +104,7 @@ function newlist() {
 
     // Custom Time Picker Button
     const timeBtn = document.createElement("button");
-
-    // Set default to current time
-    const now = new Date();
-    let h = now.getHours();
-    let m = now.getMinutes();
-    const ap = h >= 12 ? 'PM' : 'AM';
-    h = h % 12;
-    h = h ? h : 12; // the hour '0' should be '12'
-    m = m < 10 ? '0' + m : m;
-    const hStr = h < 10 ? '0' + h : h; // pad hour
-
-    timeBtn.textContent = `${hStr}:${m} ${ap} `;
-
+    timeBtn.textContent = "--:-- --";
     timeBtn.classList.add("time-display-btn");
 
     // Icon
@@ -232,21 +220,37 @@ function openTimePicker(btn) {
     timePickerDropdown.style.left = (rect.left + window.scrollX) + "px";
 
     // Set value from button
-    // Format "06:05 PM" (from button text)
     const currentVal = btn.childNodes[0].nodeValue.trim(); // Get text, ignore icon
-    if (currentVal && currentVal.includes(":")) {
+    let targetH, targetM, targetAP;
+
+    // Check if value is placeholder or empty
+    if (!currentVal || currentVal.includes("--")) {
+        // Use Current Time
+        const now = new Date();
+        let h = now.getHours();
+        let m = now.getMinutes();
+        targetAP = h >= 12 ? 'PM' : 'AM';
+        h = h % 12;
+        targetH = h ? h : 12;
+        targetM = m;
+        // Stringify for matching
+        targetH = targetH < 10 ? '0' + targetH : '' + targetH;
+        targetM = targetM < 10 ? '0' + targetM : '' + targetM;
+    } else if (currentVal.includes(":")) {
         const parts = currentVal.split(/[:\s]+/);
         if (parts.length === 3) {
-            scrollToVal(hourCol, parts[0]);
-            scrollToVal(minuteCol, parts[1]);
-            scrollToVal(ampmCol, parts[2]);
+            targetH = parts[0];
+            targetM = parts[1];
+            targetAP = parts[2];
         }
-    } else {
-        // Default 12:00 PM if empty
-        scrollToVal(hourCol, "12");
-        scrollToVal(minuteCol, "00");
-        scrollToVal(ampmCol, "PM");
     }
+
+    // Default fallbacks if parsing failed
+    if (!targetH) { targetH = "12"; targetM = "00"; targetAP = "PM"; }
+
+    scrollToVal(hourCol, targetH);
+    scrollToVal(minuteCol, targetM);
+    scrollToVal(ampmCol, targetAP);
 
     // Trigger highlight immediately
     setTimeout(() => {
@@ -258,6 +262,14 @@ function openTimePicker(btn) {
     // Add global Enter listener
     document.addEventListener("keydown", handleEnterKey);
 }
+
+// Click on highlighted item to close (User Request)
+timePickerDropdown.addEventListener("click", function (e) {
+    // If clicked element is an item and is selected (center)
+    if (e.target.classList.contains("picker-item") && e.target.classList.contains("selected")) {
+        closeTimePicker();
+    }
+});
 
 function scrollToVal(col, val) {
     const items = col.querySelectorAll(".picker-item[data-val]");
