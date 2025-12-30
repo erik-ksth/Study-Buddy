@@ -59,10 +59,31 @@ function newlist() {
     taskLableContainerTag.classList.add("task-lable-container");
     taskListTag.append(taskLableContainerTag);
 
-    const taskInputTag = document.createElement("input");
+    const taskInputTag = document.createElement("textarea");
     taskInputTag.classList.add("task-input");
     taskInputTag.placeholder = "Task";
-    taskInputTag.type = "text";
+    taskInputTag.rows = 1;
+
+    // Auto resize height
+    taskInputTag.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    });
+
+    // New task on Enter
+    taskInputTag.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            newlist();
+            // Optional: Focus the new input (needs a small delay or selection logic)
+            // Ideally newlist() appends to end, so we can focus the last textarea
+            const allInputs = document.querySelectorAll(".task-input");
+            if (allInputs.length > 0) {
+                allInputs[allInputs.length - 1].focus();
+            }
+        }
+    });
+
     taskLableContainerTag.append(taskInputTag);
 
     const taskBtnsContainer = document.createElement("div");
@@ -79,12 +100,32 @@ function newlist() {
                 taskInputTag.classList.add("hasChecked");
             }
         }
-    })
+    });
 
-    const timeInput = document.createElement("input");
-    timeInput.classList.add("timeInputBtn");
-    timeInput.type = "time";
-    taskBtnsContainer.append(timeInput);
+    // Custom Time Picker Button
+    const timeBtn = document.createElement("button");
+
+    // Set default to current time
+    const now = new Date();
+    let h = now.getHours();
+    let m = now.getMinutes();
+    const ap = h >= 12 ? 'PM' : 'AM';
+    h = h % 12;
+    h = h ? h : 12; // the hour '0' should be '12'
+    m = m < 10 ? '0' + m : m;
+    const hStr = h < 10 ? '0' + h : h; // pad hour
+
+    timeBtn.textContent = `${hStr}:${m} ${ap} `;
+
+    timeBtn.classList.add("time-display-btn");
+
+    // Icon
+    const clockIcon = document.createElement("i");
+    clockIcon.classList.add("far", "fa-clock");
+    clockIcon.style.marginLeft = "5px";
+    timeBtn.append(clockIcon);
+
+    taskBtnsContainer.append(timeBtn);
 
     const removeBtn = document.createElement("i");
     removeBtn.classList.add("far", "fa-trash-alt", "remove-btn");
@@ -92,9 +133,178 @@ function newlist() {
 
     removeBtn.addEventListener("click", () => {
         taskListTag.remove();
-    })
+    });
 
+    // Event Listeners for Opening Picker
+    // Open when clicking the button
+    timeBtn.onclick = function (e) {
+        e.stopPropagation(); // Prevent bubbling to container if container also has listener
+        openTimePicker(this);
+    };
+
+    // Open when clicking the container (User Request)
+    // Note: This might conflict if clicking removeBtn also triggers it, so we check target
+    taskBtnsContainer.addEventListener("click", function (e) {
+        // Only open if not clicking remove button or the time button (handled above)
+        if (!e.target.closest(".remove-btn") && !e.target.closest(".time-display-btn")) {
+            openTimePicker(timeBtn);
+        }
+    });
 }
+
+/* --------------------------------------------- Custom Dropdown Time Picker --------------------------------------------- */
+const timePickerDropdown = document.getElementById("custom-time-picker");
+const hourCol = document.querySelector(".hour-column");
+const minuteCol = document.querySelector(".minute-column");
+const ampmCol = document.querySelector(".ampm-column");
+let currentTargetButton = null;
+
+// Populate Picker
+function populatePicker() {
+    const pad = '<div class="picker-item" style="height:55px;pointer-events:none;"></div>'; // Padding to center first/last item
+
+    // Hours 01-12
+    let hHtml = pad;
+    for (let i = 1; i <= 12; i++) {
+        let val = i < 10 ? "0" + i : i;
+        hHtml += `<div class="picker-item" data-val="${val}">${val}</div>`;
+    }
+    hHtml += pad;
+    hourCol.innerHTML = hHtml;
+
+    // Minutes 00-59
+    let mHtml = pad;
+    for (let i = 0; i < 60; i++) {
+        let val = i < 10 ? "0" + i : i;
+        mHtml += `<div class="picker-item" data-val="${val}">${val}</div>`;
+    }
+    mHtml += pad;
+    minuteCol.innerHTML = mHtml;
+
+    // AMPM
+    let ampmHtml = pad;
+    ampmHtml += `<div class="picker-item" data-val="AM">AM</div>`;
+    ampmHtml += `<div class="picker-item" data-val="PM">PM</div>`;
+    ampmHtml += pad;
+    ampmCol.innerHTML = ampmHtml;
+
+    // Scroll listeners
+    [hourCol, minuteCol, ampmCol].forEach(col => {
+        col.addEventListener("scroll", () => highlightCenter(col));
+    });
+}
+populatePicker();
+
+function highlightCenter(col) {
+    const centerY = col.scrollTop + col.offsetHeight / 2;
+    const items = col.querySelectorAll(".picker-item[data-val]");
+    let closest = null;
+    let minDiff = Infinity;
+
+    items.forEach(item => {
+        const itemCenter = item.offsetTop + item.offsetHeight / 2;
+        const diff = Math.abs(centerY - itemCenter);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = item;
+        }
+        item.classList.remove("selected");
+    });
+
+    if (closest) {
+        closest.classList.add("selected");
+    }
+}
+
+function openTimePicker(btn) {
+    if (currentTargetButton === btn && timePickerDropdown.style.display === "block") {
+        closeTimePicker(); // Toggle off
+        return;
+    }
+
+    currentTargetButton = btn;
+    timePickerDropdown.style.display = "block";
+
+    // Positioning
+    const rect = btn.getBoundingClientRect();
+    // Position below the button
+    timePickerDropdown.style.top = (rect.bottom + window.scrollY + 5) + "px";
+    timePickerDropdown.style.left = (rect.left + window.scrollX) + "px";
+
+    // Set value from button
+    // Format "06:05 PM" (from button text)
+    const currentVal = btn.childNodes[0].nodeValue.trim(); // Get text, ignore icon
+    if (currentVal && currentVal.includes(":")) {
+        const parts = currentVal.split(/[:\s]+/);
+        if (parts.length === 3) {
+            scrollToVal(hourCol, parts[0]);
+            scrollToVal(minuteCol, parts[1]);
+            scrollToVal(ampmCol, parts[2]);
+        }
+    } else {
+        // Default 12:00 PM if empty
+        scrollToVal(hourCol, "12");
+        scrollToVal(minuteCol, "00");
+        scrollToVal(ampmCol, "PM");
+    }
+
+    // Trigger highlight immediately
+    setTimeout(() => {
+        highlightCenter(hourCol);
+        highlightCenter(minuteCol);
+        highlightCenter(ampmCol);
+    }, 0);
+
+    // Add global Enter listener
+    document.addEventListener("keydown", handleEnterKey);
+}
+
+function scrollToVal(col, val) {
+    const items = col.querySelectorAll(".picker-item[data-val]");
+    for (let item of items) {
+        if (item.getAttribute("data-val") == val) {
+            // Scroll to center
+            const top = item.offsetTop - (col.offsetHeight / 2) + (item.offsetHeight / 2);
+            col.scrollTop = top;
+            break;
+        }
+    }
+}
+
+function closeTimePicker() {
+    confirmTimePicker(); // Save on close
+    timePickerDropdown.style.display = "none";
+    currentTargetButton = null;
+    document.removeEventListener("keydown", handleEnterKey);
+}
+
+function handleEnterKey(e) {
+    if (e.key === "Enter") {
+        closeTimePicker(); // This calls confirmTimePicker
+    }
+}
+
+function confirmTimePicker() {
+    if (!currentTargetButton) return;
+
+    const h = hourCol.querySelector(".selected")?.getAttribute("data-val") || "12";
+    const m = minuteCol.querySelector(".selected")?.getAttribute("data-val") || "00";
+    const ap = ampmCol.querySelector(".selected")?.getAttribute("data-val") || "AM";
+
+    // Update button text (keep icon)
+    currentTargetButton.childNodes[0].nodeValue = `${h}:${m} ${ap} `;
+}
+
+// Close on click outside
+window.addEventListener("click", function (event) {
+    if (timePickerDropdown.style.display === "block") {
+        // If clicking outside the dropdown AND outside the current button
+        if (!timePickerDropdown.contains(event.target) &&
+            currentTargetButton && !currentTargetButton.contains(event.target)) {
+            closeTimePicker();
+        }
+    }
+});
 
 /* --------------------------------------------- Timer --------------------------------------------- */
 const timerSettingBoxTag = document.querySelector(".timer-setting-box");
