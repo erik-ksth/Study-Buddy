@@ -1,4 +1,4 @@
-$(window).on("load", function() {
+$(window).on("load", function () {
     $("#preloader").fadeOut(1000);
 })
 
@@ -10,7 +10,7 @@ const exitFullScreenBtnTag = document.querySelector(".exit-full-screen-btn");
 
 // Enter full screen function
 function enterFullScreen() {
-    if(elem.requestFullscreen) {
+    if (elem.requestFullscreen) {
         elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */
         elem.webkitRequestFullscreen();
@@ -24,7 +24,7 @@ function enterFullScreen() {
 
 // Exit full screen function
 function exitFullScreen() {
-    if(document.exitFullscreen) {
+    if (document.exitFullscreen) {
         document.exitFullscreen();
     } else if (document.webkitExitFullscreen) { /* Safari */
         document.webkitExitFullscreen();
@@ -51,8 +51,8 @@ function newlist() {
     listContainerTag.append(taskListTag);
 
     const checkboxTag = document.createElement("input");
-    checkboxTag.id="checkbox";
-    checkboxTag.type="checkbox";
+    checkboxTag.id = "checkbox";
+    checkboxTag.type = "checkbox";
     taskListTag.append(checkboxTag);
 
     const taskLableContainerTag = document.createElement("div");
@@ -61,8 +61,8 @@ function newlist() {
 
     const taskInputTag = document.createElement("input");
     taskInputTag.classList.add("task-input");
-    taskInputTag.placeholder="Task";
-    taskInputTag.type="text";
+    taskInputTag.placeholder = "Task";
+    taskInputTag.type = "text";
     taskLableContainerTag.append(taskInputTag);
 
     const taskBtnsContainer = document.createElement("div");
@@ -83,13 +83,13 @@ function newlist() {
 
     const timeInput = document.createElement("input");
     timeInput.classList.add("timeInputBtn");
-    timeInput.type="time";
+    timeInput.type = "time";
     taskBtnsContainer.append(timeInput);
 
     const removeBtn = document.createElement("i");
     removeBtn.classList.add("far", "fa-trash-alt", "remove-btn");
     taskBtnsContainer.append(removeBtn);
-    
+
     removeBtn.addEventListener("click", () => {
         taskListTag.remove();
     })
@@ -139,11 +139,11 @@ function closeTimerSetting() {
 // Applying timer setting
 function applySetting() {
 
-    if(shortBreakLengthTag.value > 15 || shortBreakLengthTag.value < 1) {
+    if (shortBreakLengthTag.value > 15 || shortBreakLengthTag.value < 1) {
         shortBreakLengthTag.value = 1;
     }
 
-    if(longBreakLengthTag.value > 30 || longBreakLengthTag.value < 15) {
+    if (longBreakLengthTag.value > 30 || longBreakLengthTag.value < 15) {
         longBreakLengthTag.value = 15;
     }
 
@@ -178,7 +178,7 @@ function tabSelected() {
         // Time Display when change tab
         displayTime();
     }
-    
+
 }
 
 // set values in timer setting according to local storage
@@ -227,6 +227,12 @@ function startTimer() {
 
     } else {
         // Running
+
+        // Request permission on first start if not granted
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+
         // Display 00 second instead of 60 seconds
         setTimeout(() => {
             firstSecsTag.style.display = "none";
@@ -244,35 +250,93 @@ function startTimer() {
 }
 
 // Timer Function
+// Request Notification Permission
+if (Notification.permission !== "granted") {
+    Notification.requestPermission();
+}
+
 // Timer Function
 function startTimerFunction(m, s) {
     let minute = parseInt(m);
     let second = parseInt(s);
 
-    clearInterval(intervalId);
-    intervalId = setInterval(timerFunction, 1000);
-    
-    function timerFunction() {
-        
-        if (second === 60) {
-            minute--;
-        }
-        second--;
-        if (second === 0) {
-            second = 60;
+    // Fix: If second is 60 (initial state), treat it as 0 for calculation
+    if (second === 60) {
+        second = 0;
+    }
 
-            if (minute <= 0 && second === 60) {
-                notiSoundTag.play();
-                openToastAlert();
-                clearInterval(intervalId);
-                startBtnTag.textContent = "start";
-                startBtnTag.classList.remove("pause-btn");
-                displayTime(); // Ensure display resets or updates correctly at end
-                return; // Stop execution
+    // Calculate target end time
+    const now = Date.now();
+    const totalSeconds = (minute * 60) + second;
+    const endTime = now + (totalSeconds * 1000);
+
+    clearInterval(intervalId);
+    intervalId = setInterval(timerFunction, 100); // Run more frequently for smoother updates if needed, but 1000 is fine too. Using 1000 for consistency.
+
+    function timerFunction() {
+        const currentTime = Date.now();
+        const distance = endTime - currentTime;
+
+        let remainingSeconds = Math.ceil(distance / 1000);
+
+        if (remainingSeconds <= 0) {
+            remainingSeconds = 0;
+            minute = 0;
+            second = 0;
+
+            // Timer Finished
+
+            // Play sound safely (handle autoplay restrictions)
+            try {
+                const playPromise = notiSoundTag.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Audio playback failed:", error);
+                    });
+                }
+            } catch (e) {
+                console.error("Audio error:", e);
             }
+
+            openToastAlert();
+            sendSystemNotification(); // Send Notification
+
+            clearInterval(intervalId);
+            restartTimer(); // Consistent reset of all UI elements
+            return;
         }
-        secsTag.textContent = second === 60 ? "00" : second < 10 ? "0" + second.toString() : second;
-        minsTag.textContent = minute < 0 ? "00" : minute < 10 ? "0" + minute.toString() : minute;
+
+        // Calculate display values
+        minute = Math.floor(remainingSeconds / 60);
+        second = remainingSeconds % 60;
+
+        secsTag.textContent = second < 10 ? "0" + second.toString() : second;
+        minsTag.textContent = minute < 10 ? "0" + minute.toString() : minute;
+    }
+}
+
+// System Notification
+function sendSystemNotification() {
+    if (Notification.permission === "granted") {
+        let title = "Time's up!";
+        let body = "Timer finished.";
+
+        // Determine context based on selected tab
+        if (pomodoroBtnTag.classList.contains("tab-selected")) {
+            title = "Focus session complete!";
+            body = "Time to take a break.";
+        } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
+            title = "Short break over!";
+            body = "Ready to get back to work?";
+        } else if (longBreakBtnTag.classList.contains("tab-selected")) {
+            title = "Long break over!";
+            body = "Ready to focus again?";
+        }
+
+        new Notification(title, {
+            body: body,
+            icon: "resources/img/lamp.svg" // Assuming this exists based on README
+        });
     }
 }
 
@@ -317,7 +381,7 @@ for (let i = 0; i < musics.length; i++) {
     iconBoxTag.setAttribute("title", musics[i].label);
     iconBoxTag.setAttribute("onclick", "playMusic()");
     moodContainerTag.append(iconBoxTag);
-    
+
     var moodLabelTag = document.createElement("label"); // label
     moodLabelTag.classList.add("mood-label");
     moodLabelTag.textContent = musics[i].label;
@@ -333,7 +397,7 @@ function playMusic() {
         // check if it is icon box
         if (selectedMood.classList.contains("icon-box")) {
 
-            let musicId = selectedMood.id-1;
+            let musicId = selectedMood.id - 1;
 
             // Alter to pause button
             startMusic();
@@ -343,7 +407,7 @@ function playMusic() {
 
             // check if it has been selected
             if (selectedMood.classList.contains("mood-selected")) {
-                
+
                 currentPlayingIndex++;
                 if (currentPlayingIndex === musics[musicId].playlist.length) {
                     currentPlayingIndex = 0;
@@ -359,22 +423,22 @@ function playMusic() {
                 selectedMood.classList.add("mood-selected");
                 playRepeatMusic(0, musicId);
             }
-        
+
             function playRepeatMusic(e, musicAlbumId) {
 
                 // Does user's browser support mp3 or ogg
                 var ext = "mp3";
                 var agent = navigator.userAgent.toLowerCase();
-                if(agent.indexOf('firefox') != -1 || agent.indexOf('opera') != -1) {
+                if (agent.indexOf('firefox') != -1 || agent.indexOf('opera') != -1) {
                     ext = "ogg";
                 }
-            
+
                 audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[e]}.${ext}`;
                 audioTag.loop = false;
                 audioTag.play();
                 currentPlayingIndex = e;
 
-                audioTag.addEventListener("ended", function() {
+                audioTag.addEventListener("ended", function () {
                     if (currentPlayingIndex === musics[musicAlbumId].playlist.length - 1) {
                         currentPlayingIndex = 0;
                     } else {
@@ -406,13 +470,13 @@ function muteFunction() {
         volumeIconTag.classList.add("fa-volume-mute");
         audioTag.volume = 0;
         volumeSliderTag.value = 0;
-    } 
+    }
     // click to volume up
-    else if (volumeIconTag.classList.contains("fa-volume-mute")){
+    else if (volumeIconTag.classList.contains("fa-volume-mute")) {
         volumeIconTag.classList.add("fa-volume-up");
         volumeIconTag.classList.remove("fa-volume-mute");
         volumeSliderTag.value = localStorage.getItem("volumeSlider");
-        if(volumeSliderTag.value < 5) {
+        if (volumeSliderTag.value < 5) {
             volumeSliderTag.value = 10;
         }
         audioTag.volume = volumeSliderTag.value / 100;
@@ -448,7 +512,7 @@ function startMusic() {
 
 /* --------------------------------------------- Quote --------------------------------------------- */
 const quoteRowTag = document.querySelector(".quote-row");
-const quoteContainerTag =  document.querySelector(".quote-container");
+const quoteContainerTag = document.querySelector(".quote-container");
 
 // Create tag for quote
 const blockQuoteTag = document.createElement("blockquote");
@@ -464,7 +528,7 @@ quoteContainerTag.append(authorTag);
 refreshQuote();
 
 function refreshQuote() {
-    let randomQuoteId = Math.floor(Math.random()*quotes.length); // get random ID
+    let randomQuoteId = Math.floor(Math.random() * quotes.length); // get random ID
     blockQuoteTag.textContent = `"` + quotes[randomQuoteId].quote + `"`; // display quote
     authorTag.textContent = "-" + quotes[randomQuoteId].author + "-"; // display author
 }
