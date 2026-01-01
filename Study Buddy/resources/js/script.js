@@ -1,4 +1,4 @@
-$(window).on("load", function() {
+$(window).on("load", function () {
     $("#preloader").fadeOut(1000);
 })
 
@@ -10,7 +10,7 @@ const exitFullScreenBtnTag = document.querySelector(".exit-full-screen-btn");
 
 // Enter full screen function
 function enterFullScreen() {
-    if(elem.requestFullscreen) {
+    if (elem.requestFullscreen) {
         elem.requestFullscreen();
     } else if (elem.webkitRequestFullscreen) { /* Safari */
         elem.webkitRequestFullscreen();
@@ -24,7 +24,7 @@ function enterFullScreen() {
 
 // Exit full screen function
 function exitFullScreen() {
-    if(document.exitFullscreen) {
+    if (document.exitFullscreen) {
         document.exitFullscreen();
     } else if (document.webkitExitFullscreen) { /* Safari */
         document.webkitExitFullscreen();
@@ -51,18 +51,39 @@ function newlist() {
     listContainerTag.append(taskListTag);
 
     const checkboxTag = document.createElement("input");
-    checkboxTag.id="checkbox";
-    checkboxTag.type="checkbox";
+    checkboxTag.id = "checkbox";
+    checkboxTag.type = "checkbox";
     taskListTag.append(checkboxTag);
 
     const taskLableContainerTag = document.createElement("div");
     taskLableContainerTag.classList.add("task-lable-container");
     taskListTag.append(taskLableContainerTag);
 
-    const taskInputTag = document.createElement("input");
+    const taskInputTag = document.createElement("textarea");
     taskInputTag.classList.add("task-input");
-    taskInputTag.placeholder="Task";
-    taskInputTag.type="text";
+    taskInputTag.placeholder = "Task";
+    taskInputTag.rows = 1;
+
+    // Auto resize height
+    taskInputTag.addEventListener("input", function () {
+        this.style.height = "auto";
+        this.style.height = (this.scrollHeight) + "px";
+    });
+
+    // New task on Enter
+    taskInputTag.addEventListener("keydown", function (e) {
+        if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            newlist();
+            // Optional: Focus the new input (needs a small delay or selection logic)
+            // Ideally newlist() appends to end, so we can focus the last textarea
+            const allInputs = document.querySelectorAll(".task-input");
+            if (allInputs.length > 0) {
+                allInputs[allInputs.length - 1].focus();
+            }
+        }
+    });
+
     taskLableContainerTag.append(taskInputTag);
 
     const taskBtnsContainer = document.createElement("div");
@@ -79,22 +100,223 @@ function newlist() {
                 taskInputTag.classList.add("hasChecked");
             }
         }
-    })
+    });
 
-    const timeInput = document.createElement("input");
-    timeInput.classList.add("timeInputBtn");
-    timeInput.type="time";
-    taskBtnsContainer.append(timeInput);
+    // Custom Time Picker Button
+    const timeBtn = document.createElement("button");
+    timeBtn.textContent = "--:-- --";
+    timeBtn.classList.add("time-display-btn");
+
+    // Icon
+    const clockIcon = document.createElement("i");
+    clockIcon.classList.add("far", "fa-clock");
+    clockIcon.style.marginLeft = "5px";
+    timeBtn.append(clockIcon);
+
+    taskBtnsContainer.append(timeBtn);
 
     const removeBtn = document.createElement("i");
     removeBtn.classList.add("far", "fa-trash-alt", "remove-btn");
     taskBtnsContainer.append(removeBtn);
-    
+
     removeBtn.addEventListener("click", () => {
         taskListTag.remove();
-    })
+    });
 
+    // Event Listeners for Opening Picker
+    // Open when clicking the button
+    timeBtn.onclick = function (e) {
+        e.stopPropagation(); // Prevent bubbling to container if container also has listener
+        openTimePicker(this);
+    };
+
+    // Open when clicking the container (User Request)
+    // Note: This might conflict if clicking removeBtn also triggers it, so we check target
+    taskBtnsContainer.addEventListener("click", function (e) {
+        // Only open if not clicking remove button or the time button (handled above)
+        if (!e.target.closest(".remove-btn") && !e.target.closest(".time-display-btn")) {
+            openTimePicker(timeBtn);
+        }
+    });
 }
+
+/* --------------------------------------------- Custom Dropdown Time Picker --------------------------------------------- */
+const timePickerDropdown = document.getElementById("custom-time-picker");
+const hourCol = document.querySelector(".hour-column");
+const minuteCol = document.querySelector(".minute-column");
+const ampmCol = document.querySelector(".ampm-column");
+let currentTargetButton = null;
+
+// Populate Picker
+function populatePicker() {
+    const pad = '<div class="picker-item" style="height:55px;pointer-events:none;"></div>'; // Padding to center first/last item
+
+    // Hours 01-12
+    let hHtml = pad;
+    for (let i = 1; i <= 12; i++) {
+        let val = i < 10 ? "0" + i : i;
+        hHtml += `<div class="picker-item" data-val="${val}">${val}</div>`;
+    }
+    hHtml += pad;
+    hourCol.innerHTML = hHtml;
+
+    // Minutes 00-59
+    let mHtml = pad;
+    for (let i = 0; i < 60; i++) {
+        let val = i < 10 ? "0" + i : i;
+        mHtml += `<div class="picker-item" data-val="${val}">${val}</div>`;
+    }
+    mHtml += pad;
+    minuteCol.innerHTML = mHtml;
+
+    // AMPM
+    let ampmHtml = pad;
+    ampmHtml += `<div class="picker-item" data-val="AM">AM</div>`;
+    ampmHtml += `<div class="picker-item" data-val="PM">PM</div>`;
+    ampmHtml += pad;
+    ampmCol.innerHTML = ampmHtml;
+
+    // Scroll listeners
+    [hourCol, minuteCol, ampmCol].forEach(col => {
+        col.addEventListener("scroll", () => highlightCenter(col));
+    });
+}
+populatePicker();
+
+function highlightCenter(col) {
+    const centerY = col.scrollTop + col.offsetHeight / 2;
+    const items = col.querySelectorAll(".picker-item[data-val]");
+    let closest = null;
+    let minDiff = Infinity;
+
+    items.forEach(item => {
+        const itemCenter = item.offsetTop + item.offsetHeight / 2;
+        const diff = Math.abs(centerY - itemCenter);
+        if (diff < minDiff) {
+            minDiff = diff;
+            closest = item;
+        }
+        item.classList.remove("selected");
+    });
+
+    if (closest) {
+        closest.classList.add("selected");
+    }
+}
+
+function openTimePicker(btn) {
+    if (currentTargetButton === btn && timePickerDropdown.style.display === "block") {
+        closeTimePicker(); // Toggle off
+        return;
+    }
+
+    currentTargetButton = btn;
+    timePickerDropdown.style.display = "block";
+
+    // Positioning
+    const rect = btn.getBoundingClientRect();
+    // Position below the button
+    timePickerDropdown.style.top = (rect.bottom + window.scrollY + 5) + "px";
+    timePickerDropdown.style.left = (rect.left + window.scrollX) + "px";
+
+    // Set value from button
+    const currentVal = btn.childNodes[0].nodeValue.trim(); // Get text, ignore icon
+    let targetH, targetM, targetAP;
+
+    // Check if value is placeholder or empty
+    if (!currentVal || currentVal.includes("--")) {
+        // Use Current Time
+        const now = new Date();
+        let h = now.getHours();
+        let m = now.getMinutes();
+        targetAP = h >= 12 ? 'PM' : 'AM';
+        h = h % 12;
+        targetH = h ? h : 12;
+        targetM = m;
+        // Stringify for matching
+        targetH = targetH < 10 ? '0' + targetH : '' + targetH;
+        targetM = targetM < 10 ? '0' + targetM : '' + targetM;
+    } else if (currentVal.includes(":")) {
+        const parts = currentVal.split(/[:\s]+/);
+        if (parts.length === 3) {
+            targetH = parts[0];
+            targetM = parts[1];
+            targetAP = parts[2];
+        }
+    }
+
+    // Default fallbacks if parsing failed
+    if (!targetH) { targetH = "12"; targetM = "00"; targetAP = "PM"; }
+
+    scrollToVal(hourCol, targetH);
+    scrollToVal(minuteCol, targetM);
+    scrollToVal(ampmCol, targetAP);
+
+    // Trigger highlight immediately
+    setTimeout(() => {
+        highlightCenter(hourCol);
+        highlightCenter(minuteCol);
+        highlightCenter(ampmCol);
+    }, 0);
+
+    // Add global Enter listener
+    document.addEventListener("keydown", handleEnterKey);
+}
+
+// Click on highlighted item to close (User Request)
+timePickerDropdown.addEventListener("click", function (e) {
+    // If clicked element is an item and is selected (center)
+    if (e.target.classList.contains("picker-item") && e.target.classList.contains("selected")) {
+        closeTimePicker();
+    }
+});
+
+function scrollToVal(col, val) {
+    const items = col.querySelectorAll(".picker-item[data-val]");
+    for (let item of items) {
+        if (item.getAttribute("data-val") == val) {
+            // Scroll to center
+            const top = item.offsetTop - (col.offsetHeight / 2) + (item.offsetHeight / 2);
+            col.scrollTop = top;
+            break;
+        }
+    }
+}
+
+function closeTimePicker() {
+    confirmTimePicker(); // Save on close
+    timePickerDropdown.style.display = "none";
+    currentTargetButton = null;
+    document.removeEventListener("keydown", handleEnterKey);
+}
+
+function handleEnterKey(e) {
+    if (e.key === "Enter") {
+        closeTimePicker(); // This calls confirmTimePicker
+    }
+}
+
+function confirmTimePicker() {
+    if (!currentTargetButton) return;
+
+    const h = hourCol.querySelector(".selected")?.getAttribute("data-val") || "12";
+    const m = minuteCol.querySelector(".selected")?.getAttribute("data-val") || "00";
+    const ap = ampmCol.querySelector(".selected")?.getAttribute("data-val") || "AM";
+
+    // Update button text (keep icon)
+    currentTargetButton.childNodes[0].nodeValue = `${h}:${m} ${ap} `;
+}
+
+// Close on click outside
+window.addEventListener("click", function (event) {
+    if (timePickerDropdown.style.display === "block") {
+        // If clicking outside the dropdown AND outside the current button
+        if (!timePickerDropdown.contains(event.target) &&
+            currentTargetButton && !currentTargetButton.contains(event.target)) {
+            closeTimePicker();
+        }
+    }
+});
 
 /* --------------------------------------------- Timer --------------------------------------------- */
 const timerSettingBoxTag = document.querySelector(".timer-setting-box");
@@ -115,6 +337,9 @@ const longBreakBtnTag = document.querySelector("#long-break-btn");
 let pomodoroLengthTag = document.querySelector("#pomodoro-length");
 let shortBreakLengthTag = document.querySelector("#short-break-length");
 let longBreakLengthTag = document.querySelector("#long-break-length");
+// Round Counter
+let roundCount = 1;
+const roundCounterTag = document.querySelector("#round-counter");
 
 
 // Open Timer Setting function
@@ -139,11 +364,11 @@ function closeTimerSetting() {
 // Applying timer setting
 function applySetting() {
 
-    if(shortBreakLengthTag.value > 15 || shortBreakLengthTag.value < 1) {
+    if (shortBreakLengthTag.value > 15 || shortBreakLengthTag.value < 1) {
         shortBreakLengthTag.value = 1;
     }
 
-    if(longBreakLengthTag.value > 30 || longBreakLengthTag.value < 15) {
+    if (longBreakLengthTag.value > 30 || longBreakLengthTag.value < 15) {
         longBreakLengthTag.value = 15;
     }
 
@@ -178,7 +403,7 @@ function tabSelected() {
         // Time Display when change tab
         displayTime();
     }
-    
+
 }
 
 // set values in timer setting according to local storage
@@ -227,6 +452,12 @@ function startTimer() {
 
     } else {
         // Running
+
+        // Request permission on first start if not granted
+        if (Notification.permission !== "granted" && Notification.permission !== "denied") {
+            Notification.requestPermission();
+        }
+
         // Display 00 second instead of 60 seconds
         setTimeout(() => {
             firstSecsTag.style.display = "none";
@@ -244,45 +475,116 @@ function startTimer() {
 }
 
 // Timer Function
+// Request Notification Permission
+if (Notification.permission !== "granted") {
+    Notification.requestPermission();
+}
+
+// Timer Function
 function startTimerFunction(m, s) {
-    let minute = m;
-    let second = s;
-    
-    if (minute < 10) {
-        minute = minute.substring(1);
+    let minute = parseInt(m);
+    let second = parseInt(s);
+
+    // Fix: If second is 60 (initial state), treat it as 0 for calculation
+    if (second === 60) {
+        second = 0;
     }
 
-    // Decrease Minute on first timer minute
-    if (minute == localStorage.getItem("pomodoro") || 
-       minute == localStorage.getItem("shortBreak") || 
-       minute == localStorage.getItem("longBreak")) {
-
-            minute--;
-
-    }
+    // Calculate target end time
+    const now = Date.now();
+    const totalSeconds = (minute * 60) + second;
+    const endTime = now + (totalSeconds * 1000);
 
     clearInterval(intervalId);
-    intervalId = setInterval(timerFunction, 1000);
-    
-    function timerFunction() {
-        
-        if (second === 60) {
-            minute--;
-        }
-        second--;
-        if (second === 0) {
-            second = 60;
+    intervalId = setInterval(timerFunction, 100); // Run more frequently for smoother updates if needed, but 1000 is fine too. Using 1000 for consistency.
 
-            if (minute <= 0 && second === 60) {
-                notiSoundTag.play();
-                openToastAlert();
-                clearInterval(intervalId);
-                startBtnTag.textContent = "start";
-                startBtnTag.classList.remove("pause-btn");
+    function timerFunction() {
+        const currentTime = Date.now();
+        const distance = endTime - currentTime;
+
+        let remainingSeconds = Math.ceil(distance / 1000);
+
+        if (remainingSeconds <= 0) {
+            remainingSeconds = 0;
+            minute = 0;
+            second = 0;
+
+            // Timer Finished
+
+            // Play sound safely (handle autoplay restrictions)
+            try {
+                const playPromise = notiSoundTag.play();
+                if (playPromise !== undefined) {
+                    playPromise.catch(error => {
+                        console.log("Audio playback failed:", error);
+                    });
+                }
+            } catch (e) {
+                console.error("Audio error:", e);
             }
+
+            const message = getNotificationMessage();
+            openToastAlert(message);
+            sendSystemNotification(message); // Send Notification
+
+            clearInterval(intervalId);
+            restartTimer(); // Consistent reset of all UI elements
+
+            if (pomodoroBtnTag.classList.contains("tab-selected")) {
+                roundCount++;
+                if (roundCount > 4) {
+                    roundCount = 1;
+                }
+                const currentRoundCounterTag = document.querySelector("#round-counter");
+                if (currentRoundCounterTag) {
+                    currentRoundCounterTag.textContent = `${roundCount}/4`;
+                }
+            }
+            return;
         }
-        secsTag.textContent = second === 60 ? "0" + "0" : second < 10 ? "0" + second.toString() : second;
-        minsTag.textContent = minute < 0 ? "0" + "0" : minute < 10 ? "0" + minute.toString() : minute;
+
+        // Calculate display values
+        minute = Math.floor(remainingSeconds / 60);
+        second = remainingSeconds % 60;
+
+        secsTag.textContent = second < 10 ? "0" + second.toString() : second;
+        minsTag.textContent = minute < 10 ? "0" + minute.toString() : minute;
+    }
+}
+
+function getNotificationMessage() {
+    if (pomodoroBtnTag.classList.contains("tab-selected")) {
+        if (roundCount < 4) {
+            return "Short break time! Take a walk, stretch, and hydrate.";
+        } else {
+            return "Long break time! Step away, relax, and reset your mind.";
+        }
+    } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
+        return "Break’s over. Let’s get back to focus.";
+    } else if (longBreakBtnTag.classList.contains("tab-selected")) {
+        return "Hope you recharged! Ready for a new focus session?";
+    }
+    return "Time's up!";
+}
+
+// System Notification
+function sendSystemNotification(message) {
+    if (Notification.permission === "granted") {
+        let title = "Time's up!";
+
+        // Determine context based on selected tab for Title (optional, or keep generic)
+        if (pomodoroBtnTag.classList.contains("tab-selected")) {
+            title = "Focus session complete!";
+        } else if (shortBreakBtnTag.classList.contains("tab-selected")) {
+            title = "Short break over!";
+        } else if (longBreakBtnTag.classList.contains("tab-selected")) {
+            title = "Long break over!";
+        }
+
+        new Notification(title, {
+            body: message,
+            icon: "resources/img/lamp.svg" // Assuming this exists based on README
+        });
     }
 }
 
@@ -290,12 +592,12 @@ function startTimerFunction(m, s) {
 // Toast Alert function
 const toastParentTag = document.querySelector(".toast-parent");
 const toastContainerTag = document.querySelector(".toast-container");
-function openToastAlert() {
+function openToastAlert(message) {
     toastContainerTag.innerHTML = `
     <div class="bannerAndBody">
         <div class="toast-banner"><span>MESSAGE</span><span>now</span></div>
         <div class="toast-parent">
-            <div class="toast-alert-text">"Hey there, Time's up!"</div>
+            <div class="toast-alert-text">"${message}"</div>
         </div>
     </div>`;
 
@@ -327,7 +629,7 @@ for (let i = 0; i < musics.length; i++) {
     iconBoxTag.setAttribute("title", musics[i].label);
     iconBoxTag.setAttribute("onclick", "playMusic()");
     moodContainerTag.append(iconBoxTag);
-    
+
     var moodLabelTag = document.createElement("label"); // label
     moodLabelTag.classList.add("mood-label");
     moodLabelTag.textContent = musics[i].label;
@@ -343,7 +645,7 @@ function playMusic() {
         // check if it is icon box
         if (selectedMood.classList.contains("icon-box")) {
 
-            let musicId = selectedMood.id-1;
+            let musicId = selectedMood.id - 1;
 
             // Alter to pause button
             startMusic();
@@ -353,7 +655,7 @@ function playMusic() {
 
             // check if it has been selected
             if (selectedMood.classList.contains("mood-selected")) {
-                
+
                 currentPlayingIndex++;
                 if (currentPlayingIndex === musics[musicId].playlist.length) {
                     currentPlayingIndex = 0;
@@ -369,22 +671,22 @@ function playMusic() {
                 selectedMood.classList.add("mood-selected");
                 playRepeatMusic(0, musicId);
             }
-        
+
             function playRepeatMusic(e, musicAlbumId) {
 
                 // Does user's browser support mp3 or ogg
                 var ext = "mp3";
                 var agent = navigator.userAgent.toLowerCase();
-                if(agent.indexOf('firefox') != -1 || agent.indexOf('opera') != -1) {
+                if (agent.indexOf('firefox') != -1 || agent.indexOf('opera') != -1) {
                     ext = "ogg";
                 }
-            
+
                 audioTag.src = `resources/music/${musics[musicAlbumId].dir}/${musics[musicAlbumId].playlist[e]}.${ext}`;
                 audioTag.loop = false;
                 audioTag.play();
                 currentPlayingIndex = e;
 
-                audioTag.addEventListener("ended", function() {
+                audioTag.addEventListener("ended", function () {
                     if (currentPlayingIndex === musics[musicAlbumId].playlist.length - 1) {
                         currentPlayingIndex = 0;
                     } else {
@@ -416,13 +718,13 @@ function muteFunction() {
         volumeIconTag.classList.add("fa-volume-mute");
         audioTag.volume = 0;
         volumeSliderTag.value = 0;
-    } 
+    }
     // click to volume up
-    else if (volumeIconTag.classList.contains("fa-volume-mute")){
+    else if (volumeIconTag.classList.contains("fa-volume-mute")) {
         volumeIconTag.classList.add("fa-volume-up");
         volumeIconTag.classList.remove("fa-volume-mute");
         volumeSliderTag.value = localStorage.getItem("volumeSlider");
-        if(volumeSliderTag.value < 5) {
+        if (volumeSliderTag.value < 5) {
             volumeSliderTag.value = 10;
         }
         audioTag.volume = volumeSliderTag.value / 100;
@@ -458,7 +760,7 @@ function startMusic() {
 
 /* --------------------------------------------- Quote --------------------------------------------- */
 const quoteRowTag = document.querySelector(".quote-row");
-const quoteContainerTag =  document.querySelector(".quote-container");
+const quoteContainerTag = document.querySelector(".quote-container");
 
 // Create tag for quote
 const blockQuoteTag = document.createElement("blockquote");
@@ -474,7 +776,7 @@ quoteContainerTag.append(authorTag);
 refreshQuote();
 
 function refreshQuote() {
-    let randomQuoteId = Math.floor(Math.random()*quotes.length); // get random ID
+    let randomQuoteId = Math.floor(Math.random() * quotes.length); // get random ID
     blockQuoteTag.textContent = `"` + quotes[randomQuoteId].quote + `"`; // display quote
     authorTag.textContent = "-" + quotes[randomQuoteId].author + "-"; // display author
 }

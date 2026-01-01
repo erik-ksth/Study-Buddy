@@ -1,4 +1,5 @@
 @media only screen and (min-width: 1510px) {
+
   .bannerAndBody,
   .pop-up-box,
   .start-btn,
@@ -63,9 +64,7 @@
     font-size: 150%;
   }
 
-  .to-do-list-box .pop-up-box {
-    min-height: 450px;
-  }
+
 
   .quote-container {
     margin-top: 10%;
@@ -82,18 +81,16 @@
   .bannerAndBody {
     width: 40%;
   }
+
   .container {
     font-size: 100%;
   }
 
-  .to-do-list-box .pop-up-box {
-    min-height: 350px;
-  }
+
 }
 
 /* from 1171px to 1200px */
-@media only screen and (max-width: 1200px) {
-}
+@media only screen and (max-width: 1200px) {}
 
 /* Large Tablet from 851 to 1023 */
 @media only screen and (max-width: 1170px) {

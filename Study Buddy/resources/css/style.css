@@ -142,6 +142,7 @@ h1 {
   height: 55%;
   border: #4e1700 solid 2px;
 }
+
 .close-btn {
   font-size: 80%;
   transform: translateX(1px);
@@ -189,7 +190,7 @@ h1 {
   border: solid 2px #4e1700;
   border-radius: 5px;
   box-shadow: #4e1700 6px 6px;
-  margin: 15px 0;
+  margin: 15px auto;
   position: relative;
 }
 
@@ -282,6 +283,19 @@ h3 {
   font-size: 120%;
   cursor: url("img/cursor/pointer.png"), pointer;
   transition: all 0.2s;
+}
+
+.reset-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#round-counter {
+  font-size: 60%;
+  color: #4e1700;
+  margin-top: 5px;
+  font-weight: bold;
 }
 
 /* Tabs */
@@ -382,6 +396,7 @@ h3 {
   letter-spacing: 1px;
   cursor: url("img/cursor/pointer.png"), pointer;
 }
+
 #apply-btn:hover,
 #apply-btn:active {
   background-color: #d8c0a2;
@@ -390,9 +405,9 @@ h3 {
 /* ---------- To-Do-List Box ---------- */
 
 .to-do-list-box .pop-up-box {
-  min-height: 300px;
-  height: auto;
-  max-height: 100%;
+  height: 300px;
+  display: flex;
+  flex-direction: column;
   overflow: hidden;
 }
 
@@ -409,13 +424,40 @@ h3 {
   right: 9px;
   cursor: url("img/cursor/pointer.png"), pointer;
   display: flex;
+  z-index: 10;
+  /* Ensure above scroll */
 }
+
 .plus-btn img {
   width: 20px;
 }
 
 .to-do-list-content {
   padding: 6%;
+  padding-bottom: 60px;
+  /* Extra space for plus button */
+  flex: 1;
+  overflow-y: auto;
+  /* Scrollbar Styling */
+  scrollbar-color: #4e1700 #f3f2ef;
+  scrollbar-width: thin;
+}
+
+.to-do-list-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.to-do-list-content::-webkit-scrollbar-track {
+  background: #f3f2ef;
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb {
+  background: #4e1700;
+  border-radius: 4px;
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb:hover {
+  background: #6e2700;
 }
 
 /* Task List */
@@ -430,6 +472,7 @@ h3 {
 .task-list:first-child {
   margin-top: 0;
 }
+
 .task-list:last-of-type {
   margin-bottom: 10%;
 }
@@ -475,25 +518,41 @@ input[type="checkbox"]:checked:after {
   border: none;
   font-size: 80%;
   letter-spacing: 1.5px;
+  resize: none;
+  /* Disable manual resize */
+  overflow: hidden;
+  /* Hide scrollbar */
+  font-family: inherit;
+  height: 25px;
+  /* Initial height */
+  padding-top: 2px;
+  /* Alignment */
 }
+
 .task-input::-webkit-input-placeholder {
   color: #9b624b;
 }
+
 .task-input::-moz-placeholder {
   color: #9b624b;
 }
+
 .task-input:-ms-input-placeholder {
   color: #9b624b;
 }
+
 .task-input::-ms-input-placeholder {
   color: #9b624b;
 }
+
 .task-input::placeholder {
   color: #9b624b;
 }
+
 .task-input::-moz-selection {
   background: #e3d6c5;
 }
+
 .task-input::selection {
   background: #e3d6c5;
 }
@@ -705,4 +764,136 @@ input[type="checkbox"]:checked:after {
   position: fixed;
   bottom: 2%;
   left: 2%;
+}
+
+/* ---------- Custom Time Picker Dropdown ---------- */
+.time-picker-dropdown {
+  position: absolute;
+  /* Positioned by JS */
+  width: 180px;
+  background-color: #faf8f5;
+  border: 2px solid #4e1700;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(78, 23, 0, 0.3);
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.time-picker-body {
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  position: relative;
+  background-color: transparent;
+}
+
+.picker-column {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  text-align: center;
+  /* Hide scrollbar */
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  padding-top: 55px;
+  /* (150 - 40) / 2 */
+  padding-bottom: 55px;
+  z-index: 2;
+}
+
+.picker-column::-webkit-scrollbar {
+  display: none;
+}
+
+.picker-item {
+  height: 40px;
+  line-height: 40px;
+  scroll-snap-align: center;
+  color: #4e1700;
+  /* Dark brown default */
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, font-weight 0.2s;
+}
+
+.picker-item.selected {
+  color: #4e1700;
+  font-weight: bold;
+  font-size: 1.3rem;
+  opacity: 1;
+}
+
+/* Highlight bar in the middle */
+.picker-highlight {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  transform: translateY(-50%);
+  background-color: #e3d6c5;
+  /* Beige accent */
+  border-top: 1px solid #4e1700;
+  border-bottom: 1px solid #4e1700;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Time Button Style (reused/adjusted) */
+.time-display-btn {
+  background: transparent;
+  border: 1px solid #4e1700;
+  border-radius: 4px;
+  padding: 2px 8px;
+  cursor: pointer;
+  color: #4e1700;
+  font-family: inherit;
+  font-size: 0.9rem;
+  min-width: 80px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-right: 5px;
+  /* Reduced from default or previous implicit values */
+}
+
+.time-display-btn:hover {
+  background-color: #e3d6c5;
+}
+
+/* Ensure buttons don't wrap */
+.task-btns-container {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* ---------- Time Button Style (Native) ---------- */
+.timeInputBtn {
+  cursor: url("img/cursor/pointer.png"), pointer;
+  display: flex;
+  flex-direction: row;
+  float: left;
+  margin-right: 10px;
+  border: 1px solid #4e1700;
+  border-radius: 4px;
+  background-color: transparent;
+  /* or #e3d6c5 */
+  font-size: 80%;
+  color: #4e1700;
+  font-family: inherit;
+  padding: 2px 5px;
+}
+
+.timeInputBtn:hover {
+  background-color: #e3d6c5;
+}
+
+/* Color the clock icon in the input (Webkit only) */
+.timeInputBtn::-webkit-calendar-picker-indicator {
+  filter: invert(16%) sepia(29%) saturate(4643%) hue-rotate(345deg) brightness(97%) contrast(105%);
+  /* Tries to match #4e1700 */
+  cursor: url("img/cursor/pointer.png"), pointer;
 }
