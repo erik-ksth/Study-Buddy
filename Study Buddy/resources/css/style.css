@@ -893,7 +893,47 @@ input[type="checkbox"]:checked:after {
 
 /* Color the clock icon in the input (Webkit only) */
 .timeInputBtn::-webkit-calendar-picker-indicator {
-  filter: invert(16%) sepia(29%) saturate(4643%) hue-rotate(345deg) brightness(97%) contrast(105%);
+  filter: invert(16%) sepia(29%) saturate(4643%) hue-rotate(345deg)
+    brightness(97%) contrast(105%);
   /* Tries to match #4e1700 */
   cursor: url("img/cursor/pointer.png"), pointer;
+}
+
+/* ---------- Drag Handle for To-Do List ---------- */
+.drag-handle {
+  color: #9b624b;
+  font-size: 90%;
+  cursor: url("img/cursor/grab.png"), grab;
+  padding: 5px;
+  margin-right: 5px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.drag-handle:hover {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: url("img/cursor/grabbing.png"), grabbing;
+}
+
+/* Sortable states */
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: #e3d6c5;
+  border-radius: 4px;
+}
+
+.sortable-chosen {
+  background-color: #faf8f5;
+  border-radius: 4px;
+  box-shadow: 0 2px 8px rgba(78, 23, 0, 0.2);
+}
+
+.sortable-drag {
+  opacity: 1;
+  background-color: #f3f2ef;
+  border-radius: 4px;
+  box-shadow: 0 4px 12px rgba(78, 23, 0, 0.3);
 }
