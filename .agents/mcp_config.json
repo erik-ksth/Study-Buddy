@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "echomem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@echomem/mcp@latest"
+      ],
+      "env": {
+        "ECHO_API_TOKEN": "YOUR_ECHO_API_TOKEN_HERE",
+        "ECHO_API_BASE_URL": "https://echo-mem-chrome.vercel.app"
+      }
+    }
+  }
+}

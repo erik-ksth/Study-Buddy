@@ -1,0 +1,254 @@
+/* Scoped to :not(:fullscreen) — entering fullscreen fills a physically larger
+   screen, which would otherwise cross this width threshold and scale the
+   whole UI up just from toggling fullscreen. A normal (non-fullscreen) window
+   this wide still gets the larger, easier-to-read sizing. */
+@media only screen and (min-width: 1510px) {
+  html:not(:fullscreen) .bannerAndBody,
+  html:not(:fullscreen) .pop-up-box,
+  html:not(:fullscreen) .start-btn,
+  html:not(:fullscreen) #apply-btn,
+  html:not(:fullscreen) .icon-box,
+  html:not(:fullscreen) .quote-container {
+    border: solid var(--color-border) 2px;
+  }
+
+  html:not(:fullscreen) .task-lable-container {
+    border-bottom: solid var(--color-border) 2px;
+  }
+
+  html:not(:fullscreen) input[type="checkbox"] {
+    width: 23px;
+    height: 23px;
+    outline: solid var(--color-border) 2px;
+  }
+
+  html:not(:fullscreen) .windows-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  html:not(:fullscreen) .bannerAndBody {
+    width: 40%;
+  }
+
+  html:not(:fullscreen) .row {
+    margin-bottom: 5%;
+  }
+
+  html:not(:fullscreen) .container {
+    font-size: 140%;
+    padding: 24px 6% 10px;
+  }
+
+  html:not(:fullscreen) .main-mood-container {
+    column-gap: 30px;
+    row-gap: 40px;
+  }
+
+  html:not(:fullscreen) .icon-box {
+    width: 100px;
+    height: 100px;
+    background-size: 50px;
+  }
+
+  html:not(:fullscreen) [data-theme="ocean"] .icon-box,
+  html:not(:fullscreen) [data-theme="forest"] .icon-box,
+  html:not(:fullscreen) [data-theme="midnight"] .icon-box {
+    background-size: contain;
+  }
+
+  html:not(:fullscreen) .mood-selected::before {
+    background-size: 24px;
+    width: 25px;
+    height: 25px;
+  }
+
+  html:not(:fullscreen) #volumeSlider::-webkit-slider-thumb {
+    width: 33px;
+    height: 33px;
+  }
+
+  html:not(:fullscreen) .audioIcon {
+    font-size: 150%;
+  }
+
+  html:not(:fullscreen) .quoteClass {
+    line-height: 150%;
+  }
+}
+
+/* from 1201 to 1510px */
+@media only screen and (max-width: 1510px) {
+  .bannerAndBody {
+    width: 40%;
+  }
+
+  .container {
+    font-size: 100%;
+  }
+}
+
+/* Large Tablet from 851 to 1023 */
+@media only screen and (max-width: 1170px) {
+  .container {
+    font-size: 20px;
+  }
+
+  .pop-up-box {
+    width: 90%;
+  }
+
+  .main-mood-container {
+    column-gap: 2%;
+    row-gap: 15px;
+  }
+
+  .icon-box {
+    transform-origin: top;
+    transform: scale(0.9);
+  }
+
+}
+
+/* Large Tablet from 741 to 850 */
+@media only screen and (max-width: 910px) {
+  .bannerAndBody {
+    width: 50%;
+  }
+
+  .container {
+    font-size: 15px;
+  }
+}
+
+/* Small Tablet from 481 to 740 */
+@media only screen and (max-width: 740px) {
+  .bannerAndBody {
+    width: 70%;
+  }
+
+  .pop-up-box {
+    width: 100%;
+  }
+
+  .timer-setting-box {
+    position: absolute;
+    left: 35%;
+    font-size: 140%;
+    transform: scale(0.7);
+  }
+
+  .timer-setting-box .windows-btn {
+    width: 30px;
+    height: 30px;
+  }
+
+  .timer-setting-box .close-btn {
+    font-size: 90%;
+  }
+
+  .timer-clock {
+    font-size: 350%;
+    margin-top: -20px;
+  }
+
+  .timer-container {
+    flex-direction: column;
+  }
+
+  .timer-btn-container {
+    margin: 5px 0;
+  }
+
+  .quote-container::before {
+    transform: scale(0.5);
+  }
+
+  .full-screen-btn,
+  .exit-full-screen-btn {
+    transform: scale(0);
+    opacity: 0;
+  }
+
+  .stats-bar {
+    padding: 14px 20px;
+  }
+
+  .stat-item {
+    padding: 0 14px;
+  }
+
+}
+
+/* Small Phone from 0 to 480px */
+@media only screen and (max-width: 480px) {
+  .home-row {
+    flex-direction: column;
+  }
+
+  .timer-todo-column,
+  .vibes-column {
+    flex: 1 1 100%;
+  }
+
+  #preloader h1 {
+    font-size: 200%;
+  }
+
+  .bannerAndBody {
+    width: 90%;
+  }
+
+  .timer-setting-box {
+    left: 0;
+    font-size: 120%;
+    transform: scale(0.7);
+  }
+
+  .timer-setting-box .windows-btn {
+    width: 40px;
+    height: 40px;
+  }
+
+  .timer-setting-box .close-btn {
+    font-size: 90%;
+  }
+
+  .container {
+    font-size: 20px;
+    transform-origin: top;
+    transform: scale(0.9);
+    padding: 10px;
+  }
+
+  .timer-clock {
+    font-size: 270%;
+    letter-spacing: 6px;
+  }
+
+  .tabs-container button {
+    font-size: 58%;
+    letter-spacing: 1.4px;
+  }
+
+  .main-mood-container {
+    width: 100%;
+  }
+
+  .pop-up-box {
+    width: 100%;
+  }
+
+  .stats-bar {
+    padding: 14px;
+    row-gap: 10px;
+  }
+
+  .stat-divider {
+    display: none;
+  }
+
+  .stat-item {
+    padding: 0 10px;
+  }
+}

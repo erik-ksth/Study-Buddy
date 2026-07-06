@@ -1,0 +1,117 @@
+:root {
+  /* Shared across every theme — only colors (and theme-tinted cursors/grid) vary */
+  --font-body: "Roboto Slab", Georgia, serif;
+  --font-display: "Rochester", cursive;
+
+  /* Shared transition timing so state changes (theme switch, hovers,
+     popovers) feel consistent rather than instant. */
+  --transition-fast: 150ms ease;
+  --transition-theme: 320ms ease;
+}
+
+/* Cream — the original/default palette, pixel-identical to the old app */
+:root,
+:root[data-theme="cream"] {
+  --color-bg: #f3f2ef;
+  --color-bg-rgb: 243, 242, 239;
+  --color-bg-alt: #faf8f5;
+  --color-text: #4e1700;
+  --color-border: #4e1700;
+  --color-shadow: #4e1700;
+  --color-shadow-rgb: 78, 23, 0;
+  --color-accent: #e3d6c5;
+  --color-accent-2: #9b624b;
+  --color-accent-3: #d8c0a2;
+  --color-accent-4: #6e2700;
+  --color-icon: #4e1700;
+  --color-icon-secondary: #f3f2ef;
+  --color-toast-banner-bg: hsla(34, 35%, 83%, 0.7);
+  --color-toast-body-bg: hsla(45, 14%, 95%, 0.7);
+  /* Cream stays exactly as it always was — the "cozy note-taking" look. */
+  --color-banner: #e3d6c5;
+  --color-banner-fg: #4e1700;
+  --color-frame: transparent;
+  --cursor-default: url("/img/cursor/cream/default.svg") 1 1;
+  --cursor-pointer: url("/img/cursor/cream/pointer.svg") 10 2;
+  --cursor-grab: url("/img/cursor/cream/grab.svg") 10 2;
+  --cursor-grabbing: url("/img/cursor/cream/grabbing.svg") 10 2;
+}
+
+/* Midnight — dark, but kept warm-toned rather than a generic cold dark mode */
+:root[data-theme="midnight"] {
+  --color-bg: #1b1e2b;
+  --color-bg-rgb: 27, 30, 43;
+  --color-bg-alt: #242838;
+  --color-text: #e8e1d3;
+  --color-border: #e8e1d3;
+  --color-shadow: #000000;
+  --color-shadow-rgb: 0, 0, 0;
+  --color-accent: #343a4d;
+  --color-accent-2: #9098b0;
+  --color-accent-3: #454c63;
+  --color-accent-4: #c9a876;
+  --color-icon: #e8e1d3;
+  --color-icon-secondary: #1b1e2b;
+  --color-toast-banner-bg: hsla(220, 25%, 30%, 0.7);
+  --color-toast-body-bg: hsla(230, 20%, 20%, 0.75);
+  /* No frame/decoration art yet for this theme — placeholder until provided. */
+  --color-banner: #3d4566;
+  --color-banner-fg: #f0ede4;
+  --color-frame: transparent;
+  --cursor-default: url("/img/cursor/midnight/default.svg") 1 1;
+  --cursor-pointer: url("/img/cursor/midnight/pointer.svg") 10 2;
+  --cursor-grab: url("/img/cursor/midnight/grab.svg") 10 2;
+  --cursor-grabbing: url("/img/cursor/midnight/grabbing.svg") 10 2;
+}
+
+/* Forest — modern pale gray with deep teal ink */
+:root[data-theme="forest"] {
+  --color-bg: #f1f2f4;
+  --color-bg-rgb: 241, 242, 244;
+  --color-bg-alt: #f7f8f9;
+  --color-text: #244c53;
+  --color-border: #244c53;
+  --color-shadow: #244c53;
+  --color-shadow-rgb: 36, 76, 83;
+  --color-accent: #d8dedf;
+  --color-accent-2: #6f7f7d;
+  --color-accent-3: #e3e7e8;
+  --color-accent-4: #244c53;
+  --color-icon: #244c53;
+  --color-icon-secondary: #f1f2f4;
+  --color-toast-banner-bg: hsla(95, 25%, 80%, 0.7);
+  --color-toast-body-bg: hsla(90, 20%, 93%, 0.7);
+  --color-banner: #6f7f7d;
+  --color-banner-fg: #f1f2f4;
+  --color-frame: transparent;
+  --cursor-default: url("/img/cursor/forest/default.svg") 1 1;
+  --cursor-pointer: url("/img/cursor/forest/pointer.svg") 10 2;
+  --cursor-grab: url("/img/cursor/forest/grab.svg") 10 2;
+  --cursor-grabbing: url("/img/cursor/forest/grabbing.svg") 10 2;
+}
+
+/* Ocean — pale seafoam with deep navy-teal ink */
+:root[data-theme="ocean"] {
+  --color-bg: #f7fbf9;
+  --color-bg-rgb: 247, 251, 249;
+  --color-bg-alt: #ffffff;
+  --color-text: #1f4d79;
+  --color-border: #82bbdc;
+  --color-shadow: #2d6d92;
+  --color-shadow-rgb: 45, 109, 146;
+  --color-accent: #d7edf8;
+  --color-accent-2: #5f90af;
+  --color-accent-3: #c2e2f3;
+  --color-accent-4: #1d5c84;
+  --color-icon: #1f4d79;
+  --color-icon-secondary: #eef4f2;
+  --color-toast-banner-bg: hsla(190, 30%, 82%, 0.7);
+  --color-toast-body-bg: hsla(185, 25%, 94%, 0.7);
+  --color-banner: #d7edf8;
+  --color-banner-fg: #1f4d79;
+  --color-frame: transparent;
+  --cursor-default: url("/img/cursor/ocean/default.svg") 1 1;
+  --cursor-pointer: url("/img/cursor/ocean/pointer.svg") 10 2;
+  --cursor-grab: url("/img/cursor/ocean/grab.svg") 10 2;
+  --cursor-grabbing: url("/img/cursor/ocean/grabbing.svg") 10 2;
+}

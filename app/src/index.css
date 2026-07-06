@@ -1,0 +1,68 @@
+@import "./styles/themes.css";
+@import "./styles/layout.css";
+@import "./styles/quotes.css";
+@import "./styles/todo.css";
+@import "./styles/timer.css";
+@import "./styles/music.css";
+@import "./styles/stats.css";
+@import "./styles/responsive.css";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  /* Default so switching themes fades colors smoothly everywhere; elements
+     with their own faster/richer transition (buttons, icon tiles, etc.) just
+     override this with a more specific rule. */
+  transition: background-color var(--transition-theme), border-color var(--transition-theme),
+    color var(--transition-theme), box-shadow var(--transition-theme);
+}
+
+*:focus {
+  outline: none;
+}
+
+html {
+  color: var(--color-text);
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 2px;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+  cursor: var(--cursor-default), auto;
+}
+
+body {
+  background-color: var(--color-bg);
+}
+
+a {
+  color: var(--color-text);
+  cursor: var(--cursor-pointer), pointer;
+}
+
+/* Shared pop-in used by anything that appears suddenly (popovers, dropdowns)
+   instead of snapping into existence. */
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94) translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+h1 {
+  margin: 0;
+  font-weight: 400;
+  font-size: 250%;
+  text-shadow: var(--color-accent) 4px 4px;
+  text-transform: capitalize;
+  text-align: center;
+  font-family: var(--font-display);
+  transition: text-shadow var(--transition-theme);
+}

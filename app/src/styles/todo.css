@@ -1,0 +1,325 @@
+/* ---------- To-Do-List content ---------- */
+.to-do-list-content {
+  padding: 6%;
+  padding-bottom: 60px;
+  flex: 1;
+  overflow-y: auto;
+  scrollbar-color: var(--color-border) var(--color-bg);
+  scrollbar-width: thin;
+}
+
+.to-do-list-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.to-do-list-content::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb {
+  background: var(--color-border);
+  border-radius: 4px;
+}
+
+.to-do-list-content::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-4);
+}
+
+.task-list {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  position: relative;
+  margin: 5% 0;
+}
+
+.task-list:first-child {
+  margin-top: 0;
+}
+
+.task-list:last-of-type {
+  margin-bottom: 10%;
+}
+
+input[type="checkbox"] {
+  appearance: none;
+  width: 17px;
+  height: 17px;
+  outline: solid var(--color-border) 1.5px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: var(--cursor-pointer), pointer;
+  flex-shrink: 0;
+  transition: transform 0.1s;
+}
+
+input[type="checkbox"]:active {
+  transform: scale(0.85);
+}
+
+@keyframes check-pulse {
+  0% {
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+input[type="checkbox"]:checked {
+  animation: check-pulse 0.25s ease;
+}
+
+input[type="checkbox"]:checked:after {
+  content: "\f00c";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 11px;
+  color: var(--color-text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.task-lable-container {
+  display: flex;
+  width: 100%;
+  height: auto;
+  justify-content: space-between;
+  border-bottom: var(--color-border) solid 1.5px;
+  margin-left: 9px;
+}
+
+.task-input {
+  width: 60%;
+  color: var(--color-text);
+  background-color: transparent;
+  outline: none;
+  border: none;
+  font-size: 80%;
+  letter-spacing: 1.5px;
+  resize: none;
+  overflow: hidden;
+  font-family: inherit;
+  height: 25px;
+  padding-top: 2px;
+}
+
+.task-input::placeholder {
+  color: var(--color-accent-2);
+}
+
+.task-input::selection {
+  background: var(--color-accent);
+}
+
+.hasChecked {
+  text-decoration: line-through;
+}
+
+.remove-btn {
+  display: flex;
+  flex-direction: row;
+  font-size: 85%;
+  cursor: var(--cursor-pointer), pointer;
+  transition: transform 0.15s;
+}
+
+.remove-btn:hover {
+  transform: scale(1.15);
+}
+
+.plus-btn {
+  width: 30px;
+  height: 30px;
+  padding: 0;
+  border: 1.5px solid var(--color-text);
+  border-radius: 8px;
+  background-color: var(--color-text);
+  color: var(--color-bg);
+  font-size: 85%;
+  position: absolute;
+  bottom: 9px;
+  right: 9px;
+  cursor: var(--cursor-pointer), pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+  box-shadow: none;
+  transition: color 0.15s, border-color 0.15s, transform 0.1s;
+}
+
+.plus-btn:hover {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border-color: var(--color-accent);
+}
+
+.plus-btn:active {
+  transform: scale(0.92);
+}
+
+/* Time display — no chip, no border, no shadow: just an icon + label whose
+   color/weight alone says whether a time is set, and a faint hover tint as
+   the only affordance that it's clickable. */
+.time-display-btn {
+  background: transparent;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  padding: 4px 8px;
+  cursor: var(--cursor-pointer), pointer;
+  color: var(--color-accent-2);
+  font-family: inherit;
+  font-size: 0.68rem;
+  letter-spacing: 1px;
+  min-width: 58px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin-right: 5px;
+  text-transform: uppercase;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.time-display-btn i {
+  font-size: 0.9em;
+}
+
+.time-display-btn-set {
+  min-width: 84px;
+  color: var(--color-text);
+  font-weight: 600;
+  text-transform: none;
+  letter-spacing: 0.4px;
+}
+
+.time-display-btn:hover {
+  background-color: rgba(var(--color-shadow-rgb), 0.07);
+  border-color: rgba(var(--color-shadow-rgb), 0.18);
+  color: var(--color-text);
+}
+
+.time-display-btn:active {
+  transform: scale(0.95);
+}
+
+.task-btns-container {
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+/* Drag handle */
+.drag-handle {
+  color: var(--color-accent-2);
+  font-size: 90%;
+  cursor: var(--cursor-grab), grab;
+  padding: 5px;
+  margin-right: 5px;
+  opacity: 0.6;
+  transition: opacity 0.2s;
+}
+
+.drag-handle:hover {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: var(--cursor-grabbing), grabbing;
+}
+
+.sortable-ghost {
+  opacity: 0.4;
+  background-color: var(--color-accent);
+  border-radius: 10px;
+}
+
+.sortable-chosen {
+  background-color: var(--color-bg-alt);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(var(--color-shadow-rgb), 0.2);
+}
+
+.sortable-drag {
+  opacity: 1;
+  background-color: var(--color-bg);
+  border-radius: 10px;
+  box-shadow: 0 6px 16px rgba(var(--color-shadow-rgb), 0.22);
+}
+
+/* ---------- Custom time picker dropdown ---------- */
+.time-picker-dropdown {
+  position: absolute;
+  width: 180px;
+  background-color: var(--color-bg-alt);
+  border: 1.5px solid var(--color-border);
+  border-radius: 14px;
+  box-shadow: 0 10px 24px rgba(var(--color-shadow-rgb), 0.2);
+  transform-origin: top left;
+  animation: pop-in 0.15s ease;
+  z-index: 1000;
+  overflow: hidden;
+}
+
+.time-picker-body {
+  display: flex;
+  justify-content: center;
+  height: 150px;
+  position: relative;
+  background-color: transparent;
+}
+
+.picker-column {
+  flex: 1;
+  height: 100%;
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+  text-align: center;
+  scrollbar-width: none;
+  padding-top: 55px;
+  padding-bottom: 55px;
+  z-index: 2;
+}
+
+.picker-column::-webkit-scrollbar {
+  display: none;
+}
+
+.picker-item {
+  height: 40px;
+  line-height: 40px;
+  scroll-snap-align: center;
+  color: var(--color-text);
+  font-size: 1.1rem;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s, font-weight 0.2s;
+}
+
+.picker-item.selected {
+  color: var(--color-text);
+  font-weight: bold;
+  font-size: 1.3rem;
+  opacity: 1;
+}
+
+.picker-highlight {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 40px;
+  transform: translateY(-50%);
+  background-color: var(--color-accent);
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  pointer-events: none;
+  z-index: 1;
+}

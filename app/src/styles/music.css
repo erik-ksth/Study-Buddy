@@ -1,0 +1,276 @@
+.music-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.main-mood-container {
+  width: 80%;
+  display: flex;
+  flex-wrap: wrap;
+  column-gap: 6%;
+  row-gap: 30px;
+  justify-content: center;
+}
+
+.mood-container {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.icon-box {
+  background-color: var(--color-bg);
+  color: var(--color-icon);
+  width: 65px;
+  height: 65px;
+  border: solid 2px var(--color-border);
+  border-radius: 14px;
+  position: relative;
+  cursor: var(--cursor-pointer), pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-shadow: 3px 4px 0 rgba(var(--color-shadow-rgb), 0.9), 3px 5px 10px rgba(var(--color-shadow-rgb), 0.12);
+  transition: background-color var(--transition-theme), border-color var(--transition-theme),
+    box-shadow 0.15s, filter 0.15s, transform 0.1s;
+}
+
+.icon-box:hover {
+  background-color: rgba(var(--color-shadow-rgb), 0.06);
+  filter: brightness(1.03);
+}
+
+.icon-box:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 2px 0 rgba(var(--color-shadow-rgb), 0.9), 1px 3px 6px rgba(var(--color-shadow-rgb), 0.12);
+}
+
+.mood-icon-svg {
+  width: 35px;
+  height: 35px;
+}
+
+[data-theme="ocean"] .icon-box,
+[data-theme="forest"] .icon-box,
+[data-theme="midnight"] .icon-box {
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+[data-theme="midnight"] .icon-box {
+  background-color: rgba(240, 237, 228, 0.9);
+  border-color: rgba(240, 237, 228, 0.98);
+  box-shadow: 5px 5px 0 rgba(8, 14, 28, 0.72), 0 8px 20px rgba(0, 0, 0, 0.34);
+}
+
+[data-theme="ocean"] .mood-icon-svg,
+[data-theme="forest"] .mood-icon-svg,
+[data-theme="midnight"] .mood-icon-svg {
+  display: none;
+}
+
+[data-theme="ocean"] .icon-box[data-mood="lofi"] {
+  background-image: url("/img/blue-theme/01-music-lofi.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="jazz"] {
+  background-image: url("/img/blue-theme/02-music-jazz.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="piano"] {
+  background-image: url("/img/blue-theme/03-music-piano.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="classical"] {
+  background-image: url("/img/blue-theme/04-music-classical.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="acoustic"] {
+  background-image: url("/img/blue-theme/05-music-acoustic.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="kalimba"] {
+  background-image: url("/img/blue-theme/06-music-kalimba.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="k-pop"] {
+  background-image: url("/img/blue-theme/07-music-kpop.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="cafe"] {
+  background-image: url("/img/blue-theme/08-music-cafe.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="library"] {
+  background-image: url("/img/blue-theme/09-music-library.png");
+}
+
+[data-theme="ocean"] .icon-box[data-mood="nature"] {
+  background-image: url("/img/blue-theme/10-music-nature.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="lofi"] {
+  background-image: url("/img/green-theme/01-music-lofi.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="jazz"] {
+  background-image: url("/img/green-theme/02-music-jazz.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="piano"] {
+  background-image: url("/img/green-theme/03-music-piano.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="classical"] {
+  background-image: url("/img/green-theme/04-music-classical.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="acoustic"] {
+  background-image: url("/img/green-theme/05-music-acoustic.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="kalimba"] {
+  background-image: url("/img/green-theme/06-music-kalimba.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="k-pop"] {
+  background-image: url("/img/green-theme/07-music-kpop.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="cafe"] {
+  background-image: url("/img/green-theme/08-music-cafe.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="library"] {
+  background-image: url("/img/green-theme/09-music-library.png");
+}
+
+[data-theme="forest"] .icon-box[data-mood="nature"] {
+  background-image: url("/img/green-theme/10-music-nature.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="lofi"] {
+  background-image: url("/img/midnight-theme/01-music-lofi.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="jazz"] {
+  background-image: url("/img/midnight-theme/02-music-jazz.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="piano"] {
+  background-image: url("/img/midnight-theme/03-music-piano.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="classical"] {
+  background-image: url("/img/midnight-theme/04-music-classical.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="acoustic"] {
+  background-image: url("/img/midnight-theme/05-music-acoustic.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="kalimba"] {
+  background-image: url("/img/midnight-theme/06-music-kalimba.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="k-pop"] {
+  background-image: url("/img/midnight-theme/07-music-kpop.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="cafe"] {
+  background-image: url("/img/midnight-theme/08-music-cafe.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="library"] {
+  background-image: url("/img/midnight-theme/09-music-library.png");
+}
+
+[data-theme="midnight"] .icon-box[data-mood="nature"] {
+  background-image: url("/img/midnight-theme/10-music-nature.png");
+}
+
+.mood-label {
+  position: relative;
+  bottom: 0%;
+  text-transform: capitalize;
+  font-size: 75%;
+  letter-spacing: 1px;
+  cursor: var(--cursor-default), default;
+}
+
+.mood-selected-badge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 56px;
+  width: 56px;
+  background-color: rgba(var(--color-bg-rgb), 0.69);
+  color: var(--color-icon);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 100%;
+  font-size: 26px;
+  transform: translate(-50%, -50%) rotate(30deg);
+  pointer-events: none;
+}
+
+/* ---------- Volume slider ----------  */
+.volume-slider-container {
+  width: 90%;
+  margin-top: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#volumeSlider {
+  appearance: none;
+  width: 80%;
+  height: 3px;
+  border-radius: 2px;
+  background-color: var(--color-border);
+  cursor: var(--cursor-default), default;
+}
+
+#volumeSlider::-webkit-slider-thumb {
+  appearance: none;
+  width: 23px;
+  height: 23px;
+  background-color: var(--color-border);
+  border-radius: 100%;
+  cursor: var(--cursor-grab), grab;
+  transition: transform 0.1s;
+}
+
+#volumeSlider::-webkit-slider-thumb:active {
+  cursor: var(--cursor-grabbing), grabbing;
+  transform: scale(1.15);
+}
+
+.audioIcon {
+  margin: 0 15px;
+  font-size: 30px;
+  cursor: var(--cursor-pointer), pointer;
+  transition: transform 0.15s, color 0.15s;
+}
+
+.audioIcon:hover {
+  transform: scale(1.12);
+}
+
+.audioIcon:active {
+  transform: scale(0.92);
+}
+
+.playPauseBtn {
+  width: 13%;
+}
+
+.fa-pause {
+  display: none;
+}

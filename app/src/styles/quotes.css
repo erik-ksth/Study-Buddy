@@ -1,0 +1,49 @@
+.quote-container::before {
+  content: "\f10d";
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  font-size: 48px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  padding: 0 6px;
+  position: absolute;
+  top: -26px;
+  left: -22px;
+  transition: color var(--transition-theme), background-color var(--transition-theme);
+}
+
+.quote-container {
+  /* The column's own gap already separates this from the music panel above —
+     this bit of extra top margin is purely to leave room for the oversized
+     quote-mark that pokes up above the card's own border. */
+  margin: 24px auto 0;
+  background-color: var(--color-bg);
+  text-align: center;
+  line-height: 40px;
+  border: solid 2px var(--color-border);
+  border-radius: 12px;
+  box-shadow: 5px 6px 0 rgba(var(--color-shadow-rgb), 0.9),
+    5px 8px 18px rgba(var(--color-shadow-rgb), 0.18);
+  padding: 7%;
+  box-sizing: border-box;
+  width: 90%;
+  max-width: 620px;
+  position: relative;
+  transition: background-color var(--transition-theme), border-color var(--transition-theme),
+    box-shadow var(--transition-theme);
+}
+
+.refresh-quote-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  font-size: 90%;
+}
+
+.quoteClass {
+  line-height: 30px;
+}
+
+.authorClass {
+  font-size: 80%;
+}
