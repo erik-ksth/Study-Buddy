@@ -6,7 +6,7 @@
   <br/>⏰ Pomodoro Timer<br/>
   <br/>🗒️ To-Do-List<br/>
   <br/>🎵 Different kinds of ambient sounds and musics<br/>
-  <br/>💬 Inspriational quotes by famouse people, plus your own<br/>
+  <br/>💬 Inspirational quotes supplied by ZenQuotes<br/>
   <br/>🎨 Multiple color themes<br/>
 </p>
 
@@ -24,4 +24,4 @@ npm run dev
 
 Adding new music: drop an mp3 into the matching `app/public/music/<genre>/` folder and rerun `npm run dev` or `npm run build` (or `npm run generate:music` directly) — the playlist manifest regenerates automatically from whatever files are on disk.
 
-Adding quotes: use the "+" button under the quote card in the app itself, or edit `app/src/data/quotes.json` directly.
+Quotes are loaded through the serverless `app/api/quotes.js` proxy, which fetches them from ZenQuotes and caches the upstream response at the edge.

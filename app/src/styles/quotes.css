@@ -40,8 +40,17 @@
   font-size: 90%;
 }
 
+.refresh-quote-btn:disabled {
+  cursor: var(--cursor-default), default;
+  opacity: 0.45;
+}
+
 .quoteClass {
   line-height: 30px;
+}
+
+.quote-status {
+  color: var(--color-accent-2);
 }
 
 .authorClass {
