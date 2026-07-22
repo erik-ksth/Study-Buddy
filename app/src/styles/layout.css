@@ -56,9 +56,7 @@
   background-color: var(--color-bg);
 }
 
-/* The graph-paper grid is specifically the "cozy note-taking" Cream look —
-   other themes get their own background treatment (e.g. Forest's leaf
-   corners) instead of this, not layered on top of it. */
+/* The graph-paper grid is specifically the cozy note-taking Cream look. */
 [data-theme="cream"] .background-img {
   background-image: linear-gradient(rgba(var(--color-shadow-rgb), 0.14) 1px, transparent 1px),
     linear-gradient(90deg, rgba(var(--color-shadow-rgb), 0.14) 1px, transparent 1px);
@@ -325,6 +323,21 @@ h3 {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+}
+
+[data-theme="cream"] .todo-card::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -8px;
+  width: 128px;
+  aspect-ratio: 436 / 512;
+  background-image: url("/img/cream-theme/12-todo-bottom-decoration.png");
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: contain;
+  opacity: 0.78;
+  pointer-events: none;
 }
 
 [data-theme="ocean"] .todo-card::before {

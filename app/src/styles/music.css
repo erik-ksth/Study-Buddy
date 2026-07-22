@@ -53,6 +53,7 @@
   height: 35px;
 }
 
+[data-theme="cream"] .icon-box,
 [data-theme="ocean"] .icon-box,
 [data-theme="forest"] .icon-box,
 [data-theme="midnight"] .icon-box {
@@ -67,10 +68,51 @@
   box-shadow: 5px 5px 0 rgba(8, 14, 28, 0.72), 0 8px 20px rgba(0, 0, 0, 0.34);
 }
 
+[data-theme="cream"] .mood-icon-svg,
 [data-theme="ocean"] .mood-icon-svg,
 [data-theme="forest"] .mood-icon-svg,
 [data-theme="midnight"] .mood-icon-svg {
   display: none;
+}
+
+[data-theme="cream"] .icon-box[data-mood="lofi"] {
+  background-image: url("/img/cream-theme/01-music-lofi.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="jazz"] {
+  background-image: url("/img/cream-theme/02-music-jazz.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="piano"] {
+  background-image: url("/img/cream-theme/03-music-piano.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="classical"] {
+  background-image: url("/img/cream-theme/04-music-classical.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="acoustic"] {
+  background-image: url("/img/cream-theme/05-music-acoustic.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="kalimba"] {
+  background-image: url("/img/cream-theme/06-music-kalimba.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="k-pop"] {
+  background-image: url("/img/cream-theme/07-music-kpop.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="cafe"] {
+  background-image: url("/img/cream-theme/08-music-cafe.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="library"] {
+  background-image: url("/img/cream-theme/09-music-library.png");
+}
+
+[data-theme="cream"] .icon-box[data-mood="nature"] {
+  background-image: url("/img/cream-theme/10-music-nature.png");
 }
 
 [data-theme="ocean"] .icon-box[data-mood="lofi"] {
