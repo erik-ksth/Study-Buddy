@@ -325,7 +325,7 @@ h3 {
   overflow: hidden;
 }
 
-[data-theme="cream"] .todo-card::before {
+/* [data-theme="cream"] .todo-card::before {
   content: "";
   position: absolute;
   left: 0;
@@ -338,7 +338,7 @@ h3 {
   background-size: contain;
   opacity: 0.78;
   pointer-events: none;
-}
+} */
 
 [data-theme="ocean"] .todo-card::before {
   content: "";
