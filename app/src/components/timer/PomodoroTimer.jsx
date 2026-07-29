@@ -28,7 +28,7 @@ function PomodoroTimer() {
   const notiSoundRef = useRef(null);
   const { recordPomodoroComplete } = useStudyStats();
 
-  const { activeTab, isRunning, remaining, holdDisplay, roundCount, lengths, selectTab, start, restart, applySettings } =
+  const { activeTab, isRunning, remaining, holdDisplay, lengths, selectTab, start, restart, applySettings } =
     usePomodoro({
       onComplete: (message, title, tab, minutes) => {
         try {
@@ -76,7 +76,6 @@ function PomodoroTimer() {
             <button className="redo-btn" onClick={restart}>
               <i className="fas fa-redo" />
             </button>
-            <span>{roundCount}/4</span>
           </div>
         </div>
       </div>
