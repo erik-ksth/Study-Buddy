@@ -1,0 +1,8 @@
+# Dependencies and generated caches
+node_modules/
+
+# Local tooling output
+.impeccable/
+
+# macOS metadata
+.DS_Store
