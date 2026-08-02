@@ -51,13 +51,15 @@ preview open.
 
 The Feedback & Ideas form remains available from the Feedback button at any time.
 After two completed Pomodoro focus sessions, the app opens a separate post-session
-check-in automatically once. Set `VITE_POST_SESSION_FORM_ENDPOINT` to a third
-hosted form endpoint. The check-in asks for `favoriteTheme`, `usageFrequency`,
-`favoriteFeature`, `responseType`, `message`, and optional `email`, and also sends
-`source`, `theme`, and `completedSessions` metadata.
+check-in. Set `VITE_POST_SESSION_FORM_ENDPOINT` to a third hosted form endpoint.
+The check-in asks for `favoriteTheme`, `usageFrequency`, `favoriteFeature`,
+`responseType`, `message`, and optional `email`, and also sends `source`, `theme`,
+and `completedSessions` metadata.
 
 The prompt uses the persisted `totalPomodoros` count and records
-`studyBuddy:post-session-feedback:v1:prompted` in local storage so it does not
-interrupt the user again. Post-session submissions use the
-`study-buddy-post-session-feedback` source. During development, add
-`?feedbackPromptPreview=1` to force the post-session version of the dialog.
+`studyBuddy:post-session-feedback:v1:prompted` in local storage. If the user
+closes it without submitting, it waits until the next completed Pomodoro before
+appearing again. After a successful submission, it does not open automatically
+again. Post-session submissions use the `study-buddy-post-session-feedback`
+source. During development, add `?feedbackPromptPreview=1` to force the
+post-session version of the dialog.

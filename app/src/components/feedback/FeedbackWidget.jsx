@@ -344,8 +344,21 @@ function FeedbackWidget() {
     if (!postSessionFormAvailable) return undefined;
 
     const completedSessions = Number(stats.totalPomodoros) || 0;
-    const hasPrompted = localStorage.getItem(POST_SESSION_PROMPTED_KEY);
-    if (!isForcedPromptPreview && (completedSessions < FEEDBACK_PROMPT_SESSION_COUNT || hasPrompted)) {
+    let promptState = {};
+
+    try {
+      promptState = JSON.parse(localStorage.getItem(POST_SESSION_PROMPTED_KEY) || "null") || {};
+    } catch {
+      // Treat malformed storage as an unseen prompt.
+    }
+
+    const lastPromptedSession = Number(promptState.completedSessions) || 0;
+    if (
+      !isForcedPromptPreview &&
+      (completedSessions < FEEDBACK_PROMPT_SESSION_COUNT ||
+        promptState.respondedAt ||
+        completedSessions <= lastPromptedSession)
+    ) {
       return undefined;
     }
 
@@ -376,7 +389,10 @@ function FeedbackWidget() {
   function markPostSessionHandled() {
     localStorage.setItem(
       POST_SESSION_PROMPTED_KEY,
-      JSON.stringify({ respondedAt: new Date().toISOString() }),
+      JSON.stringify({
+        respondedAt: new Date().toISOString(),
+        completedSessions: Number(stats.totalPomodoros) || 0,
+      }),
     );
   }
 
