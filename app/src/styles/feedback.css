@@ -192,14 +192,6 @@ body.feedback-dialog-open {
     border-color var(--transition-theme);
 }
 
-.feedback-tally-frame {
-  display: block;
-  width: 100%;
-  min-height: 500px;
-  border: 0;
-  background-color: var(--feedback-surface);
-}
-
 .feedback-privacy-note {
   display: flex;
   align-items: center;
@@ -472,10 +464,6 @@ body.feedback-dialog-open {
   min-height: 440px;
 }
 
-.survey-tally-frame {
-  min-height: 540px;
-}
-
 .survey-preview-form {
   display: flex;
   flex-direction: column;
@@ -512,6 +500,10 @@ body.feedback-dialog-open {
 
 .survey-choice-grid-four {
   grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.survey-discovery-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
 .survey-choice-grid label {
@@ -624,6 +616,58 @@ body.feedback-dialog-open {
   line-height: 1.55;
 }
 
+/* ---------- Post-session check-in ---------- */
+.post-session-feedback-form {
+  gap: 22px;
+}
+
+.post-session-feedback-form fieldset {
+  min-width: 0;
+  padding: 0;
+  border: 0;
+}
+
+.post-session-feedback-form legend {
+  display: block;
+  margin-bottom: 9px;
+  color: var(--feedback-ink);
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.35px;
+}
+
+.post-session-theme-grid {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.post-session-theme-option span {
+  gap: 8px;
+}
+
+.post-session-theme-swatch {
+  position: relative;
+  width: 22px;
+  height: 22px;
+  flex: 0 0 auto;
+  overflow: hidden;
+  background-color: var(--theme-preview-bg);
+  border: 1.5px solid var(--theme-preview-ink);
+  border-radius: 50%;
+}
+
+.post-session-theme-swatch::after {
+  content: "";
+  position: absolute;
+  inset: 5px;
+  background-color: var(--theme-preview-accent);
+  border: 1px solid var(--theme-preview-ink);
+  border-radius: 50%;
+}
+
+.post-session-feature-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
 @keyframes feedback-window-in {
   from {
     opacity: 0;
@@ -706,6 +750,13 @@ body.feedback-dialog-open {
   .survey-choice-grid,
   .survey-choice-grid-four {
     grid-template-columns: 1fr;
+  }
+
+  .survey-discovery-grid,
+  .survey-feature-grid,
+  .post-session-theme-grid,
+  .post-session-feature-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .survey-form-surface {

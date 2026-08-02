@@ -1,8 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useTheme } from "../../context/ThemeContext";
 import { submitHostedForm } from "./submitHostedForm";
 
-const TALLY_SURVEY_FORM_ID = import.meta.env.VITE_TALLY_SURVEY_FORM_ID?.trim();
 const SURVEY_FORM_ENDPOINT = import.meta.env.VITE_SURVEY_FORM_ENDPOINT?.trim();
 const SURVEY_COMPLETED_KEY = "studyBuddy:user-survey:v1:completed";
 
@@ -13,8 +12,8 @@ function SurveyCompleteState() {
         <i className="fas fa-check" />
       </span>
       <div>
-        <strong>Thank you for helping.</strong>
-        <p>Your answers will guide what Study Buddy improves next.</p>
+        <strong>You’re all set.</strong>
+        <p>Thanks for introducing yourself. Enjoy exploring Study Buddy.</p>
       </div>
     </div>
   );
@@ -44,7 +43,8 @@ function SurveyForm({ endpoint, onComplete, theme }) {
           try {
             if (endpoint) {
               await submitHostedForm(endpoint, event.currentTarget, {
-                source: "study-buddy-auto-survey",
+                source: "study-buddy-onboarding-survey",
+                flow: "onboarding",
                 theme,
               });
             }
@@ -74,36 +74,40 @@ function SurveyForm({ endpoint, onComplete, theme }) {
         </fieldset>
 
         <fieldset disabled={isSubmitting}>
-          <legend>How often do you use the app?</legend>
-          <div className="survey-choice-grid">
-            {["First time", "A few times a month", "A few times a week", "Every day"].map(
-              (choice) => (
-                <label key={choice}>
-                  <input
-                    type="radio"
-                    name="frequency"
-                    value={choice}
-                    required
-                  />
-                  <span>{choice}</span>
-                </label>
-              ),
-            )}
+          <legend>How did you first hear about Study Buddy?</legend>
+          <div className="survey-choice-grid survey-discovery-grid">
+            {[
+              "Search engine",
+              "Social media",
+              "Someone I know",
+              "School or work",
+              "Online community",
+              "Something else",
+            ].map((source) => (
+              <label key={source}>
+                <input
+                  type="radio"
+                  name="discoverySource"
+                  value={source}
+                  required
+                />
+                <span>{source}</span>
+              </label>
+            ))}
           </div>
         </fieldset>
 
         <fieldset disabled={isSubmitting}>
-          <legend>
-            Which features are your favorites? <small>Choose any</small>
-          </legend>
+          <legend>Which feature would you like to try first?</legend>
           <div className="survey-choice-grid survey-feature-grid">
             {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
               (feature) => (
                 <label key={feature}>
                   <input
-                    type="checkbox"
-                    name="favoriteFeatures"
+                    type="radio"
+                    name="featureInterest"
                     value={feature}
+                    required
                   />
                   <span>{feature}</span>
                 </label>
@@ -111,18 +115,6 @@ function SurveyForm({ endpoint, onComplete, theme }) {
             )}
           </div>
         </fieldset>
-
-        <label className="feedback-field">
-          <span>
-            What should we improve or add next? <small>optional</small>
-          </span>
-          <textarea
-            name="request"
-            rows="3"
-            placeholder="A feature, music style, workflow, or anything else…"
-            disabled={isSubmitting}
-          />
-        </label>
 
         {error && (
           <p className="feedback-form-error" role="alert">
@@ -143,7 +135,7 @@ function SurveyForm({ endpoint, onComplete, theme }) {
             </>
           ) : (
             <>
-              Send my answers
+              Send and start exploring
               <i className="far fa-paper-plane" aria-hidden="true" />
             </>
           )}
@@ -156,31 +148,14 @@ function SurveyForm({ endpoint, onComplete, theme }) {
 function UserSurvey() {
   const { theme } = useTheme();
   const dialogRef = useRef(null);
-  const iframeRef = useRef(null);
   const closeTimerRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const usesNativeForm = Boolean(SURVEY_FORM_ENDPOINT);
-  const usesTallyFallback = Boolean(TALLY_SURVEY_FORM_ID) && !usesNativeForm;
-  const isLocalPreview = import.meta.env.DEV && !usesNativeForm && !usesTallyFallback;
+  const isLocalPreview = import.meta.env.DEV && !usesNativeForm;
   const isForcedPreview =
     import.meta.env.DEV && new URLSearchParams(window.location.search).has("surveyPreview");
-  const isAvailable = usesNativeForm || usesTallyFallback || isLocalPreview;
-
-  const formUrl = useMemo(() => {
-    if (!usesTallyFallback) return "";
-
-    const params = new URLSearchParams({
-      alignLeft: "1",
-      hideTitle: "1",
-      transparentBackground: "1",
-      dynamicHeight: "1",
-      source: "study-buddy-auto-survey",
-      theme,
-    });
-
-    return `https://tally.so/embed/${TALLY_SURVEY_FORM_ID}?${params.toString()}`;
-  }, [theme, usesTallyFallback]);
+  const isAvailable = usesNativeForm || isLocalPreview;
 
   useEffect(() => {
     if (!isAvailable) return undefined;
@@ -216,31 +191,6 @@ function UserSurvey() {
 
     return () => document.body.classList.remove("feedback-dialog-open");
   }, [isOpen]);
-
-  useEffect(() => {
-    if (!usesTallyFallback) return undefined;
-
-    function handleTallyMessage(event) {
-      if (
-        event.origin !== "https://tally.so" ||
-        event.source !== iframeRef.current?.contentWindow ||
-        typeof event.data !== "string" ||
-        !event.data.includes("Tally.FormSubmitted")
-      ) {
-        return;
-      }
-
-      try {
-        const message = JSON.parse(event.data);
-        if (message?.payload?.formId === TALLY_SURVEY_FORM_ID) markComplete();
-      } catch {
-        // Ignore unrelated or malformed postMessage traffic.
-      }
-    }
-
-    window.addEventListener("message", handleTallyMessage);
-    return () => window.removeEventListener("message", handleTallyMessage);
-  }, [usesTallyFallback]);
 
   useEffect(
     () => () => {
@@ -285,7 +235,7 @@ function UserSurvey() {
         <header className="feedback-window-banner">
           <div className="feedback-window-title">
             <i className="far fa-clipboard" aria-hidden="true" />
-            <span>One-minute survey</span>
+            <span>Quick welcome</span>
           </div>
           <button
             className="feedback-close-button"
@@ -300,28 +250,21 @@ function UserSurvey() {
         <div className="feedback-window-body survey-window-body">
           <div className="feedback-intro survey-intro">
             <div>
-              <h2 id="survey-title">How do you use Study Buddy?</h2>
+              <h2 id="survey-title">Tell us what brought you here</h2>
               <p>
-                A few quick answers will help us understand who the app serves and what to
-                improve next.
+                Three quick answers help us understand who finds Study Buddy and what they
+                want to explore first.
               </p>
             </div>
             <span className="survey-time-note">
               <i className="far fa-clock" aria-hidden="true" />
-              About 1 minute
+              Under 1 minute
             </span>
           </div>
 
           <div className="feedback-form-surface survey-form-surface">
             {isComplete ? (
               <SurveyCompleteState />
-            ) : usesTallyFallback ? (
-              <iframe
-                ref={iframeRef}
-                className="feedback-tally-frame survey-tally-frame"
-                src={formUrl}
-                title="Study Buddy user survey"
-              />
             ) : (
               <SurveyForm endpoint={SURVEY_FORM_ENDPOINT} onComplete={markComplete} theme={theme} />
             )}
