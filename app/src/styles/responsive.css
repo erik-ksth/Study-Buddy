@@ -123,6 +123,14 @@
 
 /* Small Tablet from 481 to 740 */
 @media only screen and (max-width: 740px) {
+  .community-invite-popover {
+    position: fixed;
+    top: 74px;
+    right: 12px;
+    left: 12px;
+    width: auto;
+  }
+
   .bannerAndBody {
     width: 70%;
   }
@@ -182,6 +190,20 @@
 
 /* Small Phone from 0 to 480px */
 @media only screen and (max-width: 480px) {
+  .community-invite-popover {
+    padding: 18px 16px;
+  }
+
+  .community-invite-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .community-invite-actions a,
+  .community-invite-actions button {
+    width: 100%;
+  }
+
   .home-row {
     flex-direction: column;
   }
@@ -250,5 +272,17 @@
 
   .stat-item {
     padding: 0 10px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .community-invite-popover {
+    animation: none;
+  }
+
+  .community-invite-close,
+  .community-invite-actions a,
+  .community-invite-actions button {
+    transition-duration: 0.01ms;
   }
 }

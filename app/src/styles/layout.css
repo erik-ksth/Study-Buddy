@@ -450,6 +450,133 @@ h3 {
   outline-offset: 3px;
 }
 
+.community-invite {
+  position: relative;
+  display: inline-flex;
+}
+
+.community-invite-popover {
+  position: absolute;
+  top: calc(100% + 14px);
+  left: 0;
+  width: min(370px, calc(100vw - 32px));
+  padding: 20px;
+  color: var(--color-text);
+  background-color: var(--color-bg-alt);
+  border: 2px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 6px 6px 0 rgba(var(--color-shadow-rgb), 0.9);
+  font-family: var(--font-body);
+  letter-spacing: 0;
+  animation: community-invite-in 180ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.community-invite-popover h2 {
+  margin: 0 34px 10px 0;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1.35;
+  letter-spacing: 0;
+  text-wrap: balance;
+}
+
+.community-invite-popover p {
+  max-width: 45ch;
+  margin: 0 0 10px;
+  font-size: 0.7rem;
+  line-height: 1.6;
+  letter-spacing: 0.15px;
+  text-wrap: pretty;
+}
+
+.community-invite-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  color: var(--color-text);
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  cursor: var(--cursor-pointer), pointer;
+  transition: background-color var(--transition-fast), transform var(--transition-fast);
+}
+
+.community-invite-close:hover {
+  background-color: var(--color-accent);
+}
+
+.community-invite-close:active {
+  transform: scale(0.94);
+}
+
+.community-invite-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.community-invite-actions a,
+.community-invite-actions button {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 9px 13px;
+  border: 2px solid var(--color-border);
+  border-radius: 9px;
+  font: 600 0.66rem/1.2 var(--font-body);
+  letter-spacing: 0.2px;
+  text-decoration: none;
+  cursor: var(--cursor-pointer), pointer;
+  transition: transform var(--transition-fast), background-color var(--transition-fast);
+}
+
+.community-invite-join {
+  color: var(--color-banner-fg);
+  background-color: var(--color-banner);
+}
+
+.community-invite-actions button {
+  color: var(--color-text);
+  background-color: transparent;
+}
+
+.community-invite-actions a:hover,
+.community-invite-actions button:hover {
+  transform: translateY(-1px);
+}
+
+.community-invite-actions button:hover {
+  background-color: var(--color-accent);
+}
+
+.community-invite-close:focus-visible,
+.community-invite-actions a:focus-visible,
+.community-invite-actions button:focus-visible {
+  outline: 3px solid var(--color-accent-4);
+  outline-offset: 3px;
+}
+
+@keyframes community-invite-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
 .theme-swatch {
   width: 24px;
   height: 24px;
