@@ -49,6 +49,10 @@ function CommunityLink() {
           return;
         }
 
+        // Hovering or focusing the Community button may have shown the message
+        // before this timer finished. In that case, do not reopen it.
+        if (!isForcedPreview && hasSeenCommunityInvite()) return;
+
         if (!isForcedPreview) {
           markCommunityInviteSeen(Number(stats.totalPomodoros) || 0);
         }
@@ -79,8 +83,24 @@ function CommunityLink() {
     };
   }, [isOpen]);
 
+  function showCommunityInvite() {
+    if (!isForcedPreview && !hasSeenCommunityInvite()) {
+      markCommunityInviteSeen(Number(stats.totalPomodoros) || 0);
+    }
+    setIsOpen(true);
+  }
+
   return (
-    <div className="community-invite" ref={containerRef}>
+    <div
+      className="community-invite"
+      ref={containerRef}
+      onMouseEnter={showCommunityInvite}
+      onMouseLeave={() => setIsOpen(false)}
+      onFocusCapture={showCommunityInvite}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
+      }}
+    >
       <a
         className="top-left-action community-launcher"
         href={DISCORD_INVITE_URL}

@@ -428,9 +428,6 @@ function FeedbackWidget() {
           closeDialog();
         }}
         onClose={closeDialog}
-        onClick={(event) => {
-          if (event.target === dialogRef.current) closeDialog();
-        }}
       >
         <section className="feedback-window">
           <header className="feedback-window-banner">

@@ -227,9 +227,6 @@ function UserSurvey() {
         setIsOpen(false);
         document.body.classList.remove("feedback-dialog-open");
       }}
-      onClick={(event) => {
-        if (event.target === dialogRef.current) dismissSurvey();
-      }}
     >
       <section className="feedback-window survey-window">
         <header className="feedback-window-banner">
