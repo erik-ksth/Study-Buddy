@@ -395,6 +395,61 @@ h3 {
   z-index: 998;
 }
 
+/* ---------- Community shortcuts ---------- */
+.top-left-actions {
+  position: fixed;
+  top: max(16px, 2%);
+  left: max(16px, 2%);
+  z-index: 898;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+}
+
+.top-left-action {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 9px 13px;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  border: 2px solid var(--color-border);
+  border-radius: 10px;
+  box-shadow: 3px 3px 0 rgba(var(--color-shadow-rgb), 0.9);
+  font: 600 0.66rem/1 var(--font-body);
+  letter-spacing: 0.7px;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: var(--cursor-pointer), pointer;
+  transition:
+    color var(--transition-theme),
+    background-color var(--transition-theme),
+    border-color var(--transition-theme),
+    box-shadow var(--transition-theme),
+    transform 150ms ease;
+}
+
+.top-left-action i {
+  font-size: 1rem;
+}
+
+.top-left-action:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 rgba(var(--color-shadow-rgb), 0.9);
+}
+
+.top-left-action:active {
+  transform: translate(2px, 2px);
+  box-shadow: 1px 1px 0 rgba(var(--color-shadow-rgb), 0.9);
+}
+
+.top-left-action:focus-visible {
+  outline: 3px solid var(--color-accent-4);
+  outline-offset: 3px;
+}
+
 .theme-swatch {
   width: 24px;
   height: 24px;

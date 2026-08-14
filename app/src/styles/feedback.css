@@ -1,45 +1,8 @@
 /* ---------- Feedback launcher ---------- */
 .feedback-launcher {
-  position: fixed;
-  top: max(16px, 2%);
-  left: max(16px, 2%);
-  z-index: 898;
-  min-height: 44px;
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  padding: 9px 13px;
-  color: var(--color-text);
-  background-color: var(--color-bg);
-  border: 2px solid var(--color-border);
-  border-radius: 10px;
-  box-shadow: 3px 3px 0 rgba(var(--color-shadow-rgb), 0.9);
-  font: 600 0.66rem/1 var(--font-body);
-  letter-spacing: 0.7px;
-  cursor: var(--cursor-pointer), pointer;
-  transition:
-    color var(--transition-theme),
-    background-color var(--transition-theme),
-    border-color var(--transition-theme),
-    box-shadow var(--transition-theme),
-    transform 150ms ease;
+  font-family: var(--font-body);
 }
 
-.feedback-launcher i {
-  font-size: 1rem;
-}
-
-.feedback-launcher:hover {
-  transform: translate(-1px, -1px);
-  box-shadow: 4px 4px 0 rgba(var(--color-shadow-rgb), 0.9);
-}
-
-.feedback-launcher:active {
-  transform: translate(2px, 2px);
-  box-shadow: 1px 1px 0 rgba(var(--color-shadow-rgb), 0.9);
-}
-
-.feedback-launcher:focus-visible,
 .feedback-close-button:focus-visible,
 .feedback-preview-form input:focus-visible,
 .feedback-preview-form textarea:focus-visible,
@@ -688,18 +651,17 @@ body.feedback-dialog-open {
   }
 }
 
-@media only screen and (max-width: 600px) {
-  .feedback-launcher {
+@media only screen and (max-width: 740px) {
+  .top-left-action {
     width: 44px;
     padding: 0;
-    justify-content: center;
   }
 
-  .feedback-launcher ~ .container {
+  .top-left-actions ~ .container {
     padding-top: 72px;
   }
 
-  .feedback-launcher span {
+  .top-left-action span {
     position: absolute;
     width: 1px;
     height: 1px;
@@ -780,6 +742,7 @@ body.feedback-dialog-open {
   }
 
   .feedback-launcher,
+  .community-launcher,
   .feedback-close-button,
   .feedback-type-options span,
   .survey-choice-grid span,

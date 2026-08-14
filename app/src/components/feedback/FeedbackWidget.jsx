@@ -405,7 +405,7 @@ function FeedbackWidget() {
     <>
       {regularFormAvailable && (
         <button
-          className="feedback-launcher"
+          className="top-left-action feedback-launcher"
           type="button"
           aria-haspopup="dialog"
           aria-expanded={isOpen && !openedAfterSessions}
