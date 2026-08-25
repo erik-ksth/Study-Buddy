@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect } from "react";
+import { trackEvent } from "../analytics";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 
 const StudyStatsContext = createContext(null);
@@ -67,6 +68,11 @@ export function StudyStatsProvider({ children }) {
   }, []);
 
   function recordPomodoroComplete(minutes) {
+    trackEvent("sb_focus_session_complete", {
+      completed_sessions: (Number(stats.totalPomodoros) || 0) + 1,
+      focus_minutes: minutes,
+    });
+
     setStats((prev) => {
       const today = todayKey();
       const active = markActiveToday(rollDay(prev, today), today);

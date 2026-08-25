@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { trackEvent } from "../../analytics";
 import { useTheme } from "../../context/ThemeContext";
 import { useStudyStats } from "../../context/StudyStatsContext";
 import { THEMES } from "../../data/themes";
@@ -13,7 +14,20 @@ function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const hasTrackedStartRef = useRef(false);
   const isLocalPreview = !endpoint;
+  const analyticsMetadata = {
+    completed_sessions: completedSessions,
+    form_name: "manual_feedback",
+    theme,
+    trigger: "manual",
+  };
+
+  function trackStart() {
+    if (hasTrackedStartRef.current) return;
+    hasTrackedStartRef.current = true;
+    trackEvent("sb_form_start", analyticsMetadata);
+  }
 
   if (submitted) {
     return (
@@ -44,10 +58,12 @@ function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme 
 
       <form
         className="feedback-preview-form"
+        onChange={trackStart}
         onSubmit={async (event) => {
           event.preventDefault();
           setError("");
           setIsSubmitting(true);
+          trackEvent("sb_form_submit_attempt", analyticsMetadata);
 
           try {
             if (endpoint) {
@@ -57,9 +73,14 @@ function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme 
                 theme,
               });
             }
+            trackEvent("sb_form_submit", analyticsMetadata);
             onSubmitted?.();
             setSubmitted(true);
           } catch (submissionError) {
+            trackEvent("sb_form_error", {
+              ...analyticsMetadata,
+              error_type: "submission_failed",
+            });
             setError(submissionError.message);
           } finally {
             setIsSubmitting(false);
@@ -140,7 +161,20 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const hasTrackedStartRef = useRef(false);
   const isLocalPreview = !endpoint;
+  const analyticsMetadata = {
+    completed_sessions: completedSessions,
+    form_name: "post_session_feedback",
+    theme,
+    trigger: "automatic",
+  };
+
+  function trackStart() {
+    if (hasTrackedStartRef.current) return;
+    hasTrackedStartRef.current = true;
+    trackEvent("sb_form_start", analyticsMetadata);
+  }
 
   if (submitted) {
     return (
@@ -171,10 +205,12 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
 
       <form
         className="feedback-preview-form post-session-feedback-form"
+        onChange={trackStart}
         onSubmit={async (event) => {
           event.preventDefault();
           setError("");
           setIsSubmitting(true);
+          trackEvent("sb_form_submit_attempt", analyticsMetadata);
 
           try {
             if (endpoint) {
@@ -184,9 +220,14 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
                 theme,
               });
             }
+            trackEvent("sb_form_submit", analyticsMetadata);
             onSubmitted?.();
             setSubmitted(true);
           } catch (submissionError) {
+            trackEvent("sb_form_error", {
+              ...analyticsMetadata,
+              error_type: "submission_failed",
+            });
             setError(submissionError.message);
           } finally {
             setIsSubmitting(false);
@@ -318,13 +359,16 @@ function FeedbackWidget() {
   const { theme } = useTheme();
   const { stats } = useStudyStats();
   const dialogRef = useRef(null);
+  const themeRef = useRef(theme);
   const [isOpen, setIsOpen] = useState(false);
   const [openedAfterSessions, setOpenedAfterSessions] = useState(false);
+  const [submittedForm, setSubmittedForm] = useState(null);
   const regularFormAvailable = Boolean(FEEDBACK_FORM_ENDPOINT) || import.meta.env.DEV;
   const postSessionFormAvailable = Boolean(POST_SESSION_FORM_ENDPOINT) || import.meta.env.DEV;
   const isAvailable = regularFormAvailable || postSessionFormAvailable;
   const isForcedPromptPreview =
     import.meta.env.DEV && new URLSearchParams(window.location.search).has("feedbackPromptPreview");
+  themeRef.current = theme;
 
   useEffect(() => {
     const dialog = dialogRef.current;
@@ -362,6 +406,13 @@ function FeedbackWidget() {
       return undefined;
     }
 
+    trackEvent("sb_form_eligible", {
+      completed_sessions: completedSessions,
+      form_name: "post_session_feedback",
+      theme: themeRef.current,
+      trigger: "automatic",
+    });
+
     let openTimer;
 
     function openWhenReady() {
@@ -376,6 +427,13 @@ function FeedbackWidget() {
           JSON.stringify({ promptedAt: new Date().toISOString(), completedSessions }),
         );
       }
+      trackEvent("sb_form_view", {
+        completed_sessions: completedSessions,
+        form_name: "post_session_feedback",
+        theme: themeRef.current,
+        trigger: "automatic",
+      });
+      setSubmittedForm(null);
       setOpenedAfterSessions(true);
       setIsOpen(true);
     }
@@ -394,11 +452,26 @@ function FeedbackWidget() {
         completedSessions: Number(stats.totalPomodoros) || 0,
       }),
     );
+    setSubmittedForm("post_session_feedback");
   }
 
   function closeDialog() {
     setIsOpen(false);
     document.body.classList.remove("feedback-dialog-open");
+  }
+
+  function dismissFeedback(method) {
+    const formName = openedAfterSessions ? "post_session_feedback" : "manual_feedback";
+    if (submittedForm !== formName) {
+      trackEvent("sb_form_dismiss", {
+        completed_sessions: Number(stats.totalPomodoros) || 0,
+        dismiss_method: method,
+        form_name: formName,
+        theme,
+        trigger: openedAfterSessions ? "automatic" : "manual",
+      });
+    }
+    closeDialog();
   }
 
   return (
@@ -410,6 +483,13 @@ function FeedbackWidget() {
           aria-haspopup="dialog"
           aria-expanded={isOpen && !openedAfterSessions}
           onClick={() => {
+            trackEvent("sb_form_view", {
+              completed_sessions: Number(stats.totalPomodoros) || 0,
+              form_name: "manual_feedback",
+              theme,
+              trigger: "manual",
+            });
+            setSubmittedForm(null);
             setOpenedAfterSessions(false);
             setIsOpen(true);
           }}
@@ -425,7 +505,7 @@ function FeedbackWidget() {
         aria-labelledby="feedback-title"
         onCancel={(event) => {
           event.preventDefault();
-          closeDialog();
+          dismissFeedback("escape");
         }}
         onClose={closeDialog}
       >
@@ -439,7 +519,7 @@ function FeedbackWidget() {
               className="feedback-close-button"
               type="button"
               aria-label="Close feedback"
-              onClick={closeDialog}
+              onClick={() => dismissFeedback("close_button")}
             >
               <i className="fas fa-times" aria-hidden="true" />
             </button>
@@ -477,6 +557,7 @@ function FeedbackWidget() {
                 <FeedbackForm
                   completedSessions={Number(stats.totalPomodoros) || 0}
                   endpoint={FEEDBACK_FORM_ENDPOINT}
+                  onSubmitted={() => setSubmittedForm("manual_feedback")}
                   source="study-buddy-feedback"
                   theme={theme}
                 />

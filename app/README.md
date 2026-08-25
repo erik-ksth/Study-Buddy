@@ -63,3 +63,29 @@ appearing again. After a successful submission, it does not open automatically
 again. Post-session submissions use the `study-buddy-post-session-feedback`
 source. During development, add `?feedbackPromptPreview=1` to force the
 post-session version of the dialog.
+
+## Feedback funnel analytics
+
+The existing Google Analytics tag records anonymous custom events for the
+onboarding survey, the manual feedback form, and the post-session check-in:
+
+- `sb_form_eligible`: the post-session check-in reached its session threshold.
+- `sb_form_view`: a form was actually shown.
+- `sb_form_start`: the user changed their first answer.
+- `sb_form_submit_attempt`: the user tried to submit.
+- `sb_form_submit`: the hosted form accepted the submission.
+- `sb_form_error`: submission failed.
+- `sb_form_dismiss`: the user closed an unfinished form.
+- `sb_focus_session_complete`: a Pomodoro focus session was completed.
+
+Form events include `form_name`, `theme`, `trigger`, and, when available,
+`completed_sessions` and a low-cardinality `session_bucket`. Dismissal events
+also include `dismiss_method`. No form answers, messages, or email addresses are
+sent to analytics. Custom events are disabled during local development so
+preview sessions do not pollute production data.
+
+In Google Analytics, create event-scoped custom dimensions for `form_name`,
+`trigger`, `dismiss_method`, `theme`, `error_type`, and `session_bucket` under
+**Admin > Data display > Custom definitions**. Event names can be checked first
+in the Realtime report. Use an Exploration funnel ordered by `sb_form_view`,
+`sb_form_start`, `sb_form_submit_attempt`, and `sb_form_submit`.

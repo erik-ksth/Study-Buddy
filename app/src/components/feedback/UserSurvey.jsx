@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { trackEvent } from "../../analytics";
 import { useTheme } from "../../context/ThemeContext";
 import { submitHostedForm } from "./submitHostedForm";
 
@@ -22,7 +23,14 @@ function SurveyCompleteState() {
 function SurveyForm({ endpoint, onComplete, theme }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const hasTrackedStartRef = useRef(false);
   const isLocalPreview = !endpoint;
+
+  function trackStart() {
+    if (hasTrackedStartRef.current) return;
+    hasTrackedStartRef.current = true;
+    trackEvent("sb_form_start", { form_name: "onboarding_survey", theme });
+  }
 
   return (
     <>
@@ -35,10 +43,12 @@ function SurveyForm({ endpoint, onComplete, theme }) {
 
       <form
         className="survey-preview-form"
+        onChange={trackStart}
         onSubmit={async (event) => {
           event.preventDefault();
           setError("");
           setIsSubmitting(true);
+          trackEvent("sb_form_submit_attempt", { form_name: "onboarding_survey", theme });
 
           try {
             if (endpoint) {
@@ -48,8 +58,14 @@ function SurveyForm({ endpoint, onComplete, theme }) {
                 theme,
               });
             }
+            trackEvent("sb_form_submit", { form_name: "onboarding_survey", theme });
             onComplete();
           } catch (submissionError) {
+            trackEvent("sb_form_error", {
+              error_type: "submission_failed",
+              form_name: "onboarding_survey",
+              theme,
+            });
             setError(submissionError.message);
           } finally {
             setIsSubmitting(false);
@@ -149,6 +165,7 @@ function UserSurvey() {
   const { theme } = useTheme();
   const dialogRef = useRef(null);
   const closeTimerRef = useRef(null);
+  const themeRef = useRef(theme);
   const [isOpen, setIsOpen] = useState(false);
   const [isComplete, setIsComplete] = useState(false);
   const usesNativeForm = Boolean(SURVEY_FORM_ENDPOINT);
@@ -156,6 +173,7 @@ function UserSurvey() {
   const isForcedPreview =
     import.meta.env.DEV && new URLSearchParams(window.location.search).has("surveyPreview");
   const isAvailable = usesNativeForm || isLocalPreview;
+  themeRef.current = theme;
 
   useEffect(() => {
     if (!isAvailable) return undefined;
@@ -171,6 +189,11 @@ function UserSurvey() {
         return;
       }
 
+      trackEvent("sb_form_view", {
+        form_name: "onboarding_survey",
+        theme: themeRef.current,
+        trigger: "automatic",
+      });
       setIsOpen(true);
     }
 
@@ -210,7 +233,14 @@ function UserSurvey() {
     closeTimerRef.current = window.setTimeout(() => setIsOpen(false), 2400);
   }
 
-  function dismissSurvey() {
+  function dismissSurvey(method) {
+    if (!isComplete) {
+      trackEvent("sb_form_dismiss", {
+        dismiss_method: method,
+        form_name: "onboarding_survey",
+        theme,
+      });
+    }
     setIsOpen(false);
   }
 
@@ -221,7 +251,7 @@ function UserSurvey() {
       aria-labelledby="survey-title"
       onCancel={(event) => {
         event.preventDefault();
-        dismissSurvey();
+        dismissSurvey("escape");
       }}
       onClose={() => {
         setIsOpen(false);
@@ -238,7 +268,7 @@ function UserSurvey() {
             className="feedback-close-button"
             type="button"
             aria-label="Answer survey later"
-            onClick={dismissSurvey}
+            onClick={() => dismissSurvey("close_button")}
           >
             <i className="fas fa-times" aria-hidden="true" />
           </button>
@@ -269,7 +299,11 @@ function UserSurvey() {
 
           {!isComplete && (
             <div className="survey-footer">
-              <button className="survey-later-button" type="button" onClick={dismissSurvey}>
+              <button
+                className="survey-later-button"
+                type="button"
+                onClick={() => dismissSurvey("maybe_later")}
+              >
                 Maybe later
               </button>
               <p className="feedback-privacy-note">
