@@ -40,9 +40,8 @@ The app also shows a short onboarding survey after the loading screen:
 Set `VITE_SURVEY_FORM_ENDPOINT` to a second hosted form endpoint. The survey sends
 `purpose`, `discoverySource`, `featureInterest`, `source`, `flow`, and
 `theme` fields. The app saves `studyBuddy:user-survey:v1:completed` in local
-storage only after the hosted endpoint accepts the submission. Closing the survey
-only hides it for the current page view. It appears again after a refresh until a
-submission succeeds.
+storage only after the hosted endpoint accepts the submission. The survey is
+mandatory and cannot be dismissed before a successful submission.
 
 During development, add `?surveyPreview=1` to the URL to force the local survey
 preview open.
@@ -58,12 +57,12 @@ sends `source`, `theme`, and `completedSessions` metadata, then offers a Discord
 invitation after a successful submission.
 
 The prompt uses the persisted `totalPomodoros` count and records
-`studyBuddy:post-session-feedback:v1:prompted` in local storage. If the user
-closes it without submitting, it waits until the next completed Pomodoro before
-appearing again. After a successful submission, it does not open automatically
-again. Post-session submissions use the `study-buddy-post-session-feedback`
-source. During development, add `?feedbackPromptPreview=1` to force the
-post-session version of the dialog.
+`studyBuddy:post-session-feedback:v1:prompted` in local storage. The check-in is
+mandatory and cannot be dismissed before submission. After submission, the
+Discord invitation replaces the form and a **Maybe later** action closes the
+dialog. The prompt does not open automatically again. Post-session submissions
+use the `study-buddy-post-session-feedback` source. During development, add
+`?feedbackPromptPreview=1` to force the post-session version of the dialog.
 
 ## Feedback funnel analytics
 
@@ -76,7 +75,7 @@ onboarding survey, the manual feedback form, and the post-session check-in:
 - `sb_form_submit_attempt`: the user tried to submit.
 - `sb_form_submit`: the hosted form accepted the submission.
 - `sb_form_error`: submission failed.
-- `sb_form_dismiss`: the user closed an unfinished form.
+- `sb_form_dismiss`: the user closed the manual feedback form before submitting.
 - `sb_discord_invite_click`: the user clicked the post-session Discord invitation.
 - `sb_focus_session_complete`: a Pomodoro focus session was completed.
 

@@ -233,17 +233,6 @@ function UserSurvey() {
     closeTimerRef.current = window.setTimeout(() => setIsOpen(false), 2400);
   }
 
-  function dismissSurvey(method) {
-    if (!isComplete) {
-      trackEvent("sb_form_dismiss", {
-        dismiss_method: method,
-        form_name: "onboarding_survey",
-        theme,
-      });
-    }
-    setIsOpen(false);
-  }
-
   return (
     <dialog
       ref={dialogRef}
@@ -251,7 +240,6 @@ function UserSurvey() {
       aria-labelledby="survey-title"
       onCancel={(event) => {
         event.preventDefault();
-        dismissSurvey("escape");
       }}
       onClose={() => {
         setIsOpen(false);
@@ -264,14 +252,6 @@ function UserSurvey() {
             <i className="far fa-clipboard" aria-hidden="true" />
             <span>Quick welcome</span>
           </div>
-          <button
-            className="feedback-close-button"
-            type="button"
-            aria-label="Answer survey later"
-            onClick={() => dismissSurvey("close_button")}
-          >
-            <i className="fas fa-times" aria-hidden="true" />
-          </button>
         </header>
 
         <div className="feedback-window-body survey-window-body">
@@ -298,19 +278,10 @@ function UserSurvey() {
           </div>
 
           {!isComplete && (
-            <div className="survey-footer">
-              <button
-                className="survey-later-button"
-                type="button"
-                onClick={() => dismissSurvey("maybe_later")}
-              >
-                Maybe later
-              </button>
-              <p className="feedback-privacy-note">
-                <i className="fas fa-lock" aria-hidden="true" />
-                Anonymous unless you choose to identify yourself.
-              </p>
-            </div>
+            <p className="feedback-privacy-note">
+              <i className="fas fa-lock" aria-hidden="true" />
+              Anonymous unless you choose to identify yourself.
+            </p>
           )}
         </div>
       </section>

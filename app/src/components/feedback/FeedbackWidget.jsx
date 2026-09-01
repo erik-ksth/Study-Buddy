@@ -158,7 +158,7 @@ function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme 
   );
 }
 
-function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, theme }) {
+function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSubmitted, theme }) {
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -202,6 +202,9 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
             <i className="fab fa-discord" aria-hidden="true" />
             Join the Discord
           </a>
+          <button className="post-session-later-button" type="button" onClick={onDismiss}>
+            Maybe later
+          </button>
         </div>
       </div>
     );
@@ -400,12 +403,9 @@ function FeedbackWidget() {
       // Treat malformed storage as an unseen prompt.
     }
 
-    const lastPromptedSession = Number(promptState.completedSessions) || 0;
     if (
       !isForcedPromptPreview &&
-      (completedSessions < FEEDBACK_PROMPT_SESSION_COUNT ||
-        promptState.respondedAt ||
-        completedSessions <= lastPromptedSession)
+      (completedSessions < FEEDBACK_PROMPT_SESSION_COUNT || promptState.respondedAt)
     ) {
       return undefined;
     }
@@ -509,7 +509,7 @@ function FeedbackWidget() {
         aria-labelledby="feedback-title"
         onCancel={(event) => {
           event.preventDefault();
-          dismissFeedback("escape");
+          if (!openedAfterSessions) dismissFeedback("escape");
         }}
         onClose={closeDialog}
       >
@@ -519,14 +519,16 @@ function FeedbackWidget() {
               <i className="far fa-envelope-open" aria-hidden="true" />
               <span>{openedAfterSessions ? "Session check-in" : "Feedback & ideas"}</span>
             </div>
-            <button
-              className="feedback-close-button"
-              type="button"
-              aria-label="Close feedback"
-              onClick={() => dismissFeedback("close_button")}
-            >
-              <i className="fas fa-times" aria-hidden="true" />
-            </button>
+            {!openedAfterSessions && (
+              <button
+                className="feedback-close-button"
+                type="button"
+                aria-label="Close feedback"
+                onClick={() => dismissFeedback("close_button")}
+              >
+                <i className="fas fa-times" aria-hidden="true" />
+              </button>
+            )}
           </header>
 
           <div className="feedback-window-body">
@@ -554,6 +556,7 @@ function FeedbackWidget() {
                 <PostSessionFeedbackForm
                   completedSessions={Number(stats.totalPomodoros) || 0}
                   endpoint={POST_SESSION_FORM_ENDPOINT}
+                  onDismiss={closeDialog}
                   onSubmitted={markPostSessionHandled}
                   theme={theme}
                 />

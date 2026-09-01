@@ -419,6 +419,29 @@ body.feedback-dialog-open {
   text-decoration: none;
 }
 
+.post-session-later-button {
+  margin-top: 12px;
+  padding: 5px 4px;
+  color: var(--feedback-ink);
+  background: transparent;
+  border: 0;
+  font: 500 0.58rem/1 var(--font-body);
+  letter-spacing: 0.35px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: var(--cursor-pointer), pointer;
+  opacity: 0.78;
+}
+
+.post-session-later-button:hover {
+  opacity: 1;
+}
+
+.post-session-later-button:focus-visible {
+  outline: 3px solid var(--feedback-accent);
+  outline-offset: 3px;
+}
+
 /* ---------- First-visit user survey ---------- */
 .survey-dialog {
   width: min(720px, calc(100vw - 32px));
@@ -548,41 +571,6 @@ body.feedback-dialog-open {
 
 .survey-submit-button {
   align-self: flex-end;
-}
-
-.survey-footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  margin-top: 12px;
-}
-
-.survey-footer .feedback-privacy-note {
-  margin: 0;
-}
-
-.survey-later-button {
-  flex: 0 0 auto;
-  padding: 8px 4px;
-  color: var(--color-text);
-  background: transparent;
-  border: 0;
-  font: 500 0.58rem/1 var(--font-body);
-  letter-spacing: 0.35px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: var(--cursor-pointer), pointer;
-  opacity: 0.78;
-}
-
-.survey-later-button:hover {
-  opacity: 1;
-}
-
-.survey-later-button:focus-visible {
-  outline: 3px solid var(--color-accent-4);
-  outline-offset: 3px;
 }
 
 .survey-complete-state {
@@ -754,11 +742,6 @@ body.feedback-dialog-open {
     min-height: 420px;
   }
 
-  .survey-footer {
-    align-items: flex-start;
-    flex-direction: column-reverse;
-  }
-
   .survey-submit-button {
     width: 100%;
   }
@@ -775,7 +758,8 @@ body.feedback-dialog-open {
   .feedback-close-button,
   .feedback-type-options span,
   .survey-choice-grid span,
-  .feedback-submit-button {
+  .feedback-submit-button,
+  .post-session-later-button {
     transition-duration: 0.01ms;
   }
 }
