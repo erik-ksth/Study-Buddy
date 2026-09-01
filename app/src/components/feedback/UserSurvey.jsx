@@ -276,13 +276,6 @@ function UserSurvey() {
               <SurveyForm endpoint={SURVEY_FORM_ENDPOINT} onComplete={markComplete} theme={theme} />
             )}
           </div>
-
-          {!isComplete && (
-            <p className="feedback-privacy-note">
-              <i className="fas fa-lock" aria-hidden="true" />
-              Anonymous unless you choose to identify yourself.
-            </p>
-          )}
         </div>
       </section>
     </dialog>

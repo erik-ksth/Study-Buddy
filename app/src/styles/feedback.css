@@ -155,18 +155,6 @@ body.feedback-dialog-open {
     border-color var(--transition-theme);
 }
 
-.feedback-privacy-note {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  margin: 14px 2px 0;
-  color: var(--color-text);
-  font-size: 0.58rem;
-  letter-spacing: 0.3px;
-  line-height: 1.5;
-  opacity: 0.7;
-}
-
 /* ---------- Native hosted form ---------- */
 .feedback-preview-label {
   display: inline-flex;
