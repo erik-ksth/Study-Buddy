@@ -5,6 +5,12 @@ import { useTheme } from "../../context/ThemeContext";
 import { useStudyStats } from "../../context/StudyStatsContext";
 import { THEMES } from "../../data/themes";
 import { submitHostedForm } from "./submitHostedForm";
+import {
+  SurveyActions,
+  SurveyProgress,
+  SurveyStep,
+} from "./SurveyStepper";
+import { useSurveyStepper } from "./useSurveyStepper";
 
 const FEEDBACK_FORM_ENDPOINT = import.meta.env.VITE_FEEDBACK_FORM_ENDPOINT?.trim();
 const POST_SESSION_FORM_ENDPOINT = import.meta.env.VITE_POST_SESSION_FORM_ENDPOINT?.trim();
@@ -159,11 +165,14 @@ function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme 
 }
 
 function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSubmitted, theme }) {
+  const totalSteps = 5;
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const hasTrackedStartRef = useRef(false);
   const isLocalPreview = !endpoint;
+  const { currentStep, direction, formRef, goBack, goNext, isTransitioning } =
+    useSurveyStepper(totalSteps);
   const analyticsMetadata = {
     completed_sessions: completedSessions,
     form_name: "post_session_feedback",
@@ -192,12 +201,13 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSub
             href={DISCORD_INVITE_URL}
             target="_blank"
             rel="noreferrer"
-            onClick={() =>
+            onClick={() => {
               trackEvent("sb_discord_invite_click", {
                 ...analyticsMetadata,
                 trigger: "post_session_success",
-              })
-            }
+              });
+              onDismiss();
+            }}
           >
             <i className="fab fa-discord" aria-hidden="true" />
             Join the Discord
@@ -220,10 +230,17 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSub
       )}
 
       <form
+        ref={formRef}
         className="feedback-preview-form post-session-feedback-form"
         onChange={trackStart}
         onSubmit={async (event) => {
           event.preventDefault();
+
+          if (isTransitioning || currentStep !== totalSteps - 1) {
+            if (!isTransitioning) goNext();
+            return;
+          }
+
           setError("");
           setIsSubmitting(true);
           trackEvent("sb_form_submit_attempt", analyticsMetadata);
@@ -250,92 +267,135 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSub
           }
         }}
       >
-        <fieldset disabled={isSubmitting}>
-          <legend>How was your first session?</legend>
-          <div className="feedback-type-options">
-            {["Really helpful", "Pretty good", "It was okay", "Needs work"].map(
-              (experience) => (
-                <label key={experience}>
-                  <input
-                    type="radio"
-                    name="sessionExperience"
-                    value={experience}
-                    required
-                  />
-                  <span>{experience}</span>
-                </label>
-              ),
-            )}
-          </div>
-        </fieldset>
+        <SurveyProgress
+          currentStep={currentStep}
+          label="First-session check-in"
+          totalSteps={totalSteps}
+        />
 
-        <fieldset disabled={isSubmitting}>
-          <legend>Do you think Study Buddy could be useful for you?</legend>
-          <div className="feedback-type-options">
-            {["Yes, definitely", "Maybe", "Not yet"].map((usefulness) => (
-              <label key={usefulness}>
-                <input type="radio" name="usefulness" value={usefulness} required />
-                <span>{usefulness}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset disabled={isSubmitting}>
-          <legend>Which feature helped you most?</legend>
-          <div className="survey-choice-grid post-session-feature-grid">
-            {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
-              (feature) => (
-                <label key={feature}>
-                  <input type="radio" name="favoriteFeature" value={feature} required />
-                  <span>{feature}</span>
-                </label>
-              ),
-            )}
-          </div>
-        </fieldset>
-
-        <fieldset disabled={isSubmitting}>
-          <legend>Which theme is your favorite so far?</legend>
-          <div className="survey-choice-grid post-session-theme-grid">
-            {THEMES.map((themeOption) => (
-              <label className="post-session-theme-option" key={themeOption.id}>
-                <input type="radio" name="favoriteTheme" value={themeOption.label} required />
-                <span>
-                  <i
-                    className="post-session-theme-swatch"
-                    style={{
-                      "--theme-preview-bg": themeOption.swatch.bg,
-                      "--theme-preview-accent": themeOption.swatch.accent,
-                      "--theme-preview-ink": themeOption.swatch.ink,
-                    }}
-                    aria-hidden="true"
-                  />
-                  {themeOption.label}
-                </span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <label className="feedback-field">
-          <span>
-            Anything else? <small>optional</small>
-          </span>
-          <textarea
-            name="message"
-            rows="4"
-            placeholder="What would make your next session better?"
+        <div className="survey-step-viewport post-session-step-viewport">
+          <SurveyStep
+            active={currentStep === 0}
+            direction={direction}
             disabled={isSubmitting}
-          />
-        </label>
+            index={0}
+          >
+            <legend>How was your first session?</legend>
+            <div className="feedback-type-options">
+              {["Really helpful", "Pretty good", "It was okay", "Needs work"].map(
+                (experience) => (
+                  <label key={experience}>
+                    <input
+                      type="radio"
+                      name="sessionExperience"
+                      value={experience}
+                      required
+                    />
+                    <span>{experience}</span>
+                  </label>
+                ),
+              )}
+            </div>
+          </SurveyStep>
 
-        <label className="feedback-field">
-          <span>
-            Email <small>optional, only if you want a reply</small>
-          </span>
-          <input name="email" type="email" placeholder="you@example.com" disabled={isSubmitting} />
-        </label>
+          <SurveyStep
+            active={currentStep === 1}
+            direction={direction}
+            disabled={isSubmitting}
+            index={1}
+          >
+            <legend>Do you think Study Buddy could be useful for you?</legend>
+            <div className="feedback-type-options">
+              {["Yes, definitely", "Maybe", "Not yet"].map((usefulness) => (
+                <label key={usefulness}>
+                  <input type="radio" name="usefulness" value={usefulness} required />
+                  <span>{usefulness}</span>
+                </label>
+              ))}
+            </div>
+          </SurveyStep>
+
+          <SurveyStep
+            active={currentStep === 2}
+            direction={direction}
+            disabled={isSubmitting}
+            index={2}
+          >
+            <legend>Which feature helped you most?</legend>
+            <div className="survey-choice-grid post-session-feature-grid">
+              {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
+                (feature) => (
+                  <label key={feature}>
+                    <input type="radio" name="favoriteFeature" value={feature} required />
+                    <span>{feature}</span>
+                  </label>
+                ),
+              )}
+            </div>
+          </SurveyStep>
+
+          <SurveyStep
+            active={currentStep === 3}
+            direction={direction}
+            disabled={isSubmitting}
+            index={3}
+          >
+            <legend>Which theme is your favorite so far?</legend>
+            <div className="survey-choice-grid post-session-theme-grid">
+              {THEMES.map((themeOption) => (
+                <label className="post-session-theme-option" key={themeOption.id}>
+                  <input type="radio" name="favoriteTheme" value={themeOption.label} required />
+                  <span>
+                    <i
+                      className="post-session-theme-swatch"
+                      style={{
+                        "--theme-preview-bg": themeOption.swatch.bg,
+                        "--theme-preview-accent": themeOption.swatch.accent,
+                        "--theme-preview-ink": themeOption.swatch.ink,
+                      }}
+                      aria-hidden="true"
+                    />
+                    {themeOption.label}
+                  </span>
+                </label>
+              ))}
+            </div>
+          </SurveyStep>
+
+          <SurveyStep
+            active={currentStep === 4}
+            direction={direction}
+            disabled={isSubmitting}
+            index={4}
+          >
+            <legend>
+              Anything else before you go? <small>optional</small>
+            </legend>
+            <div className="survey-optional-fields">
+              <label className="feedback-field">
+                <span>Your note</span>
+                <textarea
+                  name="message"
+                  rows="4"
+                  placeholder="What would make your next session better?"
+                  disabled={isSubmitting}
+                />
+              </label>
+
+              <label className="feedback-field">
+                <span>
+                  Email <small>optional, only if you want a reply</small>
+                </span>
+                <input
+                  name="email"
+                  type="email"
+                  placeholder="you@example.com"
+                  disabled={isSubmitting}
+                />
+              </label>
+            </div>
+          </SurveyStep>
+        </div>
 
         {error && (
           <p className="feedback-form-error" role="alert">
@@ -344,19 +404,15 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onDismiss, onSub
           </p>
         )}
 
-        <button className="feedback-submit-button" type="submit" disabled={isSubmitting}>
-          {isSubmitting ? (
-            <>
-              Sending
-              <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
-            </>
-          ) : (
-            <>
-              Send check-in
-              <i className="far fa-paper-plane" aria-hidden="true" />
-            </>
-          )}
-        </button>
+        <SurveyActions
+          currentStep={currentStep}
+          isSubmitting={isSubmitting}
+          isTransitioning={isTransitioning}
+          onBack={goBack}
+          onNext={goNext}
+          submitLabel="Send check-in"
+          totalSteps={totalSteps}
+        />
       </form>
     </>
   );
@@ -540,8 +596,8 @@ function FeedbackWidget() {
               </h2>
               {openedAfterSessions ? (
                 <p>
-                  Now that you’ve tried a focus session, I’d love to know how it felt and whether
-                  Study Buddy could be useful for you.
+                  Five short steps about how the session felt and whether Study Buddy could be
+                  useful for you.
                 </p>
               ) : (
                 <p>

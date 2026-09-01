@@ -143,7 +143,7 @@ body.feedback-dialog-open {
   --feedback-accent-ink: var(--color-icon-secondary);
   --feedback-shadow: var(--color-shadow);
 
-  min-height: 400px;
+  min-height: 360px;
   padding: 22px;
   color: var(--feedback-ink);
   background-color: var(--feedback-surface);
@@ -342,6 +342,128 @@ body.feedback-dialog-open {
   line-height: 1.5;
 }
 
+/* ---------- Shared survey steps ---------- */
+.survey-progress {
+  display: grid;
+  gap: 9px;
+}
+
+.survey-progress-copy {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  color: var(--feedback-ink);
+  font-size: 0.56rem;
+  letter-spacing: 0.35px;
+}
+
+.survey-progress-copy span {
+  opacity: 0.72;
+}
+
+.survey-progress-copy strong {
+  font-weight: 600;
+}
+
+.survey-progress-track {
+  height: 7px;
+  overflow: hidden;
+  background-color: color-mix(
+    in srgb,
+    var(--feedback-border) 32%,
+    var(--feedback-control)
+  );
+  border: 1px solid color-mix(in srgb, var(--feedback-border) 58%, transparent);
+  border-radius: 999px;
+}
+
+.survey-progress-fill {
+  width: var(--survey-progress);
+  height: 100%;
+  display: block;
+  background-color: var(--feedback-accent);
+  border-radius: inherit;
+  transition: width 240ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.survey-step-viewport {
+  min-height: 175px;
+  display: grid;
+  align-items: center;
+}
+
+.survey-step {
+  min-width: 0;
+  grid-area: 1 / 1;
+  padding: 0;
+  border: 0;
+  outline: 0;
+}
+
+.survey-step[hidden] {
+  display: none;
+}
+
+.survey-step-active.survey-step-forward {
+  animation: survey-step-in-forward 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.survey-step-active.survey-step-backward {
+  animation: survey-step-in-backward 220ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.survey-step-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 2px;
+}
+
+.survey-step-primary {
+  margin-left: auto;
+}
+
+.survey-step-back {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 6px;
+  color: var(--feedback-ink);
+  background: transparent;
+  border: 0;
+  font: 600 0.6rem/1 var(--font-body);
+  letter-spacing: 0.35px;
+  cursor: var(--cursor-pointer), pointer;
+  opacity: 0.75;
+  transition:
+    opacity 150ms ease,
+    transform 150ms ease;
+}
+
+.survey-step-back:hover {
+  opacity: 1;
+  transform: translateX(-2px);
+}
+
+.survey-step-back:focus-visible {
+  outline: 3px solid var(--feedback-accent);
+  outline-offset: 3px;
+}
+
+.survey-step-back:disabled {
+  cursor: wait;
+  opacity: 0.45;
+  transform: none;
+}
+
+.survey-optional-fields {
+  display: grid;
+  gap: 18px;
+}
+
 .feedback-preview-success {
   min-height: 300px;
   display: flex;
@@ -464,7 +586,7 @@ body.feedback-dialog-open {
 }
 
 .survey-form-surface {
-  min-height: 440px;
+  min-height: 350px;
 }
 
 .survey-preview-form {
@@ -557,10 +679,6 @@ body.feedback-dialog-open {
   outline-offset: 3px;
 }
 
-.survey-submit-button {
-  align-self: flex-end;
-}
-
 .survey-complete-state {
   min-height: 390px;
   display: flex;
@@ -587,6 +705,10 @@ body.feedback-dialog-open {
 /* ---------- Post-session check-in ---------- */
 .post-session-feedback-form {
   gap: 22px;
+}
+
+.post-session-step-viewport {
+  min-height: 210px;
 }
 
 .post-session-feedback-form fieldset {
@@ -656,6 +778,28 @@ body.feedback-dialog-open {
   }
 }
 
+@keyframes survey-step-in-forward {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes survey-step-in-backward {
+  from {
+    opacity: 0;
+    transform: translateX(-14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
 @media only screen and (max-width: 740px) {
   .top-left-action {
     width: 44px;
@@ -690,7 +834,7 @@ body.feedback-dialog-open {
   }
 
   .feedback-form-surface {
-    min-height: 380px;
+    min-height: 360px;
     padding: 16px 12px;
   }
 
@@ -727,11 +871,26 @@ body.feedback-dialog-open {
   }
 
   .survey-form-surface {
-    min-height: 420px;
+    min-height: 360px;
   }
 
-  .survey-submit-button {
-    width: 100%;
+  .survey-step-viewport,
+  .post-session-step-viewport {
+    min-height: 245px;
+  }
+
+  .survey-step-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .survey-step-primary {
+    margin-left: 0;
+  }
+
+  .survey-step-back {
+    align-self: center;
   }
 }
 
@@ -747,7 +906,14 @@ body.feedback-dialog-open {
   .feedback-type-options span,
   .survey-choice-grid span,
   .feedback-submit-button,
-  .post-session-later-button {
+  .post-session-later-button,
+  .survey-progress-fill,
+  .survey-step-back {
     transition-duration: 0.01ms;
+  }
+
+  .survey-step-active.survey-step-forward,
+  .survey-step-active.survey-step-backward {
+    animation: none;
   }
 }

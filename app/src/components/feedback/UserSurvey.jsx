@@ -2,6 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "../../analytics";
 import { useTheme } from "../../context/ThemeContext";
 import { submitHostedForm } from "./submitHostedForm";
+import {
+  SurveyActions,
+  SurveyProgress,
+  SurveyStep,
+} from "./SurveyStepper";
+import { useSurveyStepper } from "./useSurveyStepper";
 
 const SURVEY_FORM_ENDPOINT = import.meta.env.VITE_SURVEY_FORM_ENDPOINT?.trim();
 const SURVEY_COMPLETED_KEY = "studyBuddy:user-survey:v1:completed";
@@ -21,10 +27,13 @@ function SurveyCompleteState() {
 }
 
 function SurveyForm({ endpoint, onComplete, theme }) {
+  const totalSteps = 3;
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
   const hasTrackedStartRef = useRef(false);
   const isLocalPreview = !endpoint;
+  const { currentStep, direction, formRef, goBack, goNext, isTransitioning } =
+    useSurveyStepper(totalSteps);
 
   function trackStart() {
     if (hasTrackedStartRef.current) return;
@@ -42,10 +51,17 @@ function SurveyForm({ endpoint, onComplete, theme }) {
       )}
 
       <form
+        ref={formRef}
         className="survey-preview-form"
         onChange={trackStart}
         onSubmit={async (event) => {
           event.preventDefault();
+
+          if (isTransitioning || currentStep !== totalSteps - 1) {
+            if (!isTransitioning) goNext();
+            return;
+          }
+
           setError("");
           setIsSubmitting(true);
           trackEvent("sb_form_submit_attempt", { form_name: "onboarding_survey", theme });
@@ -72,65 +88,73 @@ function SurveyForm({ endpoint, onComplete, theme }) {
           }
         }}
       >
-        <fieldset disabled={isSubmitting}>
-          <legend>What brings you to Study Buddy?</legend>
-          <div className="survey-choice-grid survey-choice-grid-four">
-            {["Studying", "Working", "Personal projects", "Something else"].map((choice) => (
-              <label key={choice}>
-                <input
-                  type="radio"
-                  name="purpose"
-                  value={choice}
-                  required
-                />
-                <span>{choice}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
+        <SurveyProgress
+          currentStep={currentStep}
+          label="Getting to know you"
+          totalSteps={totalSteps}
+        />
 
-        <fieldset disabled={isSubmitting}>
-          <legend>How did you first hear about Study Buddy?</legend>
-          <div className="survey-choice-grid survey-discovery-grid">
-            {[
-              "Search engine",
-              "Social media",
-              "Someone I know",
-              "School or work",
-              "Online community",
-              "Something else",
-            ].map((source) => (
-              <label key={source}>
-                <input
-                  type="radio"
-                  name="discoverySource"
-                  value={source}
-                  required
-                />
-                <span>{source}</span>
-              </label>
-            ))}
-          </div>
-        </fieldset>
-
-        <fieldset disabled={isSubmitting}>
-          <legend>Which feature would you like to try first?</legend>
-          <div className="survey-choice-grid survey-feature-grid">
-            {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
-              (feature) => (
-                <label key={feature}>
-                  <input
-                    type="radio"
-                    name="featureInterest"
-                    value={feature}
-                    required
-                  />
-                  <span>{feature}</span>
+        <div className="survey-step-viewport">
+          <SurveyStep
+            active={currentStep === 0}
+            direction={direction}
+            disabled={isSubmitting}
+            index={0}
+          >
+            <legend>What brings you to Study Buddy?</legend>
+            <div className="survey-choice-grid survey-choice-grid-four">
+              {["Studying", "Working", "Personal projects", "Something else"].map((choice) => (
+                <label key={choice}>
+                  <input type="radio" name="purpose" value={choice} required />
+                  <span>{choice}</span>
                 </label>
-              ),
-            )}
-          </div>
-        </fieldset>
+              ))}
+            </div>
+          </SurveyStep>
+
+          <SurveyStep
+            active={currentStep === 1}
+            direction={direction}
+            disabled={isSubmitting}
+            index={1}
+          >
+            <legend>How did you first hear about Study Buddy?</legend>
+            <div className="survey-choice-grid survey-discovery-grid">
+              {[
+                "Search engine",
+                "Social media",
+                "Someone I know",
+                "School or work",
+                "Online community",
+                "Something else",
+              ].map((source) => (
+                <label key={source}>
+                  <input type="radio" name="discoverySource" value={source} required />
+                  <span>{source}</span>
+                </label>
+              ))}
+            </div>
+          </SurveyStep>
+
+          <SurveyStep
+            active={currentStep === 2}
+            direction={direction}
+            disabled={isSubmitting}
+            index={2}
+          >
+            <legend>Which feature would you like to try first?</legend>
+            <div className="survey-choice-grid survey-feature-grid">
+              {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
+                (feature) => (
+                  <label key={feature}>
+                    <input type="radio" name="featureInterest" value={feature} required />
+                    <span>{feature}</span>
+                  </label>
+                ),
+              )}
+            </div>
+          </SurveyStep>
+        </div>
 
         {error && (
           <p className="feedback-form-error" role="alert">
@@ -139,23 +163,15 @@ function SurveyForm({ endpoint, onComplete, theme }) {
           </p>
         )}
 
-        <button
-          className="feedback-submit-button survey-submit-button"
-          type="submit"
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <>
-              Sending
-              <i className="fas fa-circle-notch fa-spin" aria-hidden="true" />
-            </>
-          ) : (
-            <>
-              Send and start exploring
-              <i className="far fa-paper-plane" aria-hidden="true" />
-            </>
-          )}
-        </button>
+        <SurveyActions
+          currentStep={currentStep}
+          isSubmitting={isSubmitting}
+          isTransitioning={isTransitioning}
+          onBack={goBack}
+          onNext={goNext}
+          submitLabel="Send and start exploring"
+          totalSteps={totalSteps}
+        />
       </form>
     </>
   );
@@ -259,8 +275,8 @@ function UserSurvey() {
             <div>
               <h2 id="survey-title">Tell us what brought you here</h2>
               <p>
-                Three quick answers help us understand who finds Study Buddy and what they
-                want to explore first.
+                Three quick steps help us understand who finds Study Buddy and what they want
+                to explore first.
               </p>
             </div>
             <span className="survey-time-note">
