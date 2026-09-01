@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { DISCORD_INVITE_URL } from "../../config/community";
+import { COMMUNITY_INVITE_COPY, DISCORD_INVITE_URL } from "../../config/community";
 import { useStudyStats } from "../../context/StudyStatsContext";
 
 const COMMUNITY_INVITE_SEEN_KEY = "studyBuddy:discord-invite:v1:seen";
@@ -104,12 +104,9 @@ function CommunityLink() {
             <i className="fas fa-times" aria-hidden="true" />
           </button>
 
-          <h2 id="community-invite-title">Hey, it’s Erik 👋</h2>
-          <p>I made Study Buddy, and I just wanted to say thanks for using it.</p>
-          <p>
-            I also started a Discord for anyone who wants to chat, share ideas, or give feedback.
-            It’s pretty quiet right now, but I’d love to see you there.
-          </p>
+          <h2 id="community-invite-title">{COMMUNITY_INVITE_COPY.title}</h2>
+          <p>{COMMUNITY_INVITE_COPY.thanks}</p>
+          <p>{COMMUNITY_INVITE_COPY.invitation}</p>
 
           <div className="community-invite-actions">
             <a

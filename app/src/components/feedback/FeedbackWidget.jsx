@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "../../analytics";
-import { DISCORD_INVITE_URL } from "../../config/community";
+import { COMMUNITY_INVITE_COPY, DISCORD_INVITE_URL } from "../../config/community";
 import { useTheme } from "../../context/ThemeContext";
 import { useStudyStats } from "../../context/StudyStatsContext";
 import { THEMES } from "../../data/themes";
@@ -184,16 +184,9 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
           <i className="fas fa-check" />
         </span>
         <div className="post-session-success-content">
-          <strong>{isLocalPreview ? "That’s the whole flow." : "Thanks for checking in."}</strong>
-          <p>
-            {isLocalPreview
-              ? "Add the post-session form endpoint to receive real submissions."
-              : "Your answers will help me make future focus sessions better."}
-          </p>
-          <p className="post-session-discord-copy">
-            Want to keep studying with us? Join the Study Buddy Discord to meet other students,
-            share progress, and help shape what comes next.
-          </p>
+          <strong>{COMMUNITY_INVITE_COPY.title}</strong>
+          <p>{COMMUNITY_INVITE_COPY.thanks}</p>
+          <p className="post-session-discord-copy">{COMMUNITY_INVITE_COPY.invitation}</p>
           <a
             className="feedback-submit-button post-session-discord-link"
             href={DISCORD_INVITE_URL}
