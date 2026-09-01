@@ -199,8 +199,7 @@
     flex-direction: column;
   }
 
-  .community-invite-actions a,
-  .community-invite-actions button {
+  .community-invite-actions a {
     width: 100%;
   }
 
@@ -281,8 +280,7 @@
   }
 
   .community-invite-close,
-  .community-invite-actions a,
-  .community-invite-actions button {
+  .community-invite-actions a {
     transition-duration: 0.01ms;
   }
 }

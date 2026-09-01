@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { useStudyStats } from "../../context/StudyStatsContext";
 
 const DISCORD_INVITE_URL = "https://discord.gg/ZDgQbqMCxA";
@@ -26,7 +26,6 @@ function markCommunityInviteSeen(completedSessions) {
 
 function CommunityLink() {
   const { stats } = useStudyStats();
-  const containerRef = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
   // Taking this snapshot on mount ensures session three never interrupts the
   // current study visit. The invitation can appear when the user comes back.
@@ -64,25 +63,6 @@ function CommunityLink() {
     return () => window.clearTimeout(openTimer);
   }, [isForcedPreview, stats.totalPomodoros, wasEligibleOnArrival]);
 
-  useEffect(() => {
-    if (!isOpen) return undefined;
-
-    function handlePointerDown(event) {
-      if (!containerRef.current?.contains(event.target)) setIsOpen(false);
-    }
-
-    function handleKeyDown(event) {
-      if (event.key === "Escape") setIsOpen(false);
-    }
-
-    document.addEventListener("pointerdown", handlePointerDown);
-    document.addEventListener("keydown", handleKeyDown);
-    return () => {
-      document.removeEventListener("pointerdown", handlePointerDown);
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [isOpen]);
-
   function showCommunityInvite() {
     if (!isForcedPreview && !hasSeenCommunityInvite()) {
       markCommunityInviteSeen(Number(stats.totalPomodoros) || 0);
@@ -93,13 +73,8 @@ function CommunityLink() {
   return (
     <div
       className="community-invite"
-      ref={containerRef}
       onMouseEnter={showCommunityInvite}
-      onMouseLeave={() => setIsOpen(false)}
       onFocusCapture={showCommunityInvite}
-      onBlurCapture={(event) => {
-        if (!event.currentTarget.contains(event.relatedTarget)) setIsOpen(false);
-      }}
     >
       <a
         className="top-left-action community-launcher"
@@ -142,14 +117,10 @@ function CommunityLink() {
               href={DISCORD_INVITE_URL}
               target="_blank"
               rel="noreferrer"
-              onClick={() => setIsOpen(false)}
             >
               <i className="fab fa-discord" aria-hidden="true" />
               Join the Discord
             </a>
-            <button type="button" onClick={() => setIsOpen(false)}>
-              Not right now
-            </button>
           </div>
         </aside>
       )}

@@ -523,8 +523,7 @@ h3 {
   margin-top: 16px;
 }
 
-.community-invite-actions a,
-.community-invite-actions button {
+.community-invite-actions a {
   min-height: 42px;
   display: inline-flex;
   align-items: center;
@@ -545,23 +544,12 @@ h3 {
   background-color: var(--color-banner);
 }
 
-.community-invite-actions button {
-  color: var(--color-text);
-  background-color: transparent;
-}
-
-.community-invite-actions a:hover,
-.community-invite-actions button:hover {
+.community-invite-actions a:hover {
   transform: translateY(-1px);
 }
 
-.community-invite-actions button:hover {
-  background-color: var(--color-accent);
-}
-
 .community-invite-close:focus-visible,
-.community-invite-actions a:focus-visible,
-.community-invite-actions button:focus-visible {
+.community-invite-actions a:focus-visible {
   outline: 3px solid var(--color-accent-4);
   outline-offset: 3px;
 }
