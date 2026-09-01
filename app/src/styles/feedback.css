@@ -394,7 +394,25 @@ body.feedback-dialog-open {
   margin-top: 12px;
 }
 
+.post-session-feedback-success {
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+}
+
+.post-session-success-content {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+.post-session-feedback-success p {
+  margin-right: auto;
+  margin-left: auto;
+}
+
 .post-session-discord-link {
+  align-self: center;
   margin-top: 16px;
   text-decoration: none;
 }

@@ -179,11 +179,11 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
 
   if (submitted) {
     return (
-      <div className="feedback-preview-success" role="status">
+      <div className="feedback-preview-success post-session-feedback-success" role="status">
         <span className="feedback-success-icon" aria-hidden="true">
           <i className="fas fa-check" />
         </span>
-        <div>
+        <div className="post-session-success-content">
           <strong>{isLocalPreview ? "That’s the whole flow." : "Thanks for checking in."}</strong>
           <p>
             {isLocalPreview
