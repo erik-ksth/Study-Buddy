@@ -401,12 +401,14 @@ body.feedback-dialog-open {
 }
 
 .post-session-success-content {
+  width: min(100%, 520px);
   display: flex;
   align-items: center;
   flex-direction: column;
 }
 
 .post-session-feedback-success p {
+  max-width: 50ch;
   margin-right: auto;
   margin-left: auto;
 }
