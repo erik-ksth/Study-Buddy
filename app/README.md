@@ -50,7 +50,7 @@ preview open.
 ## Detailed feedback prompt
 
 The Feedback & Ideas form remains available from the Feedback button at any time.
-After two completed Pomodoro focus sessions, the app opens a separate post-session
+After one completed Pomodoro focus session, the app opens a separate post-session
 check-in. Set `VITE_POST_SESSION_FORM_ENDPOINT` to a third hosted form endpoint.
 The check-in asks for `favoriteTheme`, `usageFrequency`, `favoriteFeature`,
 `responseType`, `message`, and optional `email`, and also sends `source`, `theme`,

@@ -8,7 +8,7 @@ import { submitHostedForm } from "./submitHostedForm";
 const FEEDBACK_FORM_ENDPOINT = import.meta.env.VITE_FEEDBACK_FORM_ENDPOINT?.trim();
 const POST_SESSION_FORM_ENDPOINT = import.meta.env.VITE_POST_SESSION_FORM_ENDPOINT?.trim();
 const POST_SESSION_PROMPTED_KEY = "studyBuddy:post-session-feedback:v1:prompted";
-const FEEDBACK_PROMPT_SESSION_COUNT = 2;
+const FEEDBACK_PROMPT_SESSION_COUNT = 1;
 
 function FeedbackForm({ completedSessions, endpoint, onSubmitted, source, theme }) {
   const [submitted, setSubmitted] = useState(false);
