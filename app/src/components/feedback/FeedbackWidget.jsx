@@ -574,11 +574,6 @@ function FeedbackWidget() {
                 />
               )}
             </div>
-
-            <p className="feedback-privacy-note">
-              <i className="fas fa-lock" aria-hidden="true" />
-              Please don’t include passwords or sensitive information.
-            </p>
           </div>
         </section>
       </dialog>
