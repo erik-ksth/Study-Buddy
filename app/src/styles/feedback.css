@@ -390,6 +390,15 @@ body.feedback-dialog-open {
   line-height: 1.55;
 }
 
+.feedback-preview-success .post-session-discord-copy {
+  margin-top: 12px;
+}
+
+.post-session-discord-link {
+  margin-top: 16px;
+  text-decoration: none;
+}
+
 /* ---------- First-visit user survey ---------- */
 .survey-dialog {
   width: min(720px, calc(100vw - 32px));

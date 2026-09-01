@@ -52,9 +52,10 @@ preview open.
 The Feedback & Ideas form remains available from the Feedback button at any time.
 After one completed Pomodoro focus session, the app opens a separate post-session
 check-in. Set `VITE_POST_SESSION_FORM_ENDPOINT` to a third hosted form endpoint.
-The check-in asks for `favoriteTheme`, `usageFrequency`, `favoriteFeature`,
-`responseType`, `message`, and optional `email`, and also sends `source`, `theme`,
-and `completedSessions` metadata.
+The check-in asks for `sessionExperience`, `usefulness`, `favoriteFeature`,
+`favoriteTheme`, optional `message`, and optional `email`. It also
+sends `source`, `theme`, and `completedSessions` metadata, then offers a Discord
+invitation after a successful submission.
 
 The prompt uses the persisted `totalPomodoros` count and records
 `studyBuddy:post-session-feedback:v1:prompted` in local storage. If the user
@@ -76,6 +77,7 @@ onboarding survey, the manual feedback form, and the post-session check-in:
 - `sb_form_submit`: the hosted form accepted the submission.
 - `sb_form_error`: submission failed.
 - `sb_form_dismiss`: the user closed an unfinished form.
+- `sb_discord_invite_click`: the user clicked the post-session Discord invitation.
 - `sb_focus_session_complete`: a Pomodoro focus session was completed.
 
 Form events include `form_name`, `theme`, `trigger`, and, when available,

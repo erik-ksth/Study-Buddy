@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
+import { DISCORD_INVITE_URL } from "../../config/community";
 import { useStudyStats } from "../../context/StudyStatsContext";
 
-const DISCORD_INVITE_URL = "https://discord.gg/ZDgQbqMCxA";
 const COMMUNITY_INVITE_SEEN_KEY = "studyBuddy:discord-invite:v1:seen";
 const REQUIRED_SESSIONS = 3;
 

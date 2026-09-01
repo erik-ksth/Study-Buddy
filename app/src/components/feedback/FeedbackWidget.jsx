@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { trackEvent } from "../../analytics";
+import { DISCORD_INVITE_URL } from "../../config/community";
 import { useTheme } from "../../context/ThemeContext";
 import { useStudyStats } from "../../context/StudyStatsContext";
 import { THEMES } from "../../data/themes";
@@ -187,8 +188,27 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
           <p>
             {isLocalPreview
               ? "Add the post-session form endpoint to receive real submissions."
-              : "Your answers will help the team make future focus sessions better."}
+              : "Your answers will help me make future focus sessions better."}
           </p>
+          <p className="post-session-discord-copy">
+            Want to keep studying with us? Join the Study Buddy Discord to meet other students,
+            share progress, and help shape what comes next.
+          </p>
+          <a
+            className="feedback-submit-button post-session-discord-link"
+            href={DISCORD_INVITE_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() =>
+              trackEvent("sb_discord_invite_click", {
+                ...analyticsMetadata,
+                trigger: "post_session_success",
+              })
+            }
+          >
+            <i className="fab fa-discord" aria-hidden="true" />
+            Join the Discord
+          </a>
         </div>
       </div>
     );
@@ -235,6 +255,51 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
         }}
       >
         <fieldset disabled={isSubmitting}>
+          <legend>How was your first session?</legend>
+          <div className="feedback-type-options">
+            {["Really helpful", "Pretty good", "It was okay", "Needs work"].map(
+              (experience) => (
+                <label key={experience}>
+                  <input
+                    type="radio"
+                    name="sessionExperience"
+                    value={experience}
+                    required
+                  />
+                  <span>{experience}</span>
+                </label>
+              ),
+            )}
+          </div>
+        </fieldset>
+
+        <fieldset disabled={isSubmitting}>
+          <legend>Do you think Study Buddy could be useful for you?</legend>
+          <div className="feedback-type-options">
+            {["Yes, definitely", "Maybe", "Not yet"].map((usefulness) => (
+              <label key={usefulness}>
+                <input type="radio" name="usefulness" value={usefulness} required />
+                <span>{usefulness}</span>
+              </label>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset disabled={isSubmitting}>
+          <legend>Which feature helped you most?</legend>
+          <div className="survey-choice-grid post-session-feature-grid">
+            {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
+              (feature) => (
+                <label key={feature}>
+                  <input type="radio" name="favoriteFeature" value={feature} required />
+                  <span>{feature}</span>
+                </label>
+              ),
+            )}
+          </div>
+        </fieldset>
+
+        <fieldset disabled={isSubmitting}>
           <legend>Which theme is your favorite so far?</legend>
           <div className="survey-choice-grid post-session-theme-grid">
             {THEMES.map((themeOption) => (
@@ -257,68 +322,14 @@ function PostSessionFeedbackForm({ completedSessions, endpoint, onSubmitted, the
           </div>
         </fieldset>
 
-        <fieldset disabled={isSubmitting}>
-          <legend>How often do you use Study Buddy?</legend>
-          <div className="survey-choice-grid post-session-frequency-grid">
-            {["This was my first session", "A few times a month", "A few times a week", "Most days"].map(
-              (frequency) => (
-                <label key={frequency}>
-                  <input type="radio" name="usageFrequency" value={frequency} required />
-                  <span>{frequency}</span>
-                </label>
-              ),
-            )}
-          </div>
-        </fieldset>
-
-        <fieldset disabled={isSubmitting}>
-          <legend>Which feature has helped you most so far?</legend>
-          <div className="survey-choice-grid post-session-feature-grid">
-            {["Pomodoro timer", "To-do list", "Music & sounds", "Quotes", "Themes", "Stats"].map(
-              (feature) => (
-                <label key={feature}>
-                  <input type="radio" name="favoriteFeature" value={feature} required />
-                  <span>{feature}</span>
-                </label>
-              ),
-            )}
-          </div>
-        </fieldset>
-
-        <fieldset disabled={isSubmitting}>
-          <legend>What would you like to share?</legend>
-          <div className="feedback-type-options">
-            <label>
-              <input type="radio" name="responseType" value="A request" defaultChecked />
-              <span>
-                <i className="far fa-lightbulb" aria-hidden="true" />
-                A request
-              </span>
-            </label>
-            <label>
-              <input type="radio" name="responseType" value="Feedback" />
-              <span>
-                <i className="far fa-comment-dots" aria-hidden="true" />
-                Feedback
-              </span>
-            </label>
-            <label>
-              <input type="radio" name="responseType" value="Something else" />
-              <span>
-                <i className="fas fa-ellipsis-h" aria-hidden="true" />
-                Something else
-              </span>
-            </label>
-          </div>
-        </fieldset>
-
         <label className="feedback-field">
-          <span>Tell us more</span>
+          <span>
+            Anything else? <small>optional</small>
+          </span>
           <textarea
             name="message"
             rows="4"
-            placeholder="What should the team improve, add, or keep doing?"
-            required
+            placeholder="What would make your next session better?"
             disabled={isSubmitting}
           />
         </label>
@@ -529,13 +540,13 @@ function FeedbackWidget() {
             <div className="feedback-intro">
               <h2 id="feedback-title">
                 {openedAfterSessions
-                  ? "How was your focus session?"
+                  ? "A quick first-session check-in"
                   : "Help shape Study Buddy"}
               </h2>
               {openedAfterSessions ? (
                 <p>
-                  Now that you’ve tried a focus session, a few quick answers will help the team
-                  understand what’s useful and what to improve next.
+                  Now that you’ve tried a focus session, I’d love to know how it felt and whether
+                  Study Buddy could be useful for you.
                 </p>
               ) : (
                 <p>
