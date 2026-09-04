@@ -4,6 +4,7 @@ import TimerSettingsPopover from "./TimerSettingsPopover";
 import TimerCompleteToast from "./TimerCompleteToast";
 import { usePomodoro } from "../../hooks/usePomodoro";
 import { useStudyStats } from "../../context/StudyStatsContext";
+import { useNotifications } from "../../context/NotificationContext";
 
 const TABS = [
   { id: "pomodoro", label: "pomodoro" },
@@ -15,32 +16,30 @@ function pad(n) {
   return n < 10 ? `0${n}` : `${n}`;
 }
 
-function sendSystemNotification(title, message) {
-  if (Notification.permission === "granted") {
-    new Notification(title, { body: message, icon: "/img/lamp.svg" });
-  }
-}
-
 function PomodoroTimer() {
   const [settingsOpen, setSettingsOpen] = useState(false);
   const [toast, setToast] = useState(null);
   const toastIdRef = useRef(0);
   const notiSoundRef = useRef(null);
   const { recordPomodoroComplete } = useStudyStats();
+  const { addNotification, preferences, sendDesktopNotification } = useNotifications();
 
   const { activeTab, isRunning, remaining, holdDisplay, lengths, selectTab, start, restart, applySettings } =
     usePomodoro({
       onComplete: (message, title, tab, minutes) => {
-        try {
-          const playPromise = notiSoundRef.current?.play();
-          playPromise?.catch(() => {});
-        } catch {
-          // ignore — matches the original's best-effort audio playback
+        if (preferences.sounds) {
+          try {
+            const playPromise = notiSoundRef.current?.play();
+            playPromise?.catch(() => {});
+          } catch {
+            // Audio alerts are best-effort because browsers can block autoplay.
+          }
         }
 
         toastIdRef.current += 1;
         setToast({ message, id: toastIdRef.current });
-        sendSystemNotification(title, message);
+        if (preferences.timerAlerts) addNotification({ title, message, type: "timer" });
+        sendDesktopNotification(title, message);
 
         if (tab === "pomodoro") {
           recordPomodoroComplete(minutes);

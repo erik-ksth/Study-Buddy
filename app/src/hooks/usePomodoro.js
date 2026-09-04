@@ -66,12 +66,6 @@ export function usePomodoro({ onComplete }) {
     [stopTicking, pomodoroLength, shortBreakLength, longBreakLength],
   );
 
-  useEffect(() => {
-    if (Notification.permission !== "granted") {
-      Notification.requestPermission();
-    }
-  }, []);
-
   function selectTab(tab) {
     setActiveTab(tab);
     resetDisplay(tab);
@@ -90,10 +84,6 @@ export function usePomodoro({ onComplete }) {
     if (isRunning) {
       pause();
       return;
-    }
-
-    if (Notification.permission !== "granted" && Notification.permission !== "denied") {
-      Notification.requestPermission();
     }
 
     const totalSeconds = remaining.minutes * 60 + remaining.seconds;

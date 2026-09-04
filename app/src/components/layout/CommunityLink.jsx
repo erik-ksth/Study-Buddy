@@ -1,109 +1,49 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { COMMUNITY_INVITE_COPY, DISCORD_INVITE_URL } from "../../config/community";
-import { useStudyStats } from "../../context/StudyStatsContext";
-
-const COMMUNITY_INVITE_SEEN_KEY = "studyBuddy:discord-invite:v1:seen";
-const REQUIRED_SESSIONS = 3;
-
-function hasSeenCommunityInvite() {
-  try {
-    return Boolean(localStorage.getItem(COMMUNITY_INVITE_SEEN_KEY));
-  } catch {
-    return false;
-  }
-}
-
-function markCommunityInviteSeen(completedSessions) {
-  try {
-    localStorage.setItem(
-      COMMUNITY_INVITE_SEEN_KEY,
-      JSON.stringify({ shownAt: new Date().toISOString(), completedSessions }),
-    );
-  } catch {
-    // If storage is unavailable, keep the invite dismissible for this visit.
-  }
-}
 
 function CommunityLink() {
-  const { stats } = useStudyStats();
   const [isOpen, setIsOpen] = useState(false);
-  // Taking this snapshot on mount ensures session three never interrupts the
-  // current study visit. The invitation can appear when the user comes back.
-  const [wasEligibleOnArrival] = useState(
-    () => (Number(stats.totalPomodoros) || 0) >= REQUIRED_SESSIONS,
-  );
-  const isForcedPreview =
-    import.meta.env.DEV && new URLSearchParams(window.location.search).has("communityInvitePreview");
+  const rootRef = useRef(null);
 
   useEffect(() => {
-    if ((!wasEligibleOnArrival && !isForcedPreview) || (!isForcedPreview && hasSeenCommunityInvite())) {
-      return undefined;
+    if (!isOpen) return undefined;
+
+    function handlePointerDown(event) {
+      if (!rootRef.current?.contains(event.target)) setIsOpen(false);
     }
 
-    const openTimer = window.setTimeout(
-      () => {
-        // Give onboarding and post-session feedback priority. If either is
-        // active, try the community invitation again on a future visit.
-        if (document.visibilityState !== "visible" || document.querySelector("dialog[open]")) {
-          return;
-        }
-
-        // Hovering or focusing the Community button may have shown the message
-        // before this timer finished. In that case, do not reopen it.
-        if (!isForcedPreview && hasSeenCommunityInvite()) return;
-
-        if (!isForcedPreview) {
-          markCommunityInviteSeen(Number(stats.totalPomodoros) || 0);
-        }
-        setIsOpen(true);
-      },
-      isForcedPreview ? 250 : 2800,
-    );
-
-    return () => window.clearTimeout(openTimer);
-  }, [isForcedPreview, stats.totalPomodoros, wasEligibleOnArrival]);
-
-  function showCommunityInvite() {
-    if (!isForcedPreview && !hasSeenCommunityInvite()) {
-      markCommunityInviteSeen(Number(stats.totalPomodoros) || 0);
+    function handleKeyDown(event) {
+      if (event.key === "Escape") setIsOpen(false);
     }
-    setIsOpen(true);
-  }
+
+    document.addEventListener("pointerdown", handlePointerDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("pointerdown", handlePointerDown);
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
-    <div
-      className="community-invite"
-      onMouseEnter={showCommunityInvite}
-      onFocusCapture={showCommunityInvite}
-    >
-      <a
+    <div className="community-invite" ref={rootRef}>
+      <button
         className="top-left-action community-launcher"
-        href={DISCORD_INVITE_URL}
-        target="_blank"
-        rel="noreferrer"
-        aria-label="Join the Study Buddy Discord community"
+        type="button"
+        aria-label="Community"
         aria-expanded={isOpen}
-        title="Join the Study Buddy Discord"
+        aria-controls="community-invite-panel"
+        onClick={() => setIsOpen((current) => !current)}
       >
         <i className="fab fa-discord" aria-hidden="true" />
         <span>Community</span>
-      </a>
+      </button>
 
       {isOpen && (
         <aside
           className="community-invite-popover"
+          id="community-invite-panel"
           aria-labelledby="community-invite-title"
-          aria-live="polite"
         >
-          <button
-            className="community-invite-close"
-            type="button"
-            aria-label="Dismiss Discord invitation"
-            onClick={() => setIsOpen(false)}
-          >
-            <i className="fas fa-times" aria-hidden="true" />
-          </button>
-
           <h2 id="community-invite-title">{COMMUNITY_INVITE_COPY.title}</h2>
           <p>{COMMUNITY_INVITE_COPY.thanks}</p>
           <p>{COMMUNITY_INVITE_COPY.invitation}</p>
@@ -114,6 +54,7 @@ function CommunityLink() {
               href={DISCORD_INVITE_URL}
               target="_blank"
               rel="noreferrer"
+              onClick={() => setIsOpen(false)}
             >
               <i className="fab fa-discord" aria-hidden="true" />
               Join the Discord

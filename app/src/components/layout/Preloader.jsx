@@ -34,7 +34,11 @@ function Preloader() {
         <LampIcon className="preloader-logo-icon" />
         <h1>Study Buddy</h1>
       </div>
-      <div id="gif">&nbsp;</div>
+      <div className="preloader-dots" role="status" aria-label="Loading Study Buddy">
+        <span />
+        <span />
+        <span />
+      </div>
     </div>
   );
 }

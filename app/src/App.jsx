@@ -10,6 +10,7 @@ import CommunityLink from "./components/layout/CommunityLink";
 import FeedbackWidget from "./components/feedback/FeedbackWidget";
 import UserSurvey from "./components/feedback/UserSurvey";
 import LampIcon from "./components/layout/lamp.svg?react";
+import NotificationCenter from "./components/notifications/NotificationCenter";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <div className="theme-frame" />
       <ThemeSwitcher />
       <div className="top-left-actions">
+        <NotificationCenter />
         <FeedbackWidget />
         <CommunityLink />
       </div>

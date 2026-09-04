@@ -25,3 +25,9 @@ npm run dev
 Adding new music: drop an mp3 into the matching `app/public/music/<genre>/` folder and rerun `npm run dev` or `npm run build` (or `npm run generate:music` directly) — the playlist manifest regenerates automatically from whatever files are on disk.
 
 Quotes are loaded through the serverless `app/api/quotes.js` proxy, which fetches them from ZenQuotes and caches the upstream response at the edge.
+
+### Notifications
+
+The React app includes a local notification inbox for product announcements and completed timer sessions. Users can opt into desktop alerts and independently control timer inbox updates and completion sounds. The app only asks for browser permission after the user enables desktop alerts.
+
+To publish an announcement with the next deployment, add an entry to `app/src/data/notifications.js` with a unique `id`, title, message, and ISO `publishedAt` date. A new ID makes the announcement unread for each user; keeping an existing ID preserves their read state.

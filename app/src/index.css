@@ -6,6 +6,7 @@
 @import "./styles/music.css";
 @import "./styles/stats.css";
 @import "./styles/feedback.css";
+@import "./styles/notifications.css";
 @import "./styles/responsive.css";
 
 * {

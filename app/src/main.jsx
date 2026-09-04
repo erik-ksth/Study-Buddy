@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { StudyStatsProvider } from "./context/StudyStatsContext.jsx";
+import { NotificationProvider } from "./context/NotificationContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <ThemeProvider>
-      <StudyStatsProvider>
-        <App />
-      </StudyStatsProvider>
+      <NotificationProvider>
+        <StudyStatsProvider>
+          <App />
+        </StudyStatsProvider>
+      </NotificationProvider>
     </ThemeProvider>
   </StrictMode>,
 );

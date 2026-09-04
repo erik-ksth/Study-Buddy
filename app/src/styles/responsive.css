@@ -275,11 +275,16 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .preloader-dots span {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+
   .community-invite-popover {
     animation: none;
   }
 
-  .community-invite-close,
   .community-invite-actions a {
     transition-duration: 0.01ms;
   }
