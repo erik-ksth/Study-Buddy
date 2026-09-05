@@ -7,4 +7,5 @@ export const THEMES = [
   },
   { id: "forest", label: "Forest", swatch: { bg: "#eef1ea", accent: "#d4dfc7", ink: "#2f4a2f" } },
   { id: "ocean", label: "Ocean", swatch: { bg: "#eef4f2", accent: "#c5d9e0", ink: "#1f3d4a" } },
+  { id: "sakura", label: "Sakura", swatch: { bg: "#fff5f5", accent: "#f2bdcb", ink: "#5f203d" } },
 ];

@@ -124,6 +124,18 @@
   background-size: cover, cover;
 }
 
+[data-theme="sakura"] .background-img {
+  background-color: var(--color-bg);
+  background-image: linear-gradient(
+      rgba(var(--color-bg-rgb), 0.38),
+      rgba(var(--color-bg-rgb), 0.38)
+    ),
+    url("/img/sakura-theme/sakura-background.png");
+  background-position: center, center;
+  background-repeat: no-repeat, no-repeat;
+  background-size: cover, cover;
+}
+
 /* Per-theme corner artwork reinforcing what each palette represents (nature,
    night sky, water, ...). Empty/no-op until a theme defines background-image
    below — most themes don't have art yet, and that's fine, they just render
@@ -410,6 +422,21 @@ h3 {
   background-position: left bottom;
   background-size: contain;
   opacity: 0.82;
+  pointer-events: none;
+}
+
+[data-theme="sakura"] .todo-card::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  bottom: -8px;
+  width: 130px;
+  aspect-ratio: 1;
+  background-image: url("/img/sakura-theme/12-todo-bottom-decoration.png");
+  background-repeat: no-repeat;
+  background-position: left bottom;
+  background-size: contain;
+  opacity: 0.76;
   pointer-events: none;
 }
 

@@ -4,12 +4,11 @@
   font-weight: 900;
   font-size: 48px;
   color: var(--color-text);
-  background-color: var(--color-bg);
   padding: 0 6px;
   position: absolute;
   top: -26px;
   left: -22px;
-  transition: color var(--transition-theme), background-color var(--transition-theme);
+  transition: color var(--transition-theme);
 }
 
 .quote-container {

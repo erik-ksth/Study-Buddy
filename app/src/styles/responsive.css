@@ -51,9 +51,11 @@
     background-size: 50px;
   }
 
+  html:not(:fullscreen) [data-theme="cream"] .icon-box[data-mood="k-pop"],
   html:not(:fullscreen) [data-theme="ocean"] .icon-box,
   html:not(:fullscreen) [data-theme="forest"] .icon-box,
-  html:not(:fullscreen) [data-theme="midnight"] .icon-box {
+  html:not(:fullscreen) [data-theme="midnight"] .icon-box,
+  html:not(:fullscreen) [data-theme="sakura"] .icon-box {
     background-size: contain;
   }
 

@@ -5,12 +5,14 @@ function ThemeSwitcher() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="theme-switcher">
+    <div className="theme-switcher" role="group" aria-label="Choose a color theme">
       {THEMES.map((t) => (
         <button
           key={t.id}
           type="button"
           className={`theme-swatch${theme === t.id ? " theme-swatch-active" : ""}`}
+          aria-label={`Use ${t.label} theme`}
+          aria-pressed={theme === t.id}
           title={t.label}
           onClick={() => setTheme(t.id)}
           style={{

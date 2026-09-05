@@ -119,3 +119,30 @@
   --cursor-grab: url("/img/cursor/ocean/grab.svg") 10 2;
   --cursor-grabbing: url("/img/cursor/ocean/grabbing.svg") 10 2;
 }
+
+/* Sakura — soft blossom pink with plum ink, grounded by the supplied landscape art */
+:root[data-theme="sakura"] {
+  --color-bg: #fff5f5;
+  --color-bg-rgb: 255, 245, 245;
+  --color-bg-alt: #fffafa;
+  --color-text: #5f203d;
+  --color-border: #8f3e5c;
+  --color-shadow: #71304c;
+  --color-shadow-rgb: 113, 48, 76;
+  --color-accent: #f3ccd5;
+  --color-accent-2: #95516b;
+  --color-accent-3: #f7dce2;
+  --color-accent-4: #8b3155;
+  --color-icon: #6d2747;
+  --color-icon-secondary: #fff5f5;
+  --color-error: #9b1c3b;
+  --color-toast-banner-bg: hsla(342, 54%, 82%, 0.82);
+  --color-toast-body-bg: hsla(350, 100%, 98%, 0.88);
+  --color-banner: #f2bdcb;
+  --color-banner-fg: #5f203d;
+  --color-frame: transparent;
+  --cursor-default: url("/img/cursor/cream/default.svg") 1 1;
+  --cursor-pointer: url("/img/cursor/cream/pointer.svg") 10 2;
+  --cursor-grab: url("/img/cursor/cream/grab.svg") 10 2;
+  --cursor-grabbing: url("/img/cursor/cream/grabbing.svg") 10 2;
+}
