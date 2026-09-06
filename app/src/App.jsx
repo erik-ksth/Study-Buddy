@@ -2,7 +2,7 @@ import Preloader from "./components/layout/Preloader";
 import PomodoroTimer from "./components/timer/PomodoroTimer";
 import TodoList from "./components/todo/TodoList";
 import MusicPanel from "./components/music/MusicPanel";
-import QuoteCard from "./components/quotes/QuoteCard";
+import AppsSection from "./components/apps/AppsSection";
 import StatsBar from "./components/stats/StatsBar";
 import ThemeSwitcher from "./components/theme/ThemeSwitcher";
 import FullscreenToggle from "./components/layout/FullscreenToggle";
@@ -38,7 +38,7 @@ function App() {
 
           <div className="vibes-column">
             <MusicPanel />
-            <QuoteCard />
+            <AppsSection />
           </div>
         </div>
 

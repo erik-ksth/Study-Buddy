@@ -1,4 +1,4 @@
-import { forwardRef, useImperativeHandle, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 
 const HOURS = Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, "0"));
@@ -54,10 +54,7 @@ function scrollToVal(col, val) {
   }
 }
 
-const CustomTimePicker = forwardRef(function CustomTimePicker(
-  { anchorEl, initialTime, onCommit },
-  ref,
-) {
+function CustomTimePicker({ anchorEl, initialTime, onCommit, onCancel }) {
   const rootRef = useRef(null);
   const hourColRef = useRef(null);
   const minuteColRef = useRef(null);
@@ -74,8 +71,6 @@ const CustomTimePicker = forwardRef(function CustomTimePicker(
   function confirmAndClose() {
     onCommit(readSelected());
   }
-
-  useImperativeHandle(ref, () => ({ confirmAndClose }));
 
   // Position next to the button that opened this, and scroll each column to
   // the task's current value — both one-time, matching the original's
@@ -105,11 +100,12 @@ const CustomTimePicker = forwardRef(function CustomTimePicker(
         anchorEl &&
         !anchorEl.contains(e.target)
       ) {
-        confirmAndClose();
+        onCancel();
       }
     }
     function handleKeydown(e) {
       if (e.key === "Enter") confirmAndClose();
+      if (e.key === "Escape") onCancel();
     }
     window.addEventListener("click", handleWindowClick);
     document.addEventListener("keydown", handleKeydown);
@@ -121,9 +117,12 @@ const CustomTimePicker = forwardRef(function CustomTimePicker(
   }, []);
 
   function handlePickerClick(e) {
-    if (e.target.classList.contains("picker-item") && e.target.classList.contains("selected")) {
-      confirmAndClose();
-    }
+    const item = e.target.closest(".picker-item[data-val]");
+    const column = item?.closest(".picker-column");
+    if (!item || !column) return;
+
+    scrollToVal(column, item.getAttribute("data-val"));
+    highlightCenter(column);
   }
 
   // Rendered via a portal straight onto <body>: the trigger button can be
@@ -138,6 +137,8 @@ const CustomTimePicker = forwardRef(function CustomTimePicker(
       className="time-picker-dropdown"
       style={{ display: "block" }}
       onClick={handlePickerClick}
+      role="dialog"
+      aria-label="Set task time"
     >
       <div className="time-picker-body">
         <div
@@ -181,9 +182,17 @@ const CustomTimePicker = forwardRef(function CustomTimePicker(
         </div>
         <div className="picker-highlight" />
       </div>
+      <div className="time-picker-actions">
+        <button type="button" className="time-picker-cancel" onClick={onCancel}>
+          Cancel
+        </button>
+        <button type="button" className="time-picker-confirm" onClick={confirmAndClose}>
+          Set time
+        </button>
+      </div>
     </div>,
     document.body,
   );
-});
+}
 
 export default CustomTimePicker;

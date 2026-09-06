@@ -323,3 +323,64 @@ input[type="checkbox"]:checked:after {
   pointer-events: none;
   z-index: 1;
 }
+
+.time-picker-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 6px;
+  padding: 8px;
+  border-top: 1px solid var(--color-border);
+}
+
+.time-picker-actions button {
+  min-height: 30px;
+  padding: 5px 9px;
+  border: 1.5px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: var(--color-text);
+  font: inherit;
+  font-size: 0.58rem;
+  letter-spacing: 0.4px;
+  cursor: var(--cursor-pointer), pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s, transform 0.1s;
+}
+
+.time-picker-actions button:hover {
+  background-color: var(--color-accent);
+}
+
+.time-picker-actions button:active {
+  transform: scale(0.96);
+}
+
+.time-picker-actions button:focus-visible {
+  outline: 3px solid var(--color-accent-4);
+  outline-offset: 1px;
+}
+
+.time-picker-actions .time-picker-cancel {
+  color: var(--color-accent-2);
+}
+
+.time-picker-actions .time-picker-confirm {
+  border-color: var(--color-border);
+  background-color: var(--color-text);
+  color: var(--color-bg);
+}
+
+.time-picker-actions .time-picker-confirm:hover {
+  border-color: var(--color-text);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .time-picker-dropdown {
+    animation: none;
+  }
+
+  .time-picker-actions button {
+    transition-duration: 0.01ms;
+  }
+}

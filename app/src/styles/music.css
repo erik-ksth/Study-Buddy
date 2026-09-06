@@ -53,17 +53,6 @@
   height: 35px;
 }
 
-[data-theme="cream"] .icon-box[data-mood="k-pop"] {
-  background-image: url("/img/cream-theme/07-music-kpop-v4.png");
-  background-repeat: no-repeat;
-  background-position: center;
-  background-size: contain;
-}
-
-[data-theme="cream"] .icon-box[data-mood="k-pop"] .mood-icon-svg {
-  display: none;
-}
-
 [data-theme="ocean"] .icon-box,
 [data-theme="forest"] .icon-box,
 [data-theme="midnight"] .icon-box,
@@ -110,7 +99,7 @@
 }
 
 [data-theme="ocean"] .icon-box[data-mood="k-pop"] {
-  background-image: url("/img/blue-theme/07-music-kpop-v4.png");
+  background-image: url("/img/blue-theme/07-music-kpop.png");
 }
 
 [data-theme="ocean"] .icon-box[data-mood="cafe"] {
@@ -150,7 +139,7 @@
 }
 
 [data-theme="forest"] .icon-box[data-mood="k-pop"] {
-  background-image: url("/img/green-theme/07-music-kpop-v4.png");
+  background-image: url("/img/green-theme/07-music-kpop.png");
 }
 
 [data-theme="forest"] .icon-box[data-mood="cafe"] {
@@ -190,7 +179,7 @@
 }
 
 [data-theme="midnight"] .icon-box[data-mood="k-pop"] {
-  background-image: url("/img/midnight-theme/07-music-kpop-v4.png");
+  background-image: url("/img/midnight-theme/07-music-kpop.png");
 }
 
 [data-theme="midnight"] .icon-box[data-mood="cafe"] {
@@ -230,7 +219,7 @@
 }
 
 [data-theme="sakura"] .icon-box[data-mood="k-pop"] {
-  background-image: url("/img/sakura-theme/07-music-kpop-v4.png");
+  background-image: url("/img/sakura-theme/07-music-kpop-cassette.png");
 }
 
 [data-theme="sakura"] .icon-box[data-mood="cafe"] {

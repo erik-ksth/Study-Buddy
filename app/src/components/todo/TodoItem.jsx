@@ -14,7 +14,6 @@ function TodoItem({
   textareaRef,
 }) {
   const timeBtnRef = useRef(null);
-  const pickerRef = useRef(null);
   const localTextareaRef = useRef(null);
 
   useLayoutEffect(() => {
@@ -30,7 +29,7 @@ function TodoItem({
   function handleTimeBtnClick(e) {
     e.stopPropagation();
     if (isPickerOpen) {
-      pickerRef.current?.confirmAndClose();
+      onClosePicker();
     } else {
       onOpenPicker();
     }
@@ -39,7 +38,7 @@ function TodoItem({
   function handleContainerClick(e) {
     if (!e.target.closest(".remove-btn") && !e.target.closest(".time-display-btn")) {
       if (isPickerOpen) {
-        pickerRef.current?.confirmAndClose();
+        onClosePicker();
       } else {
         onOpenPicker();
       }
@@ -86,9 +85,9 @@ function TodoItem({
 
       {isPickerOpen && (
         <CustomTimePicker
-          ref={pickerRef}
           anchorEl={timeBtnRef.current}
           initialTime={parseTimeValue(task.time)}
+          onCancel={onClosePicker}
           onCommit={({ hour, minute, ampm }) => {
             onUpdateTime(task.id, `${hour}:${minute} ${ampm}`);
             onClosePicker();
