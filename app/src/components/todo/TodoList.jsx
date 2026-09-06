@@ -3,13 +3,18 @@ import CardChrome from "../layout/CardChrome";
 import TodoItem from "./TodoItem";
 import { useSortableList } from "../../hooks/useSortableList";
 import { useStudyStats } from "../../context/StudyStatsContext";
+import { HYDRATE_DATA_EVENT, signalLocalChange } from "../../lib/localData";
 
 function makeTask(overrides = {}) {
+  const createdAt = new Date().toISOString();
   return {
     id: crypto.randomUUID(),
     text: "",
     checked: false,
     time: "--:-- --",
+    createdAt,
+    updatedAt: createdAt,
+    deletedAt: null,
     ...overrides,
   };
 }
@@ -22,9 +27,13 @@ function loadInitialTasks() {
       if (Array.isArray(parsed) && parsed.length > 0) {
         return parsed.map((t) =>
           makeTask({
+            id: t.id || crypto.randomUUID(),
             text: t.text || "",
             checked: !!t.checked,
             time: t.time || "--:-- --",
+            createdAt: t.createdAt || new Date().toISOString(),
+            updatedAt: t.updatedAt || t.createdAt || new Date().toISOString(),
+            deletedAt: t.deletedAt || null,
           }),
         );
       }
@@ -44,9 +53,17 @@ function TodoList() {
   const { recordTaskToggled } = useStudyStats();
 
   useEffect(() => {
-    const serializable = tasks.map(({ text, checked, time }) => ({ text, checked, time }));
-    localStorage.setItem("todoList", JSON.stringify(serializable));
+    localStorage.setItem("todoList", JSON.stringify(tasks));
+    signalLocalChange("todos");
   }, [tasks]);
+
+  useEffect(() => {
+    function handleHydration(event) {
+      if (event.detail?.namespace === "todos") setTasks(event.detail.value);
+    }
+    window.addEventListener(HYDRATE_DATA_EVENT, handleHydration);
+    return () => window.removeEventListener(HYDRATE_DATA_EVENT, handleHydration);
+  }, []);
 
   useEffect(() => {
     if (focusTaskId) {
@@ -57,10 +74,12 @@ function TodoList() {
 
   const containerRef = useSortableList(".drag-handle", (oldIndex, newIndex) => {
     setTasks((prev) => {
-      const next = [...prev];
+      const next = prev.filter((task) => !task.deletedAt);
+      const deleted = prev.filter((task) => task.deletedAt);
       const [moved] = next.splice(oldIndex, 1);
       next.splice(newIndex, 0, moved);
-      return next;
+      const updatedAt = new Date().toISOString();
+      return [...next.map((task) => ({ ...task, updatedAt })), ...deleted];
     });
   });
 
@@ -71,7 +90,7 @@ function TodoList() {
   }
 
   function updateText(id, text) {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, text } : t)));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, text, updatedAt: new Date().toISOString() } : t)));
   }
 
   function toggleChecked(id) {
@@ -81,16 +100,16 @@ function TodoList() {
     const task = tasks.find((t) => t.id === id);
     if (!task) return;
     recordTaskToggled(!task.checked);
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, checked: !t.checked } : t)));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, checked: !t.checked, updatedAt: new Date().toISOString() } : t)));
   }
 
   function removeTask(id) {
-    setTasks((prev) => prev.filter((t) => t.id !== id));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, deletedAt: new Date().toISOString(), updatedAt: new Date().toISOString() } : t)));
     taskRefs.current.delete(id);
   }
 
   function updateTime(id, time) {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, time } : t)));
+    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, time, updatedAt: new Date().toISOString() } : t)));
   }
 
   return (
@@ -102,7 +121,7 @@ function TodoList() {
 
       <div className="to-do-list-content">
         <ul className="list-container" ref={containerRef}>
-          {tasks.map((task) => (
+          {tasks.filter((task) => !task.deletedAt).map((task) => (
             <TodoItem
               key={task.id}
               task={task}

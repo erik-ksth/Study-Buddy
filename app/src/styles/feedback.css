@@ -810,7 +810,7 @@ body.feedback-dialog-open {
     padding-top: 72px;
   }
 
-  .top-left-action span {
+  .top-left-action > span:not(.notification-badge) {
     position: absolute;
     width: 1px;
     height: 1px;

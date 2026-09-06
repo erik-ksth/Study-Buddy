@@ -11,8 +11,14 @@ import FeedbackWidget from "./components/feedback/FeedbackWidget";
 import UserSurvey from "./components/feedback/UserSurvey";
 import LampIcon from "./components/layout/lamp.svg?react";
 import NotificationCenter from "./components/notifications/NotificationCenter";
+import AccountControl from "./components/account/AccountControl";
+import AuthDialog from "./components/account/AuthDialog";
+import GreetingTitle from "./components/layout/GreetingTitle";
+import { useAuth } from "./context/authState";
 
 function App() {
+  const { user } = useAuth();
+
   return (
     <>
       <Preloader />
@@ -22,13 +28,15 @@ function App() {
       <div className="theme-frame" />
       <ThemeSwitcher />
       <div className="top-left-actions">
+        <AccountControl />
         <NotificationCenter />
         <FeedbackWidget />
         <CommunityLink />
       </div>
       <UserSurvey />
+      <AuthDialog />
       <div className="container">
-        <h1>study buddy</h1>
+        {user ? <GreetingTitle key={user.id} user={user} /> : <h1>study buddy</h1>}
 
         <div className="home-row">
           <div className="timer-todo-column">

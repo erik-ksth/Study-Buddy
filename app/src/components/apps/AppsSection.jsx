@@ -4,10 +4,11 @@ import CalculatorApp from "./CalculatorApp";
 import FlashcardsApp from "./FlashcardsApp";
 import NotesApp from "./NotesApp";
 import DraggableWindow from "./DraggableWindow";
+import { useAuth } from "../../context/authState";
 
 const APPS = [
   { id: "calculator", label: "Calculator", icon: "calculator", width: 460, Component: CalculatorApp },
-  { id: "notes", label: "Quick notes", icon: "quick-notes", width: 480, Component: NotesApp },
+  { id: "notes", label: "Notes", icon: "quick-notes", width: 560, Component: NotesApp },
   { id: "flashcards", label: "Flashcards", icon: "flashcards", width: 500, Component: FlashcardsApp },
 ];
 
@@ -19,6 +20,7 @@ function initialPosition(index, preferredWidth) {
 }
 
 function AppsSection() {
+  const { user, requestSignIn } = useAuth();
   const [openApps, setOpenApps] = useState([]);
   const topZ = useRef(920);
 
@@ -28,6 +30,10 @@ function AppsSection() {
   }
 
   function launch(app, index) {
+    if (!user) {
+      requestSignIn("Study apps");
+      return;
+    }
     const nextZ = nextZIndex();
     setOpenApps((current) => {
       const open = current.find((item) => item.id === app.id);
@@ -72,6 +78,10 @@ function AppsSection() {
     return () => window.removeEventListener("keydown", handleEscape);
   }, []);
 
+  useEffect(() => {
+    if (!user) setOpenApps([]);
+  }, [user]);
+
   return (
     <>
       <section className="apps-panel" aria-labelledby="apps-title">
@@ -84,12 +94,13 @@ function AppsSection() {
             const isOpen = openApps.some((item) => item.id === app.id);
             return (
               <button
-                className={`app-launcher${isOpen ? " app-launcher-open" : ""}`}
+                className={`app-launcher${isOpen ? " app-launcher-open" : ""}${!user ? " app-launcher-locked" : ""}`}
                 type="button"
                 key={app.id}
                 onClick={() => launch(app, index)}
                 aria-haspopup="dialog"
                 aria-expanded={isOpen}
+                aria-label={!user ? `Sign in to use ${app.label}` : app.label}
               >
                 <span className="app-icon" aria-hidden="true">
                   <img
@@ -100,6 +111,11 @@ function AppsSection() {
                   />
                 </span>
                 <span>{app.label}</span>
+                {!user && (
+                  <span className="app-lock-badge" aria-hidden="true">
+                    <i className="fas fa-lock" />
+                  </span>
+                )}
                 {isOpen && <span className="app-open-dot" aria-hidden="true" />}
               </button>
             );

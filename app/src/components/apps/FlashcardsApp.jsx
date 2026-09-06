@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { HYDRATE_DATA_EVENT, signalLocalChange } from "../../lib/localData";
 
 const STORAGE_KEY = "studyBuddyFlashcards";
 
@@ -8,7 +9,16 @@ function loadCards() {
     return Array.isArray(saved)
       ? saved
           .filter((card) => card?.front && card?.back)
-          .map((card) => ({ ...card, id: card.id || crypto.randomUUID() }))
+          .map((card) => {
+            const createdAt = card.createdAt || new Date().toISOString();
+            return {
+              ...card,
+              id: card.id || crypto.randomUUID(),
+              createdAt,
+              updatedAt: card.updatedAt || createdAt,
+              deletedAt: card.deletedAt || null,
+            };
+          })
       : [];
   } catch {
     return [];
@@ -30,7 +40,8 @@ function shuffleDeck(deck) {
 }
 
 function FlashcardsApp() {
-  const [cards, setCards] = useState(loadCards);
+  const [storedCards, setStoredCards] = useState(loadCards);
+  const cards = storedCards.filter((card) => !card.deletedAt);
   const [mode, setMode] = useState("review");
   const [front, setFront] = useState("");
   const [back, setBack] = useState("");
@@ -39,14 +50,27 @@ function FlashcardsApp() {
   const [instantFlip, setInstantFlip] = useState(false);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(cards));
-  }, [cards]);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(storedCards));
+    signalLocalChange("flashcards");
+  }, [storedCards]);
+
+  useEffect(() => {
+    function handleHydration(event) {
+      if (event.detail?.namespace !== "flashcards") return;
+      setStoredCards(event.detail.value || []);
+      setIndex(0);
+      setFlipped(false);
+    }
+    window.addEventListener(HYDRATE_DATA_EVENT, handleHydration);
+    return () => window.removeEventListener(HYDRATE_DATA_EVENT, handleHydration);
+  }, []);
 
   function addCard(event) {
     event.preventDefault();
     if (!front.trim() || !back.trim()) return;
-    const card = { id: crypto.randomUUID(), front: front.trim(), back: back.trim() };
-    setCards((current) => [...current, card]);
+    const createdAt = new Date().toISOString();
+    const card = { id: crypto.randomUUID(), front: front.trim(), back: back.trim(), createdAt, updatedAt: createdAt, deletedAt: null };
+    setStoredCards((current) => [...current, card]);
     setIndex(cards.length);
     setFront("");
     setBack("");
@@ -68,8 +92,10 @@ function FlashcardsApp() {
   }
 
   function removeCurrent() {
-    const nextCards = cards.filter((_, cardIndex) => cardIndex !== index);
-    setCards(nextCards);
+    const cardToRemove = cards[index];
+    const nextCards = cards.filter((card) => card.id !== cardToRemove.id);
+    const updatedAt = new Date().toISOString();
+    setStoredCards((current) => current.map((card) => card.id === cardToRemove.id ? { ...card, deletedAt: updatedAt, updatedAt } : card));
     setFlipped(false);
     if (!nextCards.length) {
       setIndex(0);
@@ -81,7 +107,12 @@ function FlashcardsApp() {
 
   function shuffleCards() {
     if (cards.length < 2) return;
-    setCards((current) => shuffleDeck(current));
+    const shuffled = shuffleDeck(cards);
+    const visibleOrder = new Map(shuffled.map((card, cardIndex) => [card.id, cardIndex]));
+    setStoredCards((current) => [...current].sort((a, b) => {
+      if (a.deletedAt || b.deletedAt) return 0;
+      return visibleOrder.get(a.id) - visibleOrder.get(b.id);
+    }));
     setIndex(0);
     setFlipped(false);
     setInstantFlip(true);

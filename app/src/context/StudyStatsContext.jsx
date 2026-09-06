@@ -17,6 +17,7 @@ const DEFAULT_STATS = {
   totalFocusMinutes: 0,
   totalPomodoros: 0,
   totalTasksDone: 0,
+  updatedAt: null,
 };
 
 function todayKey() {
@@ -44,6 +45,7 @@ function rollDay(stats, today) {
     pomodorosToday: 0,
     tasksDoneToday: 0,
     streak: streakBroken ? 0 : stats.streak,
+    updatedAt: new Date().toISOString(),
   };
 }
 
@@ -53,7 +55,13 @@ function markActiveToday(stats, today) {
   if (stats.lastActiveDate === today) return stats;
   const gap = stats.lastActiveDate ? daysBetween(stats.lastActiveDate, today) : null;
   const streak = gap === 1 ? stats.streak + 1 : 1;
-  return { ...stats, lastActiveDate: today, streak, bestStreak: Math.max(stats.bestStreak, streak) };
+  return {
+    ...stats,
+    lastActiveDate: today,
+    streak,
+    bestStreak: Math.max(stats.bestStreak, streak),
+    updatedAt: new Date().toISOString(),
+  };
 }
 
 export function StudyStatsProvider({ children }) {
@@ -82,6 +90,7 @@ export function StudyStatsProvider({ children }) {
         pomodorosToday: active.pomodorosToday + 1,
         totalFocusMinutes: active.totalFocusMinutes + minutes,
         totalPomodoros: active.totalPomodoros + 1,
+        updatedAt: new Date().toISOString(),
       };
     });
   }
@@ -96,6 +105,7 @@ export function StudyStatsProvider({ children }) {
         ...base,
         tasksDoneToday: Math.max(0, base.tasksDoneToday + delta),
         totalTasksDone: Math.max(0, base.totalTasksDone + delta),
+        updatedAt: new Date().toISOString(),
       };
     });
   }

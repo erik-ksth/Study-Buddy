@@ -5,15 +5,21 @@ import App from "./App.jsx";
 import { ThemeProvider } from "./context/ThemeContext.jsx";
 import { StudyStatsProvider } from "./context/StudyStatsContext.jsx";
 import { NotificationProvider } from "./context/NotificationContext.jsx";
+import { AuthProvider } from "./context/AuthContext.jsx";
+import { DataSyncProvider } from "./context/DataSyncContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <ThemeProvider>
-      <NotificationProvider>
-        <StudyStatsProvider>
-          <App />
-        </StudyStatsProvider>
-      </NotificationProvider>
-    </ThemeProvider>
+    <AuthProvider>
+      <DataSyncProvider>
+        <ThemeProvider>
+          <NotificationProvider>
+            <StudyStatsProvider>
+              <App />
+            </StudyStatsProvider>
+          </NotificationProvider>
+        </ThemeProvider>
+      </DataSyncProvider>
+    </AuthProvider>
   </StrictMode>,
 );

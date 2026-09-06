@@ -30,7 +30,7 @@
       // Applied before first paint so a saved non-default theme doesn't flash as Cream on load.
       (function () {
         var saved = localStorage.getItem("theme");
-        if (saved) document.documentElement.dataset.theme = saved;
+        if (saved && saved !== "sakura") document.documentElement.dataset.theme = saved;
       })();
     </script>
 

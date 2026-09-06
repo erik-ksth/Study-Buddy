@@ -121,6 +121,11 @@
 
 /* Small Tablet from 481 to 740 */
 @media only screen and (max-width: 740px) {
+  .personal-greeting {
+    max-width: calc(100vw - 28px);
+    font-size: 1.8rem;
+  }
+
   .community-invite-popover {
     position: fixed;
     top: 74px;

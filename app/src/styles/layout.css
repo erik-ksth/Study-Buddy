@@ -231,6 +231,15 @@ h1 {
   z-index: 0;
 }
 
+.personal-greeting {
+  max-width: min(760px, calc(100vw - 32px));
+  margin-inline: auto;
+  font-size: 2.15rem;
+  line-height: 1.1;
+  text-transform: none;
+  text-wrap: balance;
+}
+
 .home-row {
   display: flex;
   align-items: flex-start;
@@ -617,6 +626,11 @@ h3 {
 
 .theme-swatch-active {
   box-shadow: var(--color-shadow) 2px 2px;
+}
+
+.theme-swatch-locked {
+  position: relative;
+  font-size: 0.42rem;
 }
 
 /* ---------- Full screen btn ---------- */

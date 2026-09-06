@@ -26,6 +26,16 @@ Adding new music: drop an mp3 into the matching `app/public/music/<genre>/` fold
 
 Quotes are loaded through the serverless `app/api/quotes.js` proxy, which fetches them from ZenQuotes and caches the upstream response at the edge.
 
+### Accounts and cloud sync
+
+Study apps and the Sakura theme unlock after sign-in. Guest timer and to-do data stays local; after sign-in, Study Buddy safely combines that work with the account. Account work syncs through Supabase and the guest workspace is restored on sign-out.
+
+1. Create a Supabase project and run [`supabase/migrations/20260906000000_account_sync.sql`](supabase/migrations/20260906000000_account_sync.sql) in its SQL editor (or with `supabase db push`).
+2. In Supabase Auth, enable Google sign-in and add local and deployed app URLs to the redirect allow list.
+3. Copy `app/.env.example` to `app/.env.local` and set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY`.
+
+Only the browser-safe publishable key belongs in Vite environment variables. Never expose a Supabase service-role key in the frontend.
+
 ### Notifications
 
 The React app includes a local notification inbox for product announcements and completed timer sessions. Users can opt into desktop alerts and independently control timer inbox updates and completion sounds. The app only asks for browser permission after the user enables desktop alerts.
