@@ -5,6 +5,7 @@ import FlashcardsApp from "./FlashcardsApp";
 import NotesApp from "./NotesApp";
 import DraggableWindow from "./DraggableWindow";
 import { useAuth } from "../../context/authState";
+import { trackAppOpened, trackEvent } from "../../analytics";
 
 const APPS = [
   { id: "calculator", label: "Calculator", icon: "calculator", width: 460, Component: CalculatorApp },
@@ -31,9 +32,21 @@ function AppsSection() {
 
   function launch(app, index) {
     if (!user) {
+      trackEvent("app_access_blocked", {
+        app_name: app.id,
+        reason: "sign_in_required",
+      });
       requestSignIn("Study apps");
       return;
     }
+
+    const isAlreadyOpen = openApps.some((item) => item.id === app.id);
+    if (isAlreadyOpen) {
+      trackEvent("app_focused", { app_name: app.id, source: "launcher" });
+    } else {
+      trackAppOpened(app.id);
+    }
+
     const nextZ = nextZIndex();
     setOpenApps((current) => {
       const open = current.find((item) => item.id === app.id);

@@ -7,6 +7,9 @@ import { StudyStatsProvider } from "./context/StudyStatsContext.jsx";
 import { NotificationProvider } from "./context/NotificationContext.jsx";
 import { AuthProvider } from "./context/AuthContext.jsx";
 import { DataSyncProvider } from "./context/DataSyncContext.jsx";
+import { initAnalytics } from "./analytics.js";
+
+initAnalytics();
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>

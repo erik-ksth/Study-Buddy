@@ -90,3 +90,31 @@ In Google Analytics, create event-scoped custom dimensions for `form_name`,
 **Admin > Data display > Custom definitions**. Event names can be checked first
 in the Realtime report. Use an Exploration funnel ordered by `sb_form_view`,
 `sb_form_start`, `sb_form_submit_attempt`, and `sb_form_submit`.
+
+## Product analytics
+
+Study Buddy uses PostHog for anonymous product analytics, interaction autocapture,
+heatmaps, and privacy-masked session replay. Add the browser-safe project key and
+the matching US or EU ingestion host to `.env.local` or the deployment environment:
+
+```bash
+VITE_POSTHOG_KEY=phc_your_project_key
+VITE_POSTHOG_HOST=https://us.i.posthog.com
+```
+
+PostHog is disabled during local development and is a no-op when the project key
+is absent. Existing semantic analytics events are sent to both Google Analytics
+and PostHog. PostHog also autocaptures supported clicks, changes, submissions,
+page views, and page leaves.
+
+Every successfully launched study app emits `app_opened` with an `app_name`
+property plus a per-app event such as `calculator_opened`, `notes_opened`, or
+`flashcards_opened`. New entries added to the `APPS` registry get both events
+automatically. Clicking an already-open launcher emits `app_focused`; attempting
+to open a locked app emits `app_access_blocked`.
+
+All input values are masked in session replay. Task text and the entire Notes and
+Flashcards app windows receive additional text masking. Add
+`data-analytics-sensitive` to any future element whose visible content must never
+appear in a replay. Do not send note contents, task names, flashcard text, email
+addresses, or other user-entered content as analytics event properties.
